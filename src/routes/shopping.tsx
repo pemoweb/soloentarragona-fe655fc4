@@ -1,0 +1,90 @@
+import { createFileRoute } from "@tanstack/react-router";
+import { PageShell, PageHero } from "@/components/PageShell";
+import { Tag, MapPin, Sparkles } from "lucide-react";
+
+export const Route = createFileRoute("/shopping")({
+  head: () => ({
+    meta: [
+      { title: "Shopping local en Tarragona — Tiendas y promociones" },
+      { name: "description", content: "Descubre las mejores tiendas locales de Tarragona y aprovecha ofertas y promociones de temporada." },
+    ],
+  }),
+  component: ShoppingPage,
+});
+
+const featured = [
+  { name: "La Botiga del Port", deal: "-30% en pescado fresco", category: "Alimentación", img: "https://images.unsplash.com/photo-1534723452862-4c874018d66d?w=900&q=80" },
+  { name: "Moda Mediterrània", deal: "2x1 en colección verano", category: "Moda", img: "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=900&q=80" },
+  { name: "Llibres del Carrer Major", deal: "20% libros catalanes", category: "Cultura", img: "https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=900&q=80" },
+];
+
+const shops = [
+  { name: "Forn Sistaré", category: "Panadería", location: "Carrer Major", img: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&q=80" },
+  { name: "Vins & Caves Tàrraco", category: "Vinoteca", location: "Rambla Nova", img: "https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?w=600&q=80" },
+  { name: "Floristeria Jardí", category: "Flores", location: "Sant Pere", img: "https://images.unsplash.com/photo-1561181286-d3fee7d55364?w=600&q=80" },
+  { name: "Joieria Mar", category: "Joyería", location: "Centre", img: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&q=80" },
+  { name: "Zapateria Costa", category: "Calzado", location: "Eixample", img: "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=600&q=80" },
+  { name: "Café Corsini", category: "Cafetería", location: "Plaça Corsini", img: "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=600&q=80" },
+];
+
+function ShoppingPage() {
+  return (
+    <PageShell>
+      <PageHero
+        eyebrow="Shopping local"
+        title="Compra local, vive Tarragona"
+        subtitle="Las tiendas que hacen ciudad. Descubre comercios de barrio, promociones de temporada y experiencias únicas."
+      />
+
+      <section className="mx-auto max-w-7xl px-4 md:px-8 py-12">
+        {/* Featured deals */}
+        <div className="flex items-center gap-2 text-coral text-sm font-bold uppercase tracking-widest">
+          <Sparkles className="h-4 w-4" /> Promociones destacadas
+        </div>
+        <div className="mt-4 grid gap-6 md:grid-cols-3">
+          {featured.map((f) => (
+            <article key={f.name} className="group relative overflow-hidden rounded-3xl aspect-[4/5] cursor-pointer">
+              <img src={f.img} alt={f.name} className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
+              <div className="absolute inset-0 bg-gradient-to-t from-primary/95 via-primary/50 to-transparent" />
+              <div className="absolute top-4 left-4 inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-coral text-coral-foreground text-xs font-bold uppercase tracking-wider">
+                <Tag className="h-3 w-3" /> Oferta
+              </div>
+              <div className="absolute bottom-0 p-6 text-primary-foreground">
+                <div className="text-xs opacity-80 uppercase tracking-wider">{f.category}</div>
+                <h3 className="mt-1 font-display text-2xl font-bold">{f.name}</h3>
+                <p className="mt-2 text-coral font-bold text-lg">{f.deal}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        {/* All shops */}
+        <h2 className="mt-20 font-display text-3xl md:text-4xl font-black">Tiendas de Tarragona</h2>
+        <div className="mt-6 flex gap-2 overflow-x-auto pb-2">
+          {["Todas", "Alimentación", "Moda", "Hogar", "Cultura", "Belleza", "Especializadas"].map((c, i) => (
+            <button key={c} className={`shrink-0 px-4 py-2 rounded-full text-sm font-semibold border transition ${
+              i === 0 ? "bg-foreground text-background border-foreground" : "bg-card text-muted-foreground border-border hover:border-coral hover:text-coral"
+            }`}>{c}</button>
+          ))}
+        </div>
+
+        <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {shops.map((s) => (
+            <article key={s.name} className="group cursor-pointer rounded-2xl bg-card border border-border overflow-hidden hover:shadow-card transition-all hover:-translate-y-1">
+              <div className="aspect-[16/10] overflow-hidden bg-muted">
+                <img src={s.img} alt={s.name} loading="lazy" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+              </div>
+              <div className="p-5">
+                <div className="text-xs font-bold uppercase tracking-wider text-coral">{s.category}</div>
+                <h3 className="mt-1 font-display text-xl font-bold group-hover:text-coral transition-colors">{s.name}</h3>
+                <div className="mt-2 flex items-center gap-1 text-sm text-muted-foreground">
+                  <MapPin className="h-3 w-3" /> {s.location}
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+    </PageShell>
+  );
+}

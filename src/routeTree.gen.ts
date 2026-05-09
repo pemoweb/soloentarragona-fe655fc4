@@ -9,8 +9,44 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ShoppingRouteImport } from './routes/shopping'
+import { Route as ServiciosPublicosRouteImport } from './routes/servicios-publicos'
+import { Route as NoticiasRouteImport } from './routes/noticias'
+import { Route as MarketplaceRouteImport } from './routes/marketplace'
+import { Route as DirectorioRouteImport } from './routes/directorio'
+import { Route as ClasificadosRouteImport } from './routes/clasificados'
 import { Route as IndexRouteImport } from './routes/index'
 
+const ShoppingRoute = ShoppingRouteImport.update({
+  id: '/shopping',
+  path: '/shopping',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServiciosPublicosRoute = ServiciosPublicosRouteImport.update({
+  id: '/servicios-publicos',
+  path: '/servicios-publicos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NoticiasRoute = NoticiasRouteImport.update({
+  id: '/noticias',
+  path: '/noticias',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MarketplaceRoute = MarketplaceRouteImport.update({
+  id: '/marketplace',
+  path: '/marketplace',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DirectorioRoute = DirectorioRouteImport.update({
+  id: '/directorio',
+  path: '/directorio',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ClasificadosRoute = ClasificadosRouteImport.update({
+  id: '/clasificados',
+  path: '/clasificados',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -19,28 +55,116 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/clasificados': typeof ClasificadosRoute
+  '/directorio': typeof DirectorioRoute
+  '/marketplace': typeof MarketplaceRoute
+  '/noticias': typeof NoticiasRoute
+  '/servicios-publicos': typeof ServiciosPublicosRoute
+  '/shopping': typeof ShoppingRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/clasificados': typeof ClasificadosRoute
+  '/directorio': typeof DirectorioRoute
+  '/marketplace': typeof MarketplaceRoute
+  '/noticias': typeof NoticiasRoute
+  '/servicios-publicos': typeof ServiciosPublicosRoute
+  '/shopping': typeof ShoppingRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/clasificados': typeof ClasificadosRoute
+  '/directorio': typeof DirectorioRoute
+  '/marketplace': typeof MarketplaceRoute
+  '/noticias': typeof NoticiasRoute
+  '/servicios-publicos': typeof ServiciosPublicosRoute
+  '/shopping': typeof ShoppingRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/clasificados'
+    | '/directorio'
+    | '/marketplace'
+    | '/noticias'
+    | '/servicios-publicos'
+    | '/shopping'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/clasificados'
+    | '/directorio'
+    | '/marketplace'
+    | '/noticias'
+    | '/servicios-publicos'
+    | '/shopping'
+  id:
+    | '__root__'
+    | '/'
+    | '/clasificados'
+    | '/directorio'
+    | '/marketplace'
+    | '/noticias'
+    | '/servicios-publicos'
+    | '/shopping'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ClasificadosRoute: typeof ClasificadosRoute
+  DirectorioRoute: typeof DirectorioRoute
+  MarketplaceRoute: typeof MarketplaceRoute
+  NoticiasRoute: typeof NoticiasRoute
+  ServiciosPublicosRoute: typeof ServiciosPublicosRoute
+  ShoppingRoute: typeof ShoppingRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/shopping': {
+      id: '/shopping'
+      path: '/shopping'
+      fullPath: '/shopping'
+      preLoaderRoute: typeof ShoppingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/servicios-publicos': {
+      id: '/servicios-publicos'
+      path: '/servicios-publicos'
+      fullPath: '/servicios-publicos'
+      preLoaderRoute: typeof ServiciosPublicosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/noticias': {
+      id: '/noticias'
+      path: '/noticias'
+      fullPath: '/noticias'
+      preLoaderRoute: typeof NoticiasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/marketplace': {
+      id: '/marketplace'
+      path: '/marketplace'
+      fullPath: '/marketplace'
+      preLoaderRoute: typeof MarketplaceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/directorio': {
+      id: '/directorio'
+      path: '/directorio'
+      fullPath: '/directorio'
+      preLoaderRoute: typeof DirectorioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/clasificados': {
+      id: '/clasificados'
+      path: '/clasificados'
+      fullPath: '/clasificados'
+      preLoaderRoute: typeof ClasificadosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -53,6 +177,12 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ClasificadosRoute: ClasificadosRoute,
+  DirectorioRoute: DirectorioRoute,
+  MarketplaceRoute: MarketplaceRoute,
+  NoticiasRoute: NoticiasRoute,
+  ServiciosPublicosRoute: ServiciosPublicosRoute,
+  ShoppingRoute: ShoppingRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
