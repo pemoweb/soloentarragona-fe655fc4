@@ -78,7 +78,7 @@ export const Route = createFileRoute("/noticias/$slug")({
 });
 
 function NewsDetail() {
-  const post = Route.useLoaderData();
+  const post = Route.useLoaderData() as NewsPost;
   const all = getAllPosts();
   const related = all
     .filter((p) => p.slug !== post.slug && p.category === post.category)
