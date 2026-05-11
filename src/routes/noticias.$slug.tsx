@@ -1,11 +1,11 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft, Clock, Share2, User } from "lucide-react";
 import { PageShell } from "@/components/PageShell";
-import { formatRelativeDate, getAllPosts, getPostBySlug } from "@/lib/news-data";
+import { formatRelativeDate, getAllPosts, getPostBySlug, type NewsPost } from "@/lib/news-data";
 
 export const Route = createFileRoute("/noticias/$slug")({
   // Loader runs on client (we use localStorage). Return the post data for head().
-  loader: ({ params }) => {
+  loader: ({ params }): NewsPost => {
     const post = getPostBySlug(params.slug);
     if (!post) throw notFound();
     return post;
