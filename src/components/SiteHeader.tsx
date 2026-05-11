@@ -42,9 +42,12 @@ export function SiteHeader() {
           <button className="px-4 py-2 text-sm font-medium text-foreground hover:text-coral transition-colors">
             Acceder
           </button>
-          <button className="px-4 py-2 text-sm font-semibold rounded-full bg-foreground text-background hover:bg-coral transition-colors">
+          <Link
+            to="/noticias/publicar"
+            className="px-4 py-2 text-sm font-semibold rounded-full bg-foreground text-background hover:bg-coral transition-colors"
+          >
             Publicar
-          </button>
+          </Link>
         </div>
 
         <button className="lg:hidden p-2" onClick={() => setOpen(!open)} aria-label="Menú">
@@ -67,7 +70,13 @@ export function SiteHeader() {
             ))}
             <div className="flex gap-2 pt-3 border-t border-border mt-2">
               <button className="flex-1 px-4 py-2.5 rounded-full border border-border font-medium">Acceder</button>
-              <button className="flex-1 px-4 py-2.5 rounded-full bg-foreground text-background font-semibold">Publicar</button>
+              <Link
+                to="/noticias/publicar"
+                onClick={() => setOpen(false)}
+                className="flex-1 px-4 py-2.5 rounded-full bg-foreground text-background font-semibold text-center"
+              >
+                Publicar
+              </Link>
             </div>
           </nav>
         </div>
