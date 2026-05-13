@@ -48,7 +48,7 @@ function ShoppingPage() {
         </div>
         <div className="mt-4 grid gap-6 md:grid-cols-3">
           {featured.map((f) => (
-            <article key={f.name} className="group relative overflow-hidden rounded-3xl aspect-[4/5] cursor-pointer">
+            <article key={f.name} onClick={() => setSelectedFeatured(f)} className="group relative overflow-hidden rounded-3xl aspect-[4/5] cursor-pointer">
               <img src={f.img} alt={f.name} className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
               <div className="absolute inset-0 bg-gradient-to-t from-primary/95 via-primary/50 to-transparent" />
               <div className="absolute top-4 left-4 inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-coral text-coral-foreground text-xs font-bold uppercase tracking-wider">
