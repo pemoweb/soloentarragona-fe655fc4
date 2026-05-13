@@ -102,7 +102,7 @@ function MarketplacePage() {
         </div>
       </section>
 
-      <Dialog open={!!selectedItem} onOpenChange={(open) => !open && setSelectedItem(null)}>
+      <Dialog open={!!selectedItem} onOpenChange={handleOpenChange}>
         <DialogContent>
           {selectedItem && (
             <>
@@ -112,15 +112,69 @@ function MarketplacePage() {
                   <MapPin className="h-3 w-3" /> {selectedItem.location}
                 </DialogDescription>
               </DialogHeader>
-              <div className="aspect-square overflow-hidden rounded-xl bg-muted my-4">
-                <img src={selectedItem.img} alt={selectedItem.title} className="w-full h-full object-cover" />
-              </div>
-              <div className="flex justify-between items-center">
-                <div className="font-display text-3xl font-black text-coral">{selectedItem.price} €</div>
-                <button className="px-6 py-3 rounded-xl bg-foreground text-background font-semibold">
-                  Contactar al vendedor
-                </button>
-              </div>
+
+              {isReporting ? (
+                reportSubmitted ? (
+                  <div className="py-8 text-center">
+                    <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100 text-green-600 mb-4">
+                      <Check className="h-6 w-6" />
+                    </div>
+                    <h3 className="text-xl font-bold">Denuncia enviada</h3>
+                    <p className="text-muted-foreground mt-2 text-sm">Gracias por ayudarnos a mantener la comunidad segura.</p>
+                    <button 
+                      onClick={() => handleOpenChange(false)} 
+                      className="mt-6 px-6 py-2.5 rounded-full bg-secondary text-secondary-foreground font-semibold text-sm hover:bg-secondary/80 transition"
+                    >
+                      Cerrar
+                    </button>
+                  </div>
+                ) : (
+                  <div className="py-2">
+                    <p className="text-sm text-muted-foreground mb-4">Por favor, indícanos el motivo por el que denuncias este anuncio para que podamos revisarlo.</p>
+                    <textarea 
+                      value={reportReason}
+                      onChange={(e) => setReportReason(e.target.value)}
+                      placeholder="Motivo (ej. spam, falso, ofensivo...)"
+                      className="w-full min-h-[100px] p-3 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-coral/50 mb-4 resize-none text-sm"
+                    />
+                    <div className="flex justify-end gap-2">
+                      <button 
+                        onClick={() => setIsReporting(false)} 
+                        className="px-4 py-2 rounded-full font-semibold text-sm hover:bg-secondary transition"
+                      >
+                        Cancelar
+                      </button>
+                      <button 
+                        disabled={!reportReason.trim()}
+                        onClick={() => setReportSubmitted(true)} 
+                        className="px-4 py-2 rounded-full bg-red-500 text-white font-semibold text-sm hover:bg-red-600 transition disabled:opacity-50"
+                      >
+                        Enviar denuncia
+                      </button>
+                    </div>
+                  </div>
+                )
+              ) : (
+                <>
+                  <div className="aspect-square overflow-hidden rounded-xl bg-muted my-4">
+                    <img src={selectedItem.img} alt={selectedItem.title} className="w-full h-full object-cover" />
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <div className="font-display text-3xl font-black text-coral">{selectedItem.price} €</div>
+                    <button className="px-6 py-3 rounded-xl bg-foreground text-background font-semibold">
+                      Contactar al vendedor
+                    </button>
+                  </div>
+                  <div className="mt-4 pt-4 border-t border-border flex justify-end">
+                    <button 
+                      onClick={() => setIsReporting(true)}
+                      className="text-xs text-muted-foreground hover:text-red-500 flex items-center gap-1 transition font-medium"
+                    >
+                      <AlertTriangle className="h-3.5 w-3.5" /> Denunciar anuncio
+                    </button>
+                  </div>
+                </>
+              )}
             </>
           )}
         </DialogContent>

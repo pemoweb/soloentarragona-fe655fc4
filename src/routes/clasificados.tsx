@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageShell, PageHero } from "@/components/PageShell";
-import { Briefcase, Home, Wrench, ShoppingBag, Clock, MapPin, Send } from "lucide-react";
+import { Briefcase, Home, Wrench, ShoppingBag, Clock, MapPin, Send, AlertTriangle, Check } from "lucide-react";
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
