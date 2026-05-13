@@ -90,6 +90,61 @@ function ShoppingPage() {
           ))}
         </div>
       </section>
+
+      {/* Featured Dialog */}
+      <Dialog open={!!selectedFeatured} onOpenChange={(open) => !open && setSelectedFeatured(null)}>
+        <DialogContent>
+          {selectedFeatured && (
+            <>
+              <DialogHeader>
+                <div className="flex items-center gap-2 mb-2 text-xs">
+                  <span className="px-2.5 py-1 rounded-full bg-secondary text-secondary-foreground font-semibold uppercase tracking-wider">{selectedFeatured.category}</span>
+                </div>
+                <DialogTitle className="text-2xl">{selectedFeatured.name}</DialogTitle>
+                <DialogDescription className="text-lg font-bold text-coral mt-1">
+                  <Tag className="h-4 w-4 inline-block mr-1" /> {selectedFeatured.deal}
+                </DialogDescription>
+              </DialogHeader>
+              <div className="aspect-[4/3] overflow-hidden rounded-xl bg-muted my-2">
+                <img src={selectedFeatured.img} alt={selectedFeatured.name} className="w-full h-full object-cover" />
+              </div>
+              <div className="flex justify-end mt-4">
+                <button className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-full bg-foreground text-background font-semibold hover:bg-coral transition">
+                  <Store className="h-4 w-4" /> Visitar tienda
+                </button>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Shop Dialog */}
+      <Dialog open={!!selectedShop} onOpenChange={(open) => !open && setSelectedShop(null)}>
+        <DialogContent>
+          {selectedShop && (
+            <>
+              <DialogHeader>
+                <div className="flex items-center gap-2 mb-2 text-xs">
+                  <span className="px-2.5 py-1 rounded-full bg-secondary text-secondary-foreground font-semibold uppercase tracking-wider">{selectedShop.category}</span>
+                </div>
+                <DialogTitle className="text-2xl">{selectedShop.name}</DialogTitle>
+                <DialogDescription className="flex items-center gap-1 mt-2">
+                  <MapPin className="h-4 w-4" /> {selectedShop.location}
+                </DialogDescription>
+              </DialogHeader>
+              <div className="aspect-[16/10] overflow-hidden rounded-xl bg-muted my-2">
+                <img src={selectedShop.img} alt={selectedShop.name} className="w-full h-full object-cover" />
+              </div>
+              <div className="flex justify-end mt-4">
+                <button className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-full bg-foreground text-background font-semibold hover:bg-coral transition">
+                  <Store className="h-4 w-4" /> Ver productos
+                </button>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
+
     </PageShell>
   );
 }
