@@ -24,6 +24,8 @@ const businesses = [
 ];
 
 function DirectorioPage() {
+  const [selectedBusiness, setSelectedBusiness] = useState<typeof businesses[0] | null>(null);
+
   return (
     <PageShell>
       <PageHero
