@@ -45,7 +45,7 @@ function DirectorioPage() {
 
         <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {businesses.map((b) => (
-            <article key={b.name} className="group cursor-pointer rounded-3xl bg-card border border-border overflow-hidden hover:shadow-glow transition-all">
+            <article key={b.name} onClick={() => setSelectedBusiness(b)} className="group cursor-pointer rounded-3xl bg-card border border-border overflow-hidden hover:shadow-glow transition-all">
               <div className="aspect-[16/10] overflow-hidden bg-muted">
                 <img src={b.img} alt={b.name} loading="lazy" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
               </div>
