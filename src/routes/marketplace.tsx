@@ -66,7 +66,7 @@ function MarketplacePage() {
         {/* Products */}
         <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {products.map((p) => (
-            <article key={p.title} className="group cursor-pointer rounded-2xl bg-card border border-border overflow-hidden hover:shadow-glow transition-all hover:-translate-y-1">
+            <article key={p.title} onClick={() => setSelectedItem(p)} className="group cursor-pointer rounded-2xl bg-card border border-border overflow-hidden hover:shadow-glow transition-all hover:-translate-y-1">
               <div className="relative aspect-square overflow-hidden bg-muted">
                 <img src={p.img} alt={p.title} loading="lazy" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
                 {p.featured && (
