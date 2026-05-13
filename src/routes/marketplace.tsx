@@ -26,6 +26,8 @@ const products = [
 ];
 
 function MarketplacePage() {
+  const [selectedItem, setSelectedItem] = useState<typeof products[0] | null>(null);
+
   return (
     <PageShell>
       <PageHero
