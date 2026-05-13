@@ -102,7 +102,7 @@ function ClasificadosPage() {
         </div>
       </section>
 
-      <Dialog open={!!selectedAd} onOpenChange={(open) => !open && setSelectedAd(null)}>
+      <Dialog open={!!selectedAd} onOpenChange={handleOpenChange}>
         <DialogContent>
           {selectedAd && (
             <>
@@ -116,16 +116,70 @@ function ClasificadosPage() {
                   <span className="inline-flex items-center gap-1"><Clock className="h-4 w-4" /> {selectedAd.time}</span>
                 </DialogDescription>
               </DialogHeader>
-              <div className="mt-4 p-4 rounded-xl bg-muted/50 border border-border">
-                <p className="text-sm text-foreground/80">
-                  Este anuncio está publicado bajo la categoría de {selectedAd.cat.toLowerCase()}. Puedes contactar directamente con el anunciante sin intermediarios ni comisiones.
-                </p>
-              </div>
-              <div className="flex justify-end mt-4">
-                <button className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-full bg-foreground text-background font-semibold hover:bg-coral transition">
-                  <Send className="h-4 w-4" /> Enviar mensaje
-                </button>
-              </div>
+
+              {isReporting ? (
+                reportSubmitted ? (
+                  <div className="py-8 text-center">
+                    <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100 text-green-600 mb-4">
+                      <Check className="h-6 w-6" />
+                    </div>
+                    <h3 className="text-xl font-bold">Denuncia enviada</h3>
+                    <p className="text-muted-foreground mt-2 text-sm">Gracias por ayudarnos a mantener la comunidad segura.</p>
+                    <button 
+                      onClick={() => handleOpenChange(false)} 
+                      className="mt-6 px-6 py-2.5 rounded-full bg-secondary text-secondary-foreground font-semibold text-sm hover:bg-secondary/80 transition"
+                    >
+                      Cerrar
+                    </button>
+                  </div>
+                ) : (
+                  <div className="py-2 mt-4">
+                    <p className="text-sm text-muted-foreground mb-4">Por favor, indícanos el motivo por el que denuncias este anuncio para que podamos revisarlo.</p>
+                    <textarea 
+                      value={reportReason}
+                      onChange={(e) => setReportReason(e.target.value)}
+                      placeholder="Motivo (ej. spam, falso, ofensivo...)"
+                      className="w-full min-h-[100px] p-3 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-coral/50 mb-4 resize-none text-sm"
+                    />
+                    <div className="flex justify-end gap-2">
+                      <button 
+                        onClick={() => setIsReporting(false)} 
+                        className="px-4 py-2 rounded-full font-semibold text-sm hover:bg-secondary transition"
+                      >
+                        Cancelar
+                      </button>
+                      <button 
+                        disabled={!reportReason.trim()}
+                        onClick={() => setReportSubmitted(true)} 
+                        className="px-4 py-2 rounded-full bg-red-500 text-white font-semibold text-sm hover:bg-red-600 transition disabled:opacity-50"
+                      >
+                        Enviar denuncia
+                      </button>
+                    </div>
+                  </div>
+                )
+              ) : (
+                <>
+                  <div className="mt-4 p-4 rounded-xl bg-muted/50 border border-border">
+                    <p className="text-sm text-foreground/80">
+                      Este anuncio está publicado bajo la categoría de {selectedAd.cat.toLowerCase()}. Puedes contactar directamente con el anunciante sin intermediarios ni comisiones.
+                    </p>
+                  </div>
+                  <div className="flex justify-end mt-4">
+                    <button className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-full bg-foreground text-background font-semibold hover:bg-coral transition">
+                      <Send className="h-4 w-4" /> Enviar mensaje
+                    </button>
+                  </div>
+                  <div className="mt-4 pt-4 border-t border-border flex justify-end">
+                    <button 
+                      onClick={() => setIsReporting(true)}
+                      className="text-xs text-muted-foreground hover:text-red-500 flex items-center gap-1 transition font-medium"
+                    >
+                      <AlertTriangle className="h-3.5 w-3.5" /> Denunciar anuncio
+                    </button>
+                  </div>
+                </>
+              )}
             </>
           )}
         </DialogContent>
