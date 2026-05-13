@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageShell, PageHero } from "@/components/PageShell";
 import { Search, MapPin, Heart, Filter } from "lucide-react";
+import { useState } from "react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
 export const Route = createFileRoute("/marketplace")({
   head: () => ({
@@ -24,6 +26,8 @@ const products = [
 ];
 
 function MarketplacePage() {
+  const [selectedItem, setSelectedItem] = useState<typeof products[0] | null>(null);
+
   return (
     <PageShell>
       <PageHero
@@ -62,7 +66,7 @@ function MarketplacePage() {
         {/* Products */}
         <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {products.map((p) => (
-            <article key={p.title} className="group cursor-pointer rounded-2xl bg-card border border-border overflow-hidden hover:shadow-glow transition-all hover:-translate-y-1">
+            <article key={p.title} onClick={() => setSelectedItem(p)} className="group cursor-pointer rounded-2xl bg-card border border-border overflow-hidden hover:shadow-glow transition-all hover:-translate-y-1">
               <div className="relative aspect-square overflow-hidden bg-muted">
                 <img src={p.img} alt={p.title} loading="lazy" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
                 {p.featured && (
@@ -83,6 +87,30 @@ function MarketplacePage() {
           ))}
         </div>
       </section>
+
+      <Dialog open={!!selectedItem} onOpenChange={(open) => !open && setSelectedItem(null)}>
+        <DialogContent>
+          {selectedItem && (
+            <>
+              <DialogHeader>
+                <DialogTitle>{selectedItem.title}</DialogTitle>
+                <DialogDescription className="flex items-center gap-1">
+                  <MapPin className="h-3 w-3" /> {selectedItem.location}
+                </DialogDescription>
+              </DialogHeader>
+              <div className="aspect-square overflow-hidden rounded-xl bg-muted my-4">
+                <img src={selectedItem.img} alt={selectedItem.title} className="w-full h-full object-cover" />
+              </div>
+              <div className="flex justify-between items-center">
+                <div className="font-display text-3xl font-black text-coral">{selectedItem.price} €</div>
+                <button className="px-6 py-3 rounded-xl bg-foreground text-background font-semibold">
+                  Contactar al vendedor
+                </button>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </PageShell>
   );
 }

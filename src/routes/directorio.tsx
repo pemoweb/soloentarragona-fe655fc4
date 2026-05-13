@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageShell, PageHero } from "@/components/PageShell";
 import { Star, MapPin, Phone, BadgeCheck } from "lucide-react";
+import { useState } from "react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
 export const Route = createFileRoute("/directorio")({
   head: () => ({
@@ -22,6 +24,8 @@ const businesses = [
 ];
 
 function DirectorioPage() {
+  const [selectedBusiness, setSelectedBusiness] = useState<typeof businesses[0] | null>(null);
+
   return (
     <PageShell>
       <PageHero
@@ -41,7 +45,7 @@ function DirectorioPage() {
 
         <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {businesses.map((b) => (
-            <article key={b.name} className="group cursor-pointer rounded-3xl bg-card border border-border overflow-hidden hover:shadow-glow transition-all">
+            <article key={b.name} onClick={() => setSelectedBusiness(b)} className="group cursor-pointer rounded-3xl bg-card border border-border overflow-hidden hover:shadow-glow transition-all">
               <div className="aspect-[16/10] overflow-hidden bg-muted">
                 <img src={b.img} alt={b.name} loading="lazy" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
               </div>
@@ -67,6 +71,38 @@ function DirectorioPage() {
           ))}
         </div>
       </section>
+
+      <Dialog open={!!selectedBusiness} onOpenChange={(open) => !open && setSelectedBusiness(null)}>
+        <DialogContent>
+          {selectedBusiness && (
+            <>
+              <DialogHeader>
+                <div className="flex items-center gap-2 mb-2 text-xs">
+                  <span className="px-2.5 py-1 rounded-full bg-secondary text-secondary-foreground font-semibold uppercase tracking-wider">{selectedBusiness.category}</span>
+                  {selectedBusiness.verified && <span className="inline-flex items-center gap-1 text-coral font-semibold"><BadgeCheck className="h-4 w-4" /> Verificado</span>}
+                </div>
+                <DialogTitle className="text-2xl">{selectedBusiness.name}</DialogTitle>
+                <DialogDescription className="flex items-center gap-1 mt-2">
+                  <MapPin className="h-4 w-4" /> {selectedBusiness.address}
+                </DialogDescription>
+              </DialogHeader>
+              <div className="aspect-[16/10] overflow-hidden rounded-xl bg-muted my-2">
+                <img src={selectedBusiness.img} alt={selectedBusiness.name} className="w-full h-full object-cover" />
+              </div>
+              <div className="flex items-center gap-1 text-sm mb-4">
+                <Star className="h-4 w-4 fill-coral text-coral" />
+                <span className="font-bold">{selectedBusiness.rating}</span>
+                <span className="text-muted-foreground">({selectedBusiness.reviews} reseñas)</span>
+              </div>
+              <div className="flex justify-end mt-2">
+                <button className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-full bg-foreground text-background font-semibold hover:bg-coral transition">
+                  <Phone className="h-4 w-4" /> Contactar ahora
+                </button>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </PageShell>
   );
 }

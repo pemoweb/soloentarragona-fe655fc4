@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageShell, PageHero } from "@/components/PageShell";
-import { Briefcase, Home, Wrench, ShoppingBag, Clock, MapPin } from "lucide-react";
+import { Briefcase, Home, Wrench, ShoppingBag, Clock, MapPin, Send } from "lucide-react";
+import { useState } from "react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
 export const Route = createFileRoute("/clasificados")({
   head: () => ({
@@ -29,6 +31,8 @@ const ads = [
 ];
 
 function ClasificadosPage() {
+  const [selectedAd, setSelectedAd] = useState<typeof ads[0] | null>(null);
+
   return (
     <PageShell>
       <PageHero
@@ -69,7 +73,7 @@ function ClasificadosPage() {
         <h2 className="mt-16 font-display text-3xl md:text-4xl font-black">Anuncios recientes</h2>
         <div className="mt-6 divide-y divide-border rounded-2xl bg-card border border-border overflow-hidden">
           {ads.map((a) => (
-            <article key={a.title} className="group p-6 flex items-start justify-between gap-4 hover:bg-secondary/40 cursor-pointer transition">
+            <article key={a.title} onClick={() => setSelectedAd(a)} className="group p-6 flex items-start justify-between gap-4 hover:bg-secondary/40 cursor-pointer transition">
               <div className="flex-1">
                 <span className="text-xs font-bold uppercase tracking-wider text-coral">{a.cat}</span>
                 <h3 className="mt-1 font-semibold text-lg group-hover:text-coral transition-colors">{a.title}</h3>
@@ -83,6 +87,35 @@ function ClasificadosPage() {
           ))}
         </div>
       </section>
+
+      <Dialog open={!!selectedAd} onOpenChange={(open) => !open && setSelectedAd(null)}>
+        <DialogContent>
+          {selectedAd && (
+            <>
+              <DialogHeader>
+                <div className="flex items-center gap-2 mb-2 text-xs">
+                  <span className="px-2.5 py-1 rounded-full bg-secondary text-secondary-foreground font-semibold uppercase tracking-wider">{selectedAd.cat}</span>
+                </div>
+                <DialogTitle className="text-2xl">{selectedAd.title}</DialogTitle>
+                <DialogDescription className="flex items-center gap-4 mt-2">
+                  <span className="inline-flex items-center gap-1"><MapPin className="h-4 w-4" /> {selectedAd.location}</span>
+                  <span className="inline-flex items-center gap-1"><Clock className="h-4 w-4" /> {selectedAd.time}</span>
+                </DialogDescription>
+              </DialogHeader>
+              <div className="mt-4 p-4 rounded-xl bg-muted/50 border border-border">
+                <p className="text-sm text-foreground/80">
+                  Este anuncio está publicado bajo la categoría de {selectedAd.cat.toLowerCase()}. Puedes contactar directamente con el anunciante sin intermediarios ni comisiones.
+                </p>
+              </div>
+              <div className="flex justify-end mt-4">
+                <button className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-full bg-foreground text-background font-semibold hover:bg-coral transition">
+                  <Send className="h-4 w-4" /> Enviar mensaje
+                </button>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </PageShell>
   );
 }

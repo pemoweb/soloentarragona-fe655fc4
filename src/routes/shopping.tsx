@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageShell, PageHero } from "@/components/PageShell";
-import { Tag, MapPin, Sparkles } from "lucide-react";
+import { Tag, MapPin, Sparkles, Store } from "lucide-react";
+import { useState } from "react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
 export const Route = createFileRoute("/shopping")({
   head: () => ({
@@ -28,6 +30,9 @@ const shops = [
 ];
 
 function ShoppingPage() {
+  const [selectedFeatured, setSelectedFeatured] = useState<typeof featured[0] | null>(null);
+  const [selectedShop, setSelectedShop] = useState<typeof shops[0] | null>(null);
+
   return (
     <PageShell>
       <PageHero
@@ -43,7 +48,7 @@ function ShoppingPage() {
         </div>
         <div className="mt-4 grid gap-6 md:grid-cols-3">
           {featured.map((f) => (
-            <article key={f.name} className="group relative overflow-hidden rounded-3xl aspect-[4/5] cursor-pointer">
+            <article key={f.name} onClick={() => setSelectedFeatured(f)} className="group relative overflow-hidden rounded-3xl aspect-[4/5] cursor-pointer">
               <img src={f.img} alt={f.name} className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
               <div className="absolute inset-0 bg-gradient-to-t from-primary/95 via-primary/50 to-transparent" />
               <div className="absolute top-4 left-4 inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-coral text-coral-foreground text-xs font-bold uppercase tracking-wider">
@@ -70,7 +75,7 @@ function ShoppingPage() {
 
         <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {shops.map((s) => (
-            <article key={s.name} className="group cursor-pointer rounded-2xl bg-card border border-border overflow-hidden hover:shadow-card transition-all hover:-translate-y-1">
+            <article key={s.name} onClick={() => setSelectedShop(s)} className="group cursor-pointer rounded-2xl bg-card border border-border overflow-hidden hover:shadow-card transition-all hover:-translate-y-1">
               <div className="aspect-[16/10] overflow-hidden bg-muted">
                 <img src={s.img} alt={s.name} loading="lazy" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
               </div>
@@ -85,6 +90,61 @@ function ShoppingPage() {
           ))}
         </div>
       </section>
+
+      {/* Featured Dialog */}
+      <Dialog open={!!selectedFeatured} onOpenChange={(open) => !open && setSelectedFeatured(null)}>
+        <DialogContent>
+          {selectedFeatured && (
+            <>
+              <DialogHeader>
+                <div className="flex items-center gap-2 mb-2 text-xs">
+                  <span className="px-2.5 py-1 rounded-full bg-secondary text-secondary-foreground font-semibold uppercase tracking-wider">{selectedFeatured.category}</span>
+                </div>
+                <DialogTitle className="text-2xl">{selectedFeatured.name}</DialogTitle>
+                <DialogDescription className="text-lg font-bold text-coral mt-1">
+                  <Tag className="h-4 w-4 inline-block mr-1" /> {selectedFeatured.deal}
+                </DialogDescription>
+              </DialogHeader>
+              <div className="aspect-[4/3] overflow-hidden rounded-xl bg-muted my-2">
+                <img src={selectedFeatured.img} alt={selectedFeatured.name} className="w-full h-full object-cover" />
+              </div>
+              <div className="flex justify-end mt-4">
+                <button className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-full bg-foreground text-background font-semibold hover:bg-coral transition">
+                  <Store className="h-4 w-4" /> Visitar tienda
+                </button>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Shop Dialog */}
+      <Dialog open={!!selectedShop} onOpenChange={(open) => !open && setSelectedShop(null)}>
+        <DialogContent>
+          {selectedShop && (
+            <>
+              <DialogHeader>
+                <div className="flex items-center gap-2 mb-2 text-xs">
+                  <span className="px-2.5 py-1 rounded-full bg-secondary text-secondary-foreground font-semibold uppercase tracking-wider">{selectedShop.category}</span>
+                </div>
+                <DialogTitle className="text-2xl">{selectedShop.name}</DialogTitle>
+                <DialogDescription className="flex items-center gap-1 mt-2">
+                  <MapPin className="h-4 w-4" /> {selectedShop.location}
+                </DialogDescription>
+              </DialogHeader>
+              <div className="aspect-[16/10] overflow-hidden rounded-xl bg-muted my-2">
+                <img src={selectedShop.img} alt={selectedShop.name} className="w-full h-full object-cover" />
+              </div>
+              <div className="flex justify-end mt-4">
+                <button className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-full bg-foreground text-background font-semibold hover:bg-coral transition">
+                  <Store className="h-4 w-4" /> Ver productos
+                </button>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
+
     </PageShell>
   );
 }
