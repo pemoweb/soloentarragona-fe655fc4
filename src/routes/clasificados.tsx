@@ -73,7 +73,7 @@ function ClasificadosPage() {
         <h2 className="mt-16 font-display text-3xl md:text-4xl font-black">Anuncios recientes</h2>
         <div className="mt-6 divide-y divide-border rounded-2xl bg-card border border-border overflow-hidden">
           {ads.map((a) => (
-            <article key={a.title} className="group p-6 flex items-start justify-between gap-4 hover:bg-secondary/40 cursor-pointer transition">
+            <article key={a.title} onClick={() => setSelectedAd(a)} className="group p-6 flex items-start justify-between gap-4 hover:bg-secondary/40 cursor-pointer transition">
               <div className="flex-1">
                 <span className="text-xs font-bold uppercase tracking-wider text-coral">{a.cat}</span>
                 <h3 className="mt-1 font-semibold text-lg group-hover:text-coral transition-colors">{a.title}</h3>
