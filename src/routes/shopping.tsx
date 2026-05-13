@@ -30,6 +30,9 @@ const shops = [
 ];
 
 function ShoppingPage() {
+  const [selectedFeatured, setSelectedFeatured] = useState<typeof featured[0] | null>(null);
+  const [selectedShop, setSelectedShop] = useState<typeof shops[0] | null>(null);
+
   return (
     <PageShell>
       <PageHero
