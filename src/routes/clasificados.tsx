@@ -31,6 +31,8 @@ const ads = [
 ];
 
 function ClasificadosPage() {
+  const [selectedAd, setSelectedAd] = useState<typeof ads[0] | null>(null);
+
   return (
     <PageShell>
       <PageHero
