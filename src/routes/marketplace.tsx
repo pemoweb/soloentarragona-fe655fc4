@@ -87,6 +87,30 @@ function MarketplacePage() {
           ))}
         </div>
       </section>
+
+      <Dialog open={!!selectedItem} onOpenChange={(open) => !open && setSelectedItem(null)}>
+        <DialogContent>
+          {selectedItem && (
+            <>
+              <DialogHeader>
+                <DialogTitle>{selectedItem.title}</DialogTitle>
+                <DialogDescription className="flex items-center gap-1">
+                  <MapPin className="h-3 w-3" /> {selectedItem.location}
+                </DialogDescription>
+              </DialogHeader>
+              <div className="aspect-square overflow-hidden rounded-xl bg-muted my-4">
+                <img src={selectedItem.img} alt={selectedItem.title} className="w-full h-full object-cover" />
+              </div>
+              <div className="flex justify-between items-center">
+                <div className="font-display text-3xl font-black text-coral">{selectedItem.price} €</div>
+                <button className="px-6 py-3 rounded-xl bg-foreground text-background font-semibold">
+                  Contactar al vendedor
+                </button>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </PageShell>
   );
 }
