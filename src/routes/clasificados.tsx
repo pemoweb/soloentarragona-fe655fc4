@@ -32,6 +32,20 @@ const ads = [
 
 function ClasificadosPage() {
   const [selectedAd, setSelectedAd] = useState<typeof ads[0] | null>(null);
+  const [isReporting, setIsReporting] = useState(false);
+  const [reportReason, setReportReason] = useState("");
+  const [reportSubmitted, setReportSubmitted] = useState(false);
+
+  const handleOpenChange = (open: boolean) => {
+    if (!open) {
+      setSelectedAd(null);
+      setTimeout(() => {
+        setIsReporting(false);
+        setReportReason("");
+        setReportSubmitted(false);
+      }, 300);
+    }
+  };
 
   return (
     <PageShell>
