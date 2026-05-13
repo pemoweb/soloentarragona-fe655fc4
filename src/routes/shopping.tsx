@@ -75,7 +75,7 @@ function ShoppingPage() {
 
         <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {shops.map((s) => (
-            <article key={s.name} className="group cursor-pointer rounded-2xl bg-card border border-border overflow-hidden hover:shadow-card transition-all hover:-translate-y-1">
+            <article key={s.name} onClick={() => setSelectedShop(s)} className="group cursor-pointer rounded-2xl bg-card border border-border overflow-hidden hover:shadow-card transition-all hover:-translate-y-1">
               <div className="aspect-[16/10] overflow-hidden bg-muted">
                 <img src={s.img} alt={s.name} loading="lazy" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
               </div>
