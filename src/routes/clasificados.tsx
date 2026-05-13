@@ -87,6 +87,35 @@ function ClasificadosPage() {
           ))}
         </div>
       </section>
+
+      <Dialog open={!!selectedAd} onOpenChange={(open) => !open && setSelectedAd(null)}>
+        <DialogContent>
+          {selectedAd && (
+            <>
+              <DialogHeader>
+                <div className="flex items-center gap-2 mb-2 text-xs">
+                  <span className="px-2.5 py-1 rounded-full bg-secondary text-secondary-foreground font-semibold uppercase tracking-wider">{selectedAd.cat}</span>
+                </div>
+                <DialogTitle className="text-2xl">{selectedAd.title}</DialogTitle>
+                <DialogDescription className="flex items-center gap-4 mt-2">
+                  <span className="inline-flex items-center gap-1"><MapPin className="h-4 w-4" /> {selectedAd.location}</span>
+                  <span className="inline-flex items-center gap-1"><Clock className="h-4 w-4" /> {selectedAd.time}</span>
+                </DialogDescription>
+              </DialogHeader>
+              <div className="mt-4 p-4 rounded-xl bg-muted/50 border border-border">
+                <p className="text-sm text-foreground/80">
+                  Este anuncio está publicado bajo la categoría de {selectedAd.cat.toLowerCase()}. Puedes contactar directamente con el anunciante sin intermediarios ni comisiones.
+                </p>
+              </div>
+              <div className="flex justify-end mt-4">
+                <button className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-full bg-foreground text-background font-semibold hover:bg-coral transition">
+                  <Send className="h-4 w-4" /> Enviar mensaje
+                </button>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </PageShell>
   );
 }
