@@ -21,17 +21,21 @@ const featured = [
 ];
 
 const shops = [
-  { name: "Forn Sistaré", category: "Panadería", location: "Carrer Major", img: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&q=80" },
-  { name: "Vins & Caves Tàrraco", category: "Vinoteca", location: "Rambla Nova", img: "https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?w=600&q=80" },
-  { name: "Floristeria Jardí", category: "Flores", location: "Sant Pere", img: "https://images.unsplash.com/photo-1561181286-d3fee7d55364?w=600&q=80" },
-  { name: "Joieria Mar", category: "Joyería", location: "Centre", img: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&q=80" },
-  { name: "Zapateria Costa", category: "Calzado", location: "Eixample", img: "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=600&q=80" },
-  { name: "Café Corsini", category: "Cafetería", location: "Plaça Corsini", img: "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=600&q=80" },
+  { name: "Forn Sistaré", category: "Panadería", group: "Alimentación", location: "Carrer Major", img: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&q=80" },
+  { name: "Vins & Caves Tàrraco", category: "Vinoteca", group: "Alimentación", location: "Rambla Nova", img: "https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?w=600&q=80" },
+  { name: "Floristeria Jardí", category: "Flores", group: "Especializadas", location: "Sant Pere", img: "https://images.unsplash.com/photo-1561181286-d3fee7d55364?w=600&q=80" },
+  { name: "Joieria Mar", category: "Joyería", group: "Especializadas", location: "Centre", img: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&q=80" },
+  { name: "Zapateria Costa", category: "Calzado", group: "Moda", location: "Eixample", img: "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=600&q=80" },
+  { name: "Café Corsini", category: "Cafetería", group: "Alimentación", location: "Plaça Corsini", img: "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=600&q=80" },
 ];
+
+const SHOP_FILTERS = ["Todas", "Alimentación", "Moda", "Hogar", "Cultura", "Belleza", "Especializadas"] as const;
 
 function ShoppingPage() {
   const [selectedFeatured, setSelectedFeatured] = useState<typeof featured[0] | null>(null);
   const [selectedShop, setSelectedShop] = useState<typeof shops[0] | null>(null);
+  const [shopFilter, setShopFilter] = useState<string>("Todas");
+  const filteredShops = shopFilter === "Todas" ? shops : shops.filter((s) => s.group === shopFilter);
 
   return (
     <PageShell>
