@@ -70,15 +70,30 @@ function ShoppingPage() {
         {/* All shops */}
         <h2 className="mt-20 font-display text-3xl md:text-4xl font-black">Tiendas de Tarragona</h2>
         <div className="mt-6 flex gap-2 overflow-x-auto pb-2">
-          {["Todas", "Alimentación", "Moda", "Hogar", "Cultura", "Belleza", "Especializadas"].map((c, i) => (
-            <button key={c} className={`shrink-0 px-4 py-2 rounded-full text-sm font-semibold border transition ${
-              i === 0 ? "bg-foreground text-background border-foreground" : "bg-card text-muted-foreground border-border hover:border-coral hover:text-coral"
-            }`}>{c}</button>
-          ))}
+          {SHOP_FILTERS.map((c) => {
+            const active = c === shopFilter;
+            return (
+              <button
+                key={c}
+                onClick={() => setShopFilter(c)}
+                className={`shrink-0 px-4 py-2 rounded-full text-sm font-semibold border transition ${
+                  active ? "bg-foreground text-background border-foreground" : "bg-card text-muted-foreground border-border hover:border-coral hover:text-coral"
+                }`}
+              >
+                {c}
+              </button>
+            );
+          })}
         </div>
 
+        {filteredShops.length === 0 && (
+          <div className="mt-8 rounded-3xl border border-dashed border-border p-12 text-center text-muted-foreground">
+            No hay tiendas en esta categoría todavía.
+          </div>
+        )}
+
         <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {shops.map((s) => (
+          {filteredShops.map((s) => (
             <article key={s.name} onClick={() => setSelectedShop(s)} className="group cursor-pointer rounded-2xl bg-card border border-border overflow-hidden hover:shadow-card transition-all hover:-translate-y-1">
               <div className="aspect-[16/10] overflow-hidden bg-muted">
                 <img src={s.img} alt={s.name} loading="lazy" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
