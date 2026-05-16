@@ -9,8 +9,10 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TerminosRouteImport } from './routes/terminos'
 import { Route as ShoppingRouteImport } from './routes/shopping'
 import { Route as ServiciosPublicosRouteImport } from './routes/servicios-publicos'
+import { Route as PrivacidadRouteImport } from './routes/privacidad'
 import { Route as NoticiasRouteImport } from './routes/noticias'
 import { Route as MarketplaceRouteImport } from './routes/marketplace'
 import { Route as DirectorioRouteImport } from './routes/directorio'
@@ -19,6 +21,11 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as NoticiasPublicarRouteImport } from './routes/noticias.publicar'
 import { Route as NoticiasSlugRouteImport } from './routes/noticias.$slug'
 
+const TerminosRoute = TerminosRouteImport.update({
+  id: '/terminos',
+  path: '/terminos',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ShoppingRoute = ShoppingRouteImport.update({
   id: '/shopping',
   path: '/shopping',
@@ -27,6 +34,11 @@ const ShoppingRoute = ShoppingRouteImport.update({
 const ServiciosPublicosRoute = ServiciosPublicosRouteImport.update({
   id: '/servicios-publicos',
   path: '/servicios-publicos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacidadRoute = PrivacidadRouteImport.update({
+  id: '/privacidad',
+  path: '/privacidad',
   getParentRoute: () => rootRouteImport,
 } as any)
 const NoticiasRoute = NoticiasRouteImport.update({
@@ -71,8 +83,10 @@ export interface FileRoutesByFullPath {
   '/directorio': typeof DirectorioRoute
   '/marketplace': typeof MarketplaceRoute
   '/noticias': typeof NoticiasRouteWithChildren
+  '/privacidad': typeof PrivacidadRoute
   '/servicios-publicos': typeof ServiciosPublicosRoute
   '/shopping': typeof ShoppingRoute
+  '/terminos': typeof TerminosRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/noticias/publicar': typeof NoticiasPublicarRoute
 }
@@ -82,8 +96,10 @@ export interface FileRoutesByTo {
   '/directorio': typeof DirectorioRoute
   '/marketplace': typeof MarketplaceRoute
   '/noticias': typeof NoticiasRouteWithChildren
+  '/privacidad': typeof PrivacidadRoute
   '/servicios-publicos': typeof ServiciosPublicosRoute
   '/shopping': typeof ShoppingRoute
+  '/terminos': typeof TerminosRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/noticias/publicar': typeof NoticiasPublicarRoute
 }
@@ -94,8 +110,10 @@ export interface FileRoutesById {
   '/directorio': typeof DirectorioRoute
   '/marketplace': typeof MarketplaceRoute
   '/noticias': typeof NoticiasRouteWithChildren
+  '/privacidad': typeof PrivacidadRoute
   '/servicios-publicos': typeof ServiciosPublicosRoute
   '/shopping': typeof ShoppingRoute
+  '/terminos': typeof TerminosRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/noticias/publicar': typeof NoticiasPublicarRoute
 }
@@ -107,8 +125,10 @@ export interface FileRouteTypes {
     | '/directorio'
     | '/marketplace'
     | '/noticias'
+    | '/privacidad'
     | '/servicios-publicos'
     | '/shopping'
+    | '/terminos'
     | '/noticias/$slug'
     | '/noticias/publicar'
   fileRoutesByTo: FileRoutesByTo
@@ -118,8 +138,10 @@ export interface FileRouteTypes {
     | '/directorio'
     | '/marketplace'
     | '/noticias'
+    | '/privacidad'
     | '/servicios-publicos'
     | '/shopping'
+    | '/terminos'
     | '/noticias/$slug'
     | '/noticias/publicar'
   id:
@@ -129,8 +151,10 @@ export interface FileRouteTypes {
     | '/directorio'
     | '/marketplace'
     | '/noticias'
+    | '/privacidad'
     | '/servicios-publicos'
     | '/shopping'
+    | '/terminos'
     | '/noticias/$slug'
     | '/noticias/publicar'
   fileRoutesById: FileRoutesById
@@ -141,12 +165,21 @@ export interface RootRouteChildren {
   DirectorioRoute: typeof DirectorioRoute
   MarketplaceRoute: typeof MarketplaceRoute
   NoticiasRoute: typeof NoticiasRouteWithChildren
+  PrivacidadRoute: typeof PrivacidadRoute
   ServiciosPublicosRoute: typeof ServiciosPublicosRoute
   ShoppingRoute: typeof ShoppingRoute
+  TerminosRoute: typeof TerminosRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/terminos': {
+      id: '/terminos'
+      path: '/terminos'
+      fullPath: '/terminos'
+      preLoaderRoute: typeof TerminosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/shopping': {
       id: '/shopping'
       path: '/shopping'
@@ -159,6 +192,13 @@ declare module '@tanstack/react-router' {
       path: '/servicios-publicos'
       fullPath: '/servicios-publicos'
       preLoaderRoute: typeof ServiciosPublicosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacidad': {
+      id: '/privacidad'
+      path: '/privacidad'
+      fullPath: '/privacidad'
+      preLoaderRoute: typeof PrivacidadRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/noticias': {
@@ -233,8 +273,10 @@ const rootRouteChildren: RootRouteChildren = {
   DirectorioRoute: DirectorioRoute,
   MarketplaceRoute: MarketplaceRoute,
   NoticiasRoute: NoticiasRouteWithChildren,
+  PrivacidadRoute: PrivacidadRoute,
   ServiciosPublicosRoute: ServiciosPublicosRoute,
   ShoppingRoute: ShoppingRoute,
+  TerminosRoute: TerminosRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
