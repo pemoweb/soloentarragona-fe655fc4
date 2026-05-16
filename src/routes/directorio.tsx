@@ -25,6 +25,9 @@ const businesses = [
 
 function DirectorioPage() {
   const [selectedBusiness, setSelectedBusiness] = useState<typeof businesses[0] | null>(null);
+  const [category, setCategory] = useState<string>("Todos");
+  const categories = ["Todos", "Restaurante", "Salud", "Hogar", "Bienestar", "Abogados", "Servicios"];
+  const filtered = category === "Todos" ? businesses : businesses.filter((b) => b.category === category);
 
   return (
     <PageShell>
@@ -36,15 +39,30 @@ function DirectorioPage() {
 
       <section className="mx-auto max-w-7xl px-4 md:px-8 py-12">
         <div className="flex gap-2 overflow-x-auto pb-3">
-          {["Todos", "Restaurantes", "Salud", "Hogar", "Bienestar", "Abogados", "Educación", "Servicios"].map((c, i) => (
-            <button key={c} className={`shrink-0 px-4 py-2 rounded-full text-sm font-semibold border transition ${
-              i === 0 ? "bg-foreground text-background border-foreground" : "bg-card text-muted-foreground border-border hover:border-coral hover:text-coral"
-            }`}>{c}</button>
-          ))}
+          {categories.map((c) => {
+            const active = c === category;
+            return (
+              <button
+                key={c}
+                onClick={() => setCategory(c)}
+                className={`shrink-0 px-4 py-2 rounded-full text-sm font-semibold border transition ${
+                  active ? "bg-foreground text-background border-foreground" : "bg-card text-muted-foreground border-border hover:border-coral hover:text-coral"
+                }`}
+              >
+                {c}
+              </button>
+            );
+          })}
         </div>
 
+        {filtered.length === 0 && (
+          <div className="mt-10 rounded-3xl border border-dashed border-border p-12 text-center text-muted-foreground">
+            No hay negocios en esta categoría todavía.
+          </div>
+        )}
+
         <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {businesses.map((b) => (
+          {filtered.map((b) => (
             <article key={b.name} onClick={() => setSelectedBusiness(b)} className="group cursor-pointer rounded-3xl bg-card border border-border overflow-hidden hover:shadow-glow transition-all">
               <div className="aspect-[16/10] overflow-hidden bg-muted">
                 <img src={b.img} alt={b.name} loading="lazy" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
