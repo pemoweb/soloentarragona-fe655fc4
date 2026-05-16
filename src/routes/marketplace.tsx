@@ -15,21 +15,31 @@ export const Route = createFileRoute("/marketplace")({
 });
 
 const products = [
-  { title: "Bicicleta urbana Orbea", price: 280, location: "Part Alta", img: "https://images.unsplash.com/photo-1532298229144-0ec0c57515c7?w=600&q=80", featured: true },
-  { title: "Sofá nórdico 3 plazas", price: 420, location: "Sant Pere", img: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&q=80" },
-  { title: "iPhone 13 128GB como nuevo", price: 450, location: "Eixample", img: "https://images.unsplash.com/photo-1592286927505-1def25115558?w=600&q=80", featured: true },
-  { title: "Mesa comedor madera maciza", price: 180, location: "Bonavista", img: "https://images.unsplash.com/photo-1577140917170-285929fb55b7?w=600&q=80" },
-  { title: "Cámara Sony A6000", price: 320, location: "Centre", img: "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=600&q=80" },
-  { title: "Tabla de surf 6'2", price: 150, location: "Platja Llarga", img: "https://images.unsplash.com/photo-1502680390469-be75c86b636f?w=600&q=80" },
-  { title: "PlayStation 5 + 2 mandos", price: 380, location: "Torreforta", img: "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=600&q=80" },
-  { title: "Estantería industrial", price: 95, location: "Serrallo", img: "https://images.unsplash.com/photo-1594620302200-9a762244a156?w=600&q=80" },
+  { title: "Bicicleta urbana Orbea", price: 280, location: "Part Alta", category: "Deporte", img: "https://images.unsplash.com/photo-1532298229144-0ec0c57515c7?w=600&q=80", featured: true },
+  { title: "Sofá nórdico 3 plazas", price: 420, location: "Sant Pere", category: "Hogar", img: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&q=80" },
+  { title: "iPhone 13 128GB como nuevo", price: 450, location: "Eixample", category: "Electrónica", img: "https://images.unsplash.com/photo-1592286927505-1def25115558?w=600&q=80", featured: true },
+  { title: "Mesa comedor madera maciza", price: 180, location: "Bonavista", category: "Hogar", img: "https://images.unsplash.com/photo-1577140917170-285929fb55b7?w=600&q=80" },
+  { title: "Cámara Sony A6000", price: 320, location: "Centre", category: "Electrónica", img: "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=600&q=80" },
+  { title: "Tabla de surf 6'2", price: 150, location: "Platja Llarga", category: "Deporte", img: "https://images.unsplash.com/photo-1502680390469-be75c86b636f?w=600&q=80" },
+  { title: "PlayStation 5 + 2 mandos", price: 380, location: "Torreforta", category: "Electrónica", img: "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?w=600&q=80" },
+  { title: "Estantería industrial", price: 95, location: "Serrallo", category: "Hogar", img: "https://images.unsplash.com/photo-1594620302200-9a762244a156?w=600&q=80" },
 ];
+
+const CATEGORIES = ["Todo", "Electrónica", "Hogar", "Moda", "Deporte", "Vehículos", "Niños", "Coleccionismo"] as const;
 
 function MarketplacePage() {
   const [selectedItem, setSelectedItem] = useState<typeof products[0] | null>(null);
   const [isReporting, setIsReporting] = useState(false);
   const [reportReason, setReportReason] = useState("");
   const [reportSubmitted, setReportSubmitted] = useState(false);
+  const [query, setQuery] = useState("");
+  const [category, setCategory] = useState<string>("Todo");
+
+  const filtered = products.filter((p) => {
+    if (category !== "Todo" && p.category !== category) return false;
+    if (query.trim() && !p.title.toLowerCase().includes(query.trim().toLowerCase())) return false;
+    return true;
+  });
 
   const handleOpenChange = (open: boolean) => {
     if (!open) {
@@ -55,7 +65,12 @@ function MarketplacePage() {
         <div className="flex flex-col md:flex-row gap-3 p-3 rounded-2xl bg-card border border-border shadow-card">
           <div className="flex-1 flex items-center gap-2 px-3">
             <Search className="h-5 w-5 text-muted-foreground" />
-            <input placeholder="¿Qué estás buscando?" className="flex-1 bg-transparent py-3 focus:outline-none" />
+            <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="¿Qué estás buscando?"
+              className="flex-1 bg-transparent py-3 focus:outline-none"
+            />
           </div>
           <div className="flex gap-2">
             <button className="px-4 py-3 rounded-xl border border-border font-medium text-sm inline-flex items-center gap-2 hover:border-coral">
@@ -70,16 +85,31 @@ function MarketplacePage() {
 
         {/* Categories */}
         <div className="mt-8 flex gap-2 overflow-x-auto pb-2">
-          {["Todo", "Electrónica", "Hogar", "Moda", "Deporte", "Vehículos", "Niños", "Coleccionismo"].map((c, i) => (
-            <button key={c} className={`shrink-0 px-4 py-2 rounded-full text-sm font-semibold border transition ${
-              i === 0 ? "bg-foreground text-background border-foreground" : "bg-card text-muted-foreground border-border hover:border-coral hover:text-coral"
-            }`}>{c}</button>
-          ))}
+          {CATEGORIES.map((c) => {
+            const active = c === category;
+            return (
+              <button
+                key={c}
+                onClick={() => setCategory(c)}
+                className={`shrink-0 px-4 py-2 rounded-full text-sm font-semibold border transition ${
+                  active ? "bg-foreground text-background border-foreground" : "bg-card text-muted-foreground border-border hover:border-coral hover:text-coral"
+                }`}
+              >
+                {c}
+              </button>
+            );
+          })}
         </div>
+
+        {filtered.length === 0 && (
+          <div className="mt-10 rounded-3xl border border-dashed border-border p-12 text-center text-muted-foreground">
+            No hay productos con estos filtros.
+          </div>
+        )}
 
         {/* Products */}
         <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {products.map((p) => (
+          {filtered.map((p) => (
             <article key={p.title} onClick={() => setSelectedItem(p)} className="group cursor-pointer rounded-2xl bg-card border border-border overflow-hidden hover:shadow-glow transition-all hover:-translate-y-1">
               <div className="relative aspect-square overflow-hidden bg-muted">
                 <img src={p.img} alt={p.title} loading="lazy" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
