@@ -27,13 +27,16 @@ export function SiteFooter() {
           <ul className="space-y-2 text-sm opacity-80">
             <li><Link to="/servicios-publicos">Servicios públicos</Link></li>
             <li><Link to="/shopping">Tiendas locales</Link></li>
-            <li>Sobre nosotros</li>
-            <li>Contacto</li>
+            <li><Link to="/privacidad">Privacidad</Link></li>
+            <li><Link to="/terminos">Términos</Link></li>
           </ul>
         </div>
       </div>
-      <div className="border-t border-primary-foreground/10 py-6 text-center text-xs opacity-60">
-        © {new Date().getFullYear()} Solo en Tarragona · Hecho con ❤ en la Costa Daurada
+      <div className="border-t border-primary-foreground/10 py-6 flex flex-col md:flex-row items-center justify-center gap-2 md:gap-4 text-center text-xs opacity-60">
+        <span>© {new Date().getFullYear()} Solo en Tarragona · Hecho con ❤ en la Costa Daurada</span>
+        <span className="hidden md:inline">·</span>
+        <Link to="/privacidad" className="hover:opacity-100 hover:underline">Privacidad</Link>
+        <Link to="/terminos" className="hover:opacity-100 hover:underline">Términos</Link>
       </div>
     </footer>
   );
