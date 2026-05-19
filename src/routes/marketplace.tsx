@@ -99,7 +99,7 @@ function MarketplacePage() {
               </button>
             );
           })}
-          {(category !== "Todo" || query.trim()) && (
+          {category !== "Todo" && (
             <button
               onClick={() => { setCategory("Todo"); setQuery(""); }}
               className="shrink-0 px-3 py-2 rounded-full text-sm font-semibold border border-border text-muted-foreground hover:border-coral hover:text-coral inline-flex items-center gap-1 transition"
