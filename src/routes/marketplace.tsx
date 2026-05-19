@@ -99,6 +99,14 @@ function MarketplacePage() {
               </button>
             );
           })}
+          {(category !== "Todo" || query.trim()) && (
+            <button
+              onClick={() => { setCategory("Todo"); setQuery(""); }}
+              className="shrink-0 px-3 py-2 rounded-full text-sm font-semibold border border-border text-muted-foreground hover:border-coral hover:text-coral inline-flex items-center gap-1 transition"
+            >
+              <RotateCcw className="h-3.5 w-3.5" /> Limpiar filtros
+            </button>
+          )}
         </div>
 
         {filtered.length === 0 && (
