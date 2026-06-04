@@ -3,6 +3,38 @@ import { PageShell, PageHero } from "@/components/PageShell";
 import { Tag, MapPin, Sparkles, Store, RotateCcw } from "lucide-react";
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { useDynamicSeo } from "@/lib/use-dynamic-seo";
+
+const SHOP_SEO: Record<string, { title: string; description: string }> = {
+  Todas: {
+    title: "Shopping local en Tarragona — Tiendas y promociones",
+    description: "Descubre las mejores tiendas locales de Tarragona y aprovecha ofertas y promociones de temporada.",
+  },
+  Alimentación: {
+    title: "Tiendas de Alimentación en Tarragona — Panaderías, vinotecas y más",
+    description: "Panaderías, vinotecas, cafeterías y comercio gastronómico local en Tarragona.",
+  },
+  Moda: {
+    title: "Tiendas de Moda en Tarragona — Ropa y calzado local",
+    description: "Boutiques de moda, calzado y accesorios de comercios locales en Tarragona.",
+  },
+  Hogar: {
+    title: "Tiendas para el Hogar en Tarragona — Decoración y menaje",
+    description: "Decoración, menaje y artículos para el hogar en comercios locales de Tarragona.",
+  },
+  Cultura: {
+    title: "Librerías y tiendas de Cultura en Tarragona",
+    description: "Librerías, papelerías y tiendas culturales locales en Tarragona.",
+  },
+  Belleza: {
+    title: "Tiendas de Belleza y cosmética en Tarragona",
+    description: "Cosmética, perfumería y bienestar en comercios locales de Tarragona.",
+  },
+  Especializadas: {
+    title: "Tiendas especializadas en Tarragona — Joyerías, floristerías y más",
+    description: "Floristerías, joyerías y tiendas especializadas de barrio en Tarragona.",
+  },
+};
 
 export const Route = createFileRoute("/shopping")({
   head: () => ({

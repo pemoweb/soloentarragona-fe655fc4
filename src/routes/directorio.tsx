@@ -61,6 +61,9 @@ function DirectorioPage() {
   const categories = ["Todos", "Restaurante", "Salud", "Hogar", "Bienestar", "Abogados", "Servicios"];
   const filtered = category === "Todos" ? businesses : businesses.filter((b) => b.category === category);
 
+  const seo = DIR_SEO[category] ?? DIR_SEO.Todos;
+  useDynamicSeo({ title: seo.title, description: seo.description });
+
   return (
     <PageShell>
       <PageHero
