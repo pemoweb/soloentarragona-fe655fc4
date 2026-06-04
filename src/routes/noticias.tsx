@@ -66,6 +66,9 @@ function NewsPage() {
     });
   }, [posts, category, tag]);
 
+  const seo = newsSeo(category, tag);
+  useDynamicSeo({ title: seo.title, description: seo.description });
+
   const [featured, ...rest] = filtered;
 
   return (
