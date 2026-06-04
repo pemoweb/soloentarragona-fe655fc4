@@ -3,6 +3,42 @@ import { PageShell, PageHero } from "@/components/PageShell";
 import { Search, MapPin, Heart, Filter, AlertTriangle, Check, RotateCcw } from "lucide-react";
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { useDynamicSeo } from "@/lib/use-dynamic-seo";
+
+const SEO_BY_CAT: Record<string, { title: string; description: string }> = {
+  Todo: {
+    title: "Marketplace de Tarragona — Compra y vende cerca de ti",
+    description: "Compra y vende productos de segunda mano y nuevos en Tarragona y alrededores.",
+  },
+  Electrónica: {
+    title: "Electrónica de segunda mano en Tarragona — Marketplace",
+    description: "Móviles, ordenadores, cámaras y consolas de segunda mano en Tarragona. Compra y vende entre vecinos.",
+  },
+  Hogar: {
+    title: "Muebles y artículos para el hogar en Tarragona",
+    description: "Sofás, mesas, decoración y electrodomésticos de segunda mano en Tarragona. Precios entre vecinos.",
+  },
+  Moda: {
+    title: "Moda y ropa de segunda mano en Tarragona",
+    description: "Ropa, calzado y accesorios de segunda mano en Tarragona. Compra y vende sin intermediarios.",
+  },
+  Deporte: {
+    title: "Material deportivo de segunda mano en Tarragona",
+    description: "Bicis, tablas, equipación y material deportivo de segunda mano en Tarragona.",
+  },
+  Vehículos: {
+    title: "Vehículos de segunda mano en Tarragona",
+    description: "Coches, motos y bicis de segunda mano en Tarragona. Trato directo entre particulares.",
+  },
+  Niños: {
+    title: "Artículos para niños de segunda mano en Tarragona",
+    description: "Carritos, ropa, juguetes y mobiliario infantil de segunda mano en Tarragona.",
+  },
+  Coleccionismo: {
+    title: "Coleccionismo y antigüedades en Tarragona",
+    description: "Cómics, vinilos, sellos y piezas únicas de coleccionismo en Tarragona.",
+  },
+};
 
 export const Route = createFileRoute("/marketplace")({
   head: () => ({
