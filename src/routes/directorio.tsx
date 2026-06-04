@@ -3,6 +3,38 @@ import { PageShell, PageHero } from "@/components/PageShell";
 import { Star, MapPin, Phone, BadgeCheck, RotateCcw } from "lucide-react";
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { useDynamicSeo } from "@/lib/use-dynamic-seo";
+
+const DIR_SEO: Record<string, { title: string; description: string }> = {
+  Todos: {
+    title: "Directorio profesional de Tarragona",
+    description: "Encuentra empresas y profesionales verificados en Tarragona: restaurantes, salud, hogar, servicios.",
+  },
+  Restaurante: {
+    title: "Restaurantes en Tarragona — Directorio local",
+    description: "Los mejores restaurantes de Tarragona valorados por la comunidad. Reseñas, ubicación y contacto directo.",
+  },
+  Salud: {
+    title: "Clínicas y profesionales de la Salud en Tarragona",
+    description: "Dentistas, fisios, médicos y centros de salud verificados en Tarragona.",
+  },
+  Hogar: {
+    title: "Reformas y servicios para el Hogar en Tarragona",
+    description: "Profesionales para reformas, mudanzas y mantenimiento del hogar en Tarragona.",
+  },
+  Bienestar: {
+    title: "Bienestar y deporte en Tarragona — Yoga, gimnasios, spa",
+    description: "Centros de bienestar, yoga, pilates y deporte en Tarragona valorados por vecinos.",
+  },
+  Abogados: {
+    title: "Abogados y servicios jurídicos en Tarragona",
+    description: "Despachos y profesionales del derecho verificados en Tarragona.",
+  },
+  Servicios: {
+    title: "Servicios profesionales en Tarragona — Directorio local",
+    description: "Fotógrafos, diseñadores, asesores y otros profesionales en Tarragona.",
+  },
+};
 
 export const Route = createFileRoute("/directorio")({
   head: () => ({
@@ -28,6 +60,9 @@ function DirectorioPage() {
   const [category, setCategory] = useState<string>("Todos");
   const categories = ["Todos", "Restaurante", "Salud", "Hogar", "Bienestar", "Abogados", "Servicios"];
   const filtered = category === "Todos" ? businesses : businesses.filter((b) => b.category === category);
+
+  const seo = DIR_SEO[category] ?? DIR_SEO.Todos;
+  useDynamicSeo({ title: seo.title, description: seo.description });
 
   return (
     <PageShell>

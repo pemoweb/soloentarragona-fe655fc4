@@ -39,11 +39,14 @@ export function SiteHeader() {
         </nav>
 
         <div className="hidden lg:flex items-center gap-2">
-          <button className="px-4 py-2 text-sm font-medium text-foreground hover:text-coral transition-colors">
-            Acceder
-          </button>
           <Link
-            to="/noticias/publicar"
+            to="/acceder"
+            className="px-4 py-2 text-sm font-medium text-foreground hover:text-coral transition-colors"
+          >
+            Acceder
+          </Link>
+          <Link
+            to="/publicar"
             className="px-4 py-2 text-sm font-semibold rounded-full bg-foreground text-background hover:bg-coral transition-colors"
           >
             Publicar
@@ -69,9 +72,15 @@ export function SiteHeader() {
               </Link>
             ))}
             <div className="flex gap-2 pt-3 border-t border-border mt-2">
-              <button className="flex-1 px-4 py-2.5 rounded-full border border-border font-medium">Acceder</button>
               <Link
-                to="/noticias/publicar"
+                to="/acceder"
+                onClick={() => setOpen(false)}
+                className="flex-1 px-4 py-2.5 rounded-full border border-border font-medium text-center"
+              >
+                Acceder
+              </Link>
+              <Link
+                to="/publicar"
                 onClick={() => setOpen(false)}
                 className="flex-1 px-4 py-2.5 rounded-full bg-foreground text-background font-semibold text-center"
               >
