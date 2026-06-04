@@ -71,6 +71,9 @@ function MarketplacePage() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<string>("Todo");
 
+  const seo = SEO_BY_CAT[category] ?? SEO_BY_CAT.Todo;
+  useDynamicSeo({ title: seo.title, description: seo.description });
+
   const filtered = products.filter((p) => {
     if (category !== "Todo" && p.category !== category) return false;
     if (query.trim() && !p.title.toLowerCase().includes(query.trim().toLowerCase())) return false;
