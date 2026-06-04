@@ -46,8 +46,15 @@ const zones = TARRAGONA_ZONES.filter((z) => z !== "Todas");
 
 function PublicarClasificado() {
   const navigate = useNavigate();
-  const [form, setForm] = useState({
-    cat: "Empleo" as "Empleo" | "Alquiler" | "Venta" | "Servicios",
+  const [form, setForm] = useState<{
+    cat: "Empleo" | "Alquiler" | "Venta" | "Servicios";
+    title: string;
+    location: string;
+    description: string;
+    daysLeft: number;
+    contact: string;
+  }>({
+    cat: "Empleo",
     title: "",
     location: zones[0],
     description: "",

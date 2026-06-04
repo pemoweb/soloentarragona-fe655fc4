@@ -12,14 +12,17 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as TerminosRouteImport } from './routes/terminos'
 import { Route as ShoppingRouteImport } from './routes/shopping'
 import { Route as ServiciosPublicosRouteImport } from './routes/servicios-publicos'
+import { Route as PublicarRouteImport } from './routes/publicar'
 import { Route as PrivacidadRouteImport } from './routes/privacidad'
 import { Route as NoticiasRouteImport } from './routes/noticias'
 import { Route as MarketplaceRouteImport } from './routes/marketplace'
 import { Route as DirectorioRouteImport } from './routes/directorio'
 import { Route as ClasificadosRouteImport } from './routes/clasificados'
+import { Route as AccederRouteImport } from './routes/acceder'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as NoticiasPublicarRouteImport } from './routes/noticias.publicar'
 import { Route as NoticiasSlugRouteImport } from './routes/noticias.$slug'
+import { Route as ClasificadosPublicarRouteImport } from './routes/clasificados.publicar'
 
 const TerminosRoute = TerminosRouteImport.update({
   id: '/terminos',
@@ -34,6 +37,11 @@ const ShoppingRoute = ShoppingRouteImport.update({
 const ServiciosPublicosRoute = ServiciosPublicosRouteImport.update({
   id: '/servicios-publicos',
   path: '/servicios-publicos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PublicarRoute = PublicarRouteImport.update({
+  id: '/publicar',
+  path: '/publicar',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacidadRoute = PrivacidadRouteImport.update({
@@ -61,6 +69,11 @@ const ClasificadosRoute = ClasificadosRouteImport.update({
   path: '/clasificados',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AccederRoute = AccederRouteImport.update({
+  id: '/acceder',
+  path: '/acceder',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -76,44 +89,58 @@ const NoticiasSlugRoute = NoticiasSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => NoticiasRoute,
 } as any)
+const ClasificadosPublicarRoute = ClasificadosPublicarRouteImport.update({
+  id: '/publicar',
+  path: '/publicar',
+  getParentRoute: () => ClasificadosRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/clasificados': typeof ClasificadosRoute
+  '/acceder': typeof AccederRoute
+  '/clasificados': typeof ClasificadosRouteWithChildren
   '/directorio': typeof DirectorioRoute
   '/marketplace': typeof MarketplaceRoute
   '/noticias': typeof NoticiasRouteWithChildren
   '/privacidad': typeof PrivacidadRoute
+  '/publicar': typeof PublicarRoute
   '/servicios-publicos': typeof ServiciosPublicosRoute
   '/shopping': typeof ShoppingRoute
   '/terminos': typeof TerminosRoute
+  '/clasificados/publicar': typeof ClasificadosPublicarRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/noticias/publicar': typeof NoticiasPublicarRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/clasificados': typeof ClasificadosRoute
+  '/acceder': typeof AccederRoute
+  '/clasificados': typeof ClasificadosRouteWithChildren
   '/directorio': typeof DirectorioRoute
   '/marketplace': typeof MarketplaceRoute
   '/noticias': typeof NoticiasRouteWithChildren
   '/privacidad': typeof PrivacidadRoute
+  '/publicar': typeof PublicarRoute
   '/servicios-publicos': typeof ServiciosPublicosRoute
   '/shopping': typeof ShoppingRoute
   '/terminos': typeof TerminosRoute
+  '/clasificados/publicar': typeof ClasificadosPublicarRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/noticias/publicar': typeof NoticiasPublicarRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/clasificados': typeof ClasificadosRoute
+  '/acceder': typeof AccederRoute
+  '/clasificados': typeof ClasificadosRouteWithChildren
   '/directorio': typeof DirectorioRoute
   '/marketplace': typeof MarketplaceRoute
   '/noticias': typeof NoticiasRouteWithChildren
   '/privacidad': typeof PrivacidadRoute
+  '/publicar': typeof PublicarRoute
   '/servicios-publicos': typeof ServiciosPublicosRoute
   '/shopping': typeof ShoppingRoute
   '/terminos': typeof TerminosRoute
+  '/clasificados/publicar': typeof ClasificadosPublicarRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/noticias/publicar': typeof NoticiasPublicarRoute
 }
@@ -121,51 +148,62 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/acceder'
     | '/clasificados'
     | '/directorio'
     | '/marketplace'
     | '/noticias'
     | '/privacidad'
+    | '/publicar'
     | '/servicios-publicos'
     | '/shopping'
     | '/terminos'
+    | '/clasificados/publicar'
     | '/noticias/$slug'
     | '/noticias/publicar'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/acceder'
     | '/clasificados'
     | '/directorio'
     | '/marketplace'
     | '/noticias'
     | '/privacidad'
+    | '/publicar'
     | '/servicios-publicos'
     | '/shopping'
     | '/terminos'
+    | '/clasificados/publicar'
     | '/noticias/$slug'
     | '/noticias/publicar'
   id:
     | '__root__'
     | '/'
+    | '/acceder'
     | '/clasificados'
     | '/directorio'
     | '/marketplace'
     | '/noticias'
     | '/privacidad'
+    | '/publicar'
     | '/servicios-publicos'
     | '/shopping'
     | '/terminos'
+    | '/clasificados/publicar'
     | '/noticias/$slug'
     | '/noticias/publicar'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  ClasificadosRoute: typeof ClasificadosRoute
+  AccederRoute: typeof AccederRoute
+  ClasificadosRoute: typeof ClasificadosRouteWithChildren
   DirectorioRoute: typeof DirectorioRoute
   MarketplaceRoute: typeof MarketplaceRoute
   NoticiasRoute: typeof NoticiasRouteWithChildren
   PrivacidadRoute: typeof PrivacidadRoute
+  PublicarRoute: typeof PublicarRoute
   ServiciosPublicosRoute: typeof ServiciosPublicosRoute
   ShoppingRoute: typeof ShoppingRoute
   TerminosRoute: typeof TerminosRoute
@@ -192,6 +230,13 @@ declare module '@tanstack/react-router' {
       path: '/servicios-publicos'
       fullPath: '/servicios-publicos'
       preLoaderRoute: typeof ServiciosPublicosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/publicar': {
+      id: '/publicar'
+      path: '/publicar'
+      fullPath: '/publicar'
+      preLoaderRoute: typeof PublicarRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacidad': {
@@ -229,6 +274,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ClasificadosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/acceder': {
+      id: '/acceder'
+      path: '/acceder'
+      fullPath: '/acceder'
+      preLoaderRoute: typeof AccederRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -250,8 +302,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NoticiasSlugRouteImport
       parentRoute: typeof NoticiasRoute
     }
+    '/clasificados/publicar': {
+      id: '/clasificados/publicar'
+      path: '/publicar'
+      fullPath: '/clasificados/publicar'
+      preLoaderRoute: typeof ClasificadosPublicarRouteImport
+      parentRoute: typeof ClasificadosRoute
+    }
   }
 }
+
+interface ClasificadosRouteChildren {
+  ClasificadosPublicarRoute: typeof ClasificadosPublicarRoute
+}
+
+const ClasificadosRouteChildren: ClasificadosRouteChildren = {
+  ClasificadosPublicarRoute: ClasificadosPublicarRoute,
+}
+
+const ClasificadosRouteWithChildren = ClasificadosRoute._addFileChildren(
+  ClasificadosRouteChildren,
+)
 
 interface NoticiasRouteChildren {
   NoticiasSlugRoute: typeof NoticiasSlugRoute
@@ -269,11 +340,13 @@ const NoticiasRouteWithChildren = NoticiasRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  ClasificadosRoute: ClasificadosRoute,
+  AccederRoute: AccederRoute,
+  ClasificadosRoute: ClasificadosRouteWithChildren,
   DirectorioRoute: DirectorioRoute,
   MarketplaceRoute: MarketplaceRoute,
   NoticiasRoute: NoticiasRouteWithChildren,
   PrivacidadRoute: PrivacidadRoute,
+  PublicarRoute: PublicarRoute,
   ServiciosPublicosRoute: ServiciosPublicosRoute,
   ShoppingRoute: ShoppingRoute,
   TerminosRoute: TerminosRoute,
@@ -281,13 +354,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
