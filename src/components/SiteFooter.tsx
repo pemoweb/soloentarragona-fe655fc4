@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { openCookiePreferences } from "@/components/CookieBanner";
 
 export function SiteFooter() {
   return (
@@ -37,6 +38,13 @@ export function SiteFooter() {
         <span className="hidden md:inline">·</span>
         <Link to="/privacidad" className="hover:opacity-100 hover:underline">Privacidad</Link>
         <Link to="/terminos" className="hover:opacity-100 hover:underline">Términos</Link>
+        <button
+          type="button"
+          onClick={openCookiePreferences}
+          className="hover:opacity-100 hover:underline"
+        >
+          Preferencias de cookies
+        </button>
       </div>
     </footer>
   );
