@@ -69,6 +69,9 @@ function ShoppingPage() {
   const [shopFilter, setShopFilter] = useState<string>("Todas");
   const filteredShops = shopFilter === "Todas" ? shops : shops.filter((s) => s.group === shopFilter);
 
+  const seo = SHOP_SEO[shopFilter] ?? SHOP_SEO.Todas;
+  useDynamicSeo({ title: seo.title, description: seo.description });
+
   return (
     <PageShell>
       <PageHero

@@ -8,6 +8,27 @@ import {
   formatRelativeDate,
   getAllPosts,
 } from "@/lib/news-data";
+import { useDynamicSeo } from "@/lib/use-dynamic-seo";
+
+function newsSeo(category: string, tag: string | null) {
+  const inTag = tag ? ` · #${tag}` : "";
+  if (category !== "Todas") {
+    return {
+      title: `${category} en Tarragona${inTag} — Noticias`,
+      description: `Últimas noticias de ${category.toLowerCase()} en Tarragona${tag ? ` sobre ${tag}` : ""}, actualizadas a diario.`,
+    };
+  }
+  if (tag) {
+    return {
+      title: `Noticias sobre ${tag} en Tarragona`,
+      description: `Toda la actualidad relacionada con ${tag} en Tarragona, contada por la comunidad.`,
+    };
+  }
+  return {
+    title: "Noticias de Tarragona — Solo en Tarragona",
+    description: "Toda la actualidad, cultura, deportes y sucesos de Tarragona, actualizado a diario.",
+  };
+}
 
 export const Route = createFileRoute("/noticias")({
   head: () => ({
