@@ -18,10 +18,12 @@ import { Route as NoticiasRouteImport } from './routes/noticias'
 import { Route as MarketplaceRouteImport } from './routes/marketplace'
 import { Route as DirectorioRouteImport } from './routes/directorio'
 import { Route as ClasificadosRouteImport } from './routes/clasificados'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AccederRouteImport } from './routes/acceder'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as NoticiasPublicarRouteImport } from './routes/noticias.publicar'
 import { Route as NoticiasSlugRouteImport } from './routes/noticias.$slug'
+import { Route as MarketplacePublicarRouteImport } from './routes/marketplace.publicar'
 import { Route as ClasificadosPublicarRouteImport } from './routes/clasificados.publicar'
 
 const TerminosRoute = TerminosRouteImport.update({
@@ -69,6 +71,11 @@ const ClasificadosRoute = ClasificadosRouteImport.update({
   path: '/clasificados',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AccederRoute = AccederRouteImport.update({
   id: '/acceder',
   path: '/acceder',
@@ -89,6 +96,11 @@ const NoticiasSlugRoute = NoticiasSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => NoticiasRoute,
 } as any)
+const MarketplacePublicarRoute = MarketplacePublicarRouteImport.update({
+  id: '/publicar',
+  path: '/publicar',
+  getParentRoute: () => MarketplaceRoute,
+} as any)
 const ClasificadosPublicarRoute = ClasificadosPublicarRouteImport.update({
   id: '/publicar',
   path: '/publicar',
@@ -98,9 +110,10 @@ const ClasificadosPublicarRoute = ClasificadosPublicarRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/acceder': typeof AccederRoute
+  '/admin': typeof AdminRoute
   '/clasificados': typeof ClasificadosRouteWithChildren
   '/directorio': typeof DirectorioRoute
-  '/marketplace': typeof MarketplaceRoute
+  '/marketplace': typeof MarketplaceRouteWithChildren
   '/noticias': typeof NoticiasRouteWithChildren
   '/privacidad': typeof PrivacidadRoute
   '/publicar': typeof PublicarRoute
@@ -108,15 +121,17 @@ export interface FileRoutesByFullPath {
   '/shopping': typeof ShoppingRoute
   '/terminos': typeof TerminosRoute
   '/clasificados/publicar': typeof ClasificadosPublicarRoute
+  '/marketplace/publicar': typeof MarketplacePublicarRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/noticias/publicar': typeof NoticiasPublicarRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/acceder': typeof AccederRoute
+  '/admin': typeof AdminRoute
   '/clasificados': typeof ClasificadosRouteWithChildren
   '/directorio': typeof DirectorioRoute
-  '/marketplace': typeof MarketplaceRoute
+  '/marketplace': typeof MarketplaceRouteWithChildren
   '/noticias': typeof NoticiasRouteWithChildren
   '/privacidad': typeof PrivacidadRoute
   '/publicar': typeof PublicarRoute
@@ -124,6 +139,7 @@ export interface FileRoutesByTo {
   '/shopping': typeof ShoppingRoute
   '/terminos': typeof TerminosRoute
   '/clasificados/publicar': typeof ClasificadosPublicarRoute
+  '/marketplace/publicar': typeof MarketplacePublicarRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/noticias/publicar': typeof NoticiasPublicarRoute
 }
@@ -131,9 +147,10 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/acceder': typeof AccederRoute
+  '/admin': typeof AdminRoute
   '/clasificados': typeof ClasificadosRouteWithChildren
   '/directorio': typeof DirectorioRoute
-  '/marketplace': typeof MarketplaceRoute
+  '/marketplace': typeof MarketplaceRouteWithChildren
   '/noticias': typeof NoticiasRouteWithChildren
   '/privacidad': typeof PrivacidadRoute
   '/publicar': typeof PublicarRoute
@@ -141,6 +158,7 @@ export interface FileRoutesById {
   '/shopping': typeof ShoppingRoute
   '/terminos': typeof TerminosRoute
   '/clasificados/publicar': typeof ClasificadosPublicarRoute
+  '/marketplace/publicar': typeof MarketplacePublicarRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/noticias/publicar': typeof NoticiasPublicarRoute
 }
@@ -149,6 +167,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/acceder'
+    | '/admin'
     | '/clasificados'
     | '/directorio'
     | '/marketplace'
@@ -159,12 +178,14 @@ export interface FileRouteTypes {
     | '/shopping'
     | '/terminos'
     | '/clasificados/publicar'
+    | '/marketplace/publicar'
     | '/noticias/$slug'
     | '/noticias/publicar'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/acceder'
+    | '/admin'
     | '/clasificados'
     | '/directorio'
     | '/marketplace'
@@ -175,12 +196,14 @@ export interface FileRouteTypes {
     | '/shopping'
     | '/terminos'
     | '/clasificados/publicar'
+    | '/marketplace/publicar'
     | '/noticias/$slug'
     | '/noticias/publicar'
   id:
     | '__root__'
     | '/'
     | '/acceder'
+    | '/admin'
     | '/clasificados'
     | '/directorio'
     | '/marketplace'
@@ -191,6 +214,7 @@ export interface FileRouteTypes {
     | '/shopping'
     | '/terminos'
     | '/clasificados/publicar'
+    | '/marketplace/publicar'
     | '/noticias/$slug'
     | '/noticias/publicar'
   fileRoutesById: FileRoutesById
@@ -198,9 +222,10 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AccederRoute: typeof AccederRoute
+  AdminRoute: typeof AdminRoute
   ClasificadosRoute: typeof ClasificadosRouteWithChildren
   DirectorioRoute: typeof DirectorioRoute
-  MarketplaceRoute: typeof MarketplaceRoute
+  MarketplaceRoute: typeof MarketplaceRouteWithChildren
   NoticiasRoute: typeof NoticiasRouteWithChildren
   PrivacidadRoute: typeof PrivacidadRoute
   PublicarRoute: typeof PublicarRoute
@@ -274,6 +299,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ClasificadosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/acceder': {
       id: '/acceder'
       path: '/acceder'
@@ -302,6 +334,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NoticiasSlugRouteImport
       parentRoute: typeof NoticiasRoute
     }
+    '/marketplace/publicar': {
+      id: '/marketplace/publicar'
+      path: '/publicar'
+      fullPath: '/marketplace/publicar'
+      preLoaderRoute: typeof MarketplacePublicarRouteImport
+      parentRoute: typeof MarketplaceRoute
+    }
     '/clasificados/publicar': {
       id: '/clasificados/publicar'
       path: '/publicar'
@@ -324,6 +363,18 @@ const ClasificadosRouteWithChildren = ClasificadosRoute._addFileChildren(
   ClasificadosRouteChildren,
 )
 
+interface MarketplaceRouteChildren {
+  MarketplacePublicarRoute: typeof MarketplacePublicarRoute
+}
+
+const MarketplaceRouteChildren: MarketplaceRouteChildren = {
+  MarketplacePublicarRoute: MarketplacePublicarRoute,
+}
+
+const MarketplaceRouteWithChildren = MarketplaceRoute._addFileChildren(
+  MarketplaceRouteChildren,
+)
+
 interface NoticiasRouteChildren {
   NoticiasSlugRoute: typeof NoticiasSlugRoute
   NoticiasPublicarRoute: typeof NoticiasPublicarRoute
@@ -341,9 +392,10 @@ const NoticiasRouteWithChildren = NoticiasRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AccederRoute: AccederRoute,
+  AdminRoute: AdminRoute,
   ClasificadosRoute: ClasificadosRouteWithChildren,
   DirectorioRoute: DirectorioRoute,
-  MarketplaceRoute: MarketplaceRoute,
+  MarketplaceRoute: MarketplaceRouteWithChildren,
   NoticiasRoute: NoticiasRouteWithChildren,
   PrivacidadRoute: PrivacidadRoute,
   PublicarRoute: PublicarRoute,
@@ -354,13 +406,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

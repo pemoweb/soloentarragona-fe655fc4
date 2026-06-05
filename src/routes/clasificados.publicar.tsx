@@ -6,8 +6,8 @@ import { PageShell, PageHero } from "@/components/PageShell";
 import {
   CLASSIFIED_CATEGORIES,
   TARRAGONA_ZONES,
-  addClassified,
 } from "@/lib/classifieds-data";
+import { submitToModeration } from "@/lib/moderation";
 
 export const Route = createFileRoute("/clasificados/publicar")({
   head: () => ({
@@ -74,12 +74,13 @@ function PublicarClasificado() {
       setErrors(fe);
       return;
     }
-    addClassified({
+    submitToModeration("classified", {
       cat: result.data.cat,
       title: result.data.title,
       location: result.data.location,
       description: result.data.description,
       daysLeft: result.data.daysLeft,
+      contact: result.data.contact,
     });
     setDone(true);
   };
@@ -105,10 +106,10 @@ function PublicarClasificado() {
               <Check className="h-7 w-7" />
             </div>
             <h2 className="font-display text-2xl font-black">
-              ¡Anuncio publicado!
+              ¡Anuncio enviado a moderación!
             </h2>
             <p className="mt-2 text-muted-foreground text-sm">
-              Ya es visible en clasificados durante {form.daysLeft} días.
+              Será visible en clasificados durante {form.daysLeft} días una vez aprobado.
             </p>
             <div className="mt-6 flex justify-center gap-3">
               <button
