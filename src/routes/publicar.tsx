@@ -43,11 +43,11 @@ const OPTIONS = [
     color: "from-coral to-orange-400",
   },
   {
-    to: "/marketplace",
+    to: "/marketplace/publicar",
     icon: ShoppingBag,
     title: "Producto en Marketplace",
-    desc: "Vende tus cosas a vecinos cerca de ti. Próximamente con publicación directa.",
-    badge: "Próximamente",
+    desc: "Vende tus cosas a vecinos cerca de ti. Revisamos antes de publicar.",
+    badge: "Con moderación",
     color: "from-emerald-500 to-teal-400",
   },
 ] as const;

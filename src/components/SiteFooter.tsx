@@ -45,6 +45,7 @@ export function SiteFooter() {
         >
           Preferencias de cookies
         </button>
+        <Link to="/admin" className="hover:opacity-100 hover:underline">Admin</Link>
       </div>
     </footer>
   );

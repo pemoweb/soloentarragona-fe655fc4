@@ -3,62 +3,52 @@ import { useState } from "react";
 import { z } from "zod";
 import { ArrowLeft, Check, Send } from "lucide-react";
 import { PageShell, PageHero } from "@/components/PageShell";
-import {
-  CLASSIFIED_CATEGORIES,
-  TARRAGONA_ZONES,
-} from "@/lib/classifieds-data";
 import { submitToModeration } from "@/lib/moderation";
 
-export const Route = createFileRoute("/clasificados/publicar")({
+export const Route = createFileRoute("/marketplace/publicar")({
   head: () => ({
     meta: [
-      { title: "Publicar clasificado gratis en Tarragona" },
+      { title: "Publicar producto en Marketplace — Tarragona" },
       {
         name: "description",
         content:
-          "Crea tu anuncio clasificado en Tarragona. Empleo, alquiler, venta o servicios. Gratis durante 7 días.",
+          "Publica un producto en el Marketplace de Tarragona. Tu anuncio pasará por moderación antes de aparecer.",
       },
-      {
-        property: "og:title",
-        content: "Publicar clasificado gratis en Tarragona",
-      },
-      {
-        property: "og:description",
-        content:
-          "Publica tu anuncio clasificado gratis durante 7 días en Tarragona.",
-      },
+      { name: "robots", content: "noindex, follow" },
     ],
   }),
-  component: PublicarClasificado,
+  component: PublishMarketplace,
 });
 
+const CATEGORIES = [
+  "Electrónica",
+  "Hogar",
+  "Moda",
+  "Deporte",
+  "Vehículos",
+  "Niños",
+  "Coleccionismo",
+] as const;
+
 const schema = z.object({
-  cat: z.enum(["Empleo", "Alquiler", "Venta", "Servicios"]),
-  title: z.string().trim().min(8, "Título demasiado corto").max(120),
-  location: z.string().trim().min(2, "Indica una zona").max(60),
-  description: z.string().trim().min(20, "Mínimo 20 caracteres").max(800),
-  daysLeft: z.number().int().min(1).max(7),
+  title: z.string().trim().min(5, "Título demasiado corto").max(120),
+  price: z.number().min(0).max(1_000_000),
+  location: z.string().trim().min(2).max(60),
+  category: z.enum(CATEGORIES),
+  description: z.string().trim().min(20, "Mínimo 20 caracteres").max(1000),
+  img: z.string().trim().url("URL de imagen no válida").or(z.literal("")),
   contact: z.string().trim().email("Email no válido").max(255),
 });
 
-const cats = CLASSIFIED_CATEGORIES.filter((c) => c !== "Todos");
-const zones = TARRAGONA_ZONES.filter((z) => z !== "Todas");
-
-function PublicarClasificado() {
+function PublishMarketplace() {
   const navigate = useNavigate();
-  const [form, setForm] = useState<{
-    cat: "Empleo" | "Alquiler" | "Venta" | "Servicios";
-    title: string;
-    location: string;
-    description: string;
-    daysLeft: number;
-    contact: string;
-  }>({
-    cat: "Empleo",
+  const [form, setForm] = useState({
     title: "",
-    location: zones[0],
+    price: 0,
+    location: "Centre",
+    category: "Hogar" as (typeof CATEGORIES)[number],
     description: "",
-    daysLeft: 7,
+    img: "",
     contact: "",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -66,38 +56,31 @@ function PublicarClasificado() {
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setErrors({});
-    const result = schema.safeParse(form);
-    if (!result.success) {
+    const res = schema.safeParse(form);
+    if (!res.success) {
       const fe: Record<string, string> = {};
-      for (const i of result.error.issues) fe[i.path[0] as string] = i.message;
+      for (const i of res.error.issues) fe[i.path[0] as string] = i.message;
       setErrors(fe);
       return;
     }
-    submitToModeration("classified", {
-      cat: result.data.cat,
-      title: result.data.title,
-      location: result.data.location,
-      description: result.data.description,
-      daysLeft: result.data.daysLeft,
-      contact: result.data.contact,
-    });
+    setErrors({});
+    submitToModeration("marketplace", res.data);
     setDone(true);
   };
 
   return (
     <PageShell>
       <PageHero
-        eyebrow="Publicar clasificado"
-        title="Crea tu anuncio en un minuto"
-        subtitle="Rellena los datos básicos. Tu anuncio se publica al instante y dura 7 días."
+        eyebrow="Publicar en Marketplace"
+        title="Vende a tus vecinos en minutos"
+        subtitle="Rellena los datos del producto. Tu anuncio será revisado por moderación antes de publicarse."
       />
       <section className="mx-auto max-w-2xl px-4 md:px-8 pb-20">
         <Link
-          to="/clasificados"
+          to="/marketplace"
           className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-coral transition mb-6"
         >
-          <ArrowLeft className="h-4 w-4" /> Volver a clasificados
+          <ArrowLeft className="h-4 w-4" /> Volver a Marketplace
         </Link>
 
         {done ? (
@@ -105,31 +88,19 @@ function PublicarClasificado() {
             <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-coral/10 text-coral mb-4">
               <Check className="h-7 w-7" />
             </div>
-            <h2 className="font-display text-2xl font-black">
-              ¡Anuncio enviado a moderación!
-            </h2>
+            <h2 className="font-display text-2xl font-black">¡Enviado a moderación!</h2>
             <p className="mt-2 text-muted-foreground text-sm">
-              Será visible en clasificados durante {form.daysLeft} días una vez aprobado.
+              Tu producto está en la cola de revisión. Te avisaremos cuando esté publicado.
             </p>
             <div className="mt-6 flex justify-center gap-3">
               <button
-                onClick={() => navigate({ to: "/clasificados" })}
+                onClick={() => navigate({ to: "/marketplace" })}
                 className="px-6 py-2.5 rounded-full bg-foreground text-background font-semibold text-sm hover:bg-coral transition"
               >
-                Ver clasificados
+                Ver Marketplace
               </button>
               <button
-                onClick={() => {
-                  setDone(false);
-                  setForm({
-                    cat: "Empleo",
-                    title: "",
-                    location: zones[0],
-                    description: "",
-                    daysLeft: 7,
-                    contact: "",
-                  });
-                }}
+                onClick={() => setDone(false)}
                 className="px-6 py-2.5 rounded-full border border-border font-semibold text-sm hover:border-coral hover:text-coral transition"
               >
                 Publicar otro
@@ -142,79 +113,71 @@ function PublicarClasificado() {
             noValidate
             className="rounded-3xl border border-border bg-card p-6 md:p-8 shadow-card space-y-4"
           >
-            <Field label="Categoría" error={errors.cat}>
-              <select
-                value={form.cat}
-                onChange={(e) =>
-                  setForm({ ...form, cat: e.target.value as typeof form.cat })
-                }
-                className="w-full bg-transparent py-3 px-3 focus:outline-none"
-              >
-                {cats.map((c) => (
-                  <option key={c} value={c}>
-                    {c}
-                  </option>
-                ))}
-              </select>
-            </Field>
-
             <Field label="Título" error={errors.title}>
               <input
                 value={form.title}
                 onChange={(e) => setForm({ ...form, title: e.target.value })}
-                placeholder="Ej. Camarero/a fines de semana"
+                placeholder="Ej. Bicicleta urbana como nueva"
                 maxLength={120}
                 className="w-full bg-transparent py-3 px-3 focus:outline-none"
               />
             </Field>
 
             <div className="grid gap-4 md:grid-cols-2">
-              <Field label="Zona" error={errors.location}>
-                <select
-                  value={form.location}
-                  onChange={(e) =>
-                    setForm({ ...form, location: e.target.value })
-                  }
-                  className="w-full bg-transparent py-3 px-3 focus:outline-none"
-                >
-                  {zones.map((z) => (
-                    <option key={z} value={z}>
-                      {z}
-                    </option>
-                  ))}
-                </select>
-              </Field>
-
-              <Field label="Duración (días)" error={errors.daysLeft}>
+              <Field label="Precio (€)" error={errors.price}>
                 <input
                   type="number"
-                  min={1}
-                  max={7}
-                  value={form.daysLeft}
+                  min={0}
+                  value={form.price}
                   onChange={(e) =>
-                    setForm({
-                      ...form,
-                      daysLeft: Math.max(
-                        1,
-                        Math.min(7, Number(e.target.value) || 7),
-                      ),
-                    })
+                    setForm({ ...form, price: Math.max(0, Number(e.target.value) || 0) })
                   }
                   className="w-full bg-transparent py-3 px-3 focus:outline-none"
                 />
               </Field>
+              <Field label="Categoría" error={errors.category}>
+                <select
+                  value={form.category}
+                  onChange={(e) =>
+                    setForm({ ...form, category: e.target.value as (typeof CATEGORIES)[number] })
+                  }
+                  className="w-full bg-transparent py-3 px-3 focus:outline-none"
+                >
+                  {CATEGORIES.map((c) => (
+                    <option key={c} value={c}>
+                      {c}
+                    </option>
+                  ))}
+                </select>
+              </Field>
             </div>
+
+            <Field label="Ubicación" error={errors.location}>
+              <input
+                value={form.location}
+                onChange={(e) => setForm({ ...form, location: e.target.value })}
+                placeholder="Ej. Part Alta"
+                className="w-full bg-transparent py-3 px-3 focus:outline-none"
+              />
+            </Field>
 
             <Field label="Descripción" error={errors.description}>
               <textarea
                 value={form.description}
-                onChange={(e) =>
-                  setForm({ ...form, description: e.target.value })
-                }
-                placeholder="Detalles del anuncio…"
+                onChange={(e) => setForm({ ...form, description: e.target.value })}
+                placeholder="Estado, detalles, motivo de venta..."
                 rows={5}
-                maxLength={800}
+                maxLength={1000}
                 className="w-full bg-transparent py-3 px-3 focus:outline-none resize-y"
+              />
+            </Field>
+
+            <Field label="Imagen (URL)" error={errors.img}>
+              <input
+                value={form.img}
+                onChange={(e) => setForm({ ...form, img: e.target.value })}
+                placeholder="https://..."
+                className="w-full bg-transparent py-3 px-3 focus:outline-none"
               />
             </Field>
 
@@ -232,7 +195,7 @@ function PublicarClasificado() {
               type="submit"
               className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-coral text-coral-foreground font-semibold shadow-glow hover:scale-[1.01] transition"
             >
-              <Send className="h-4 w-4" /> Publicar anuncio
+              <Send className="h-4 w-4" /> Enviar a moderación
             </button>
           </form>
         )}

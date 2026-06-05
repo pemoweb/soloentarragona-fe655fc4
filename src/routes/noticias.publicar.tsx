@@ -6,9 +6,9 @@ import { PageShell, PageHero } from "@/components/PageShell";
 import {
   NEWS_CATEGORIES,
   POPULAR_TAGS,
-  createPost,
   type NewsCategory,
 } from "@/lib/news-data";
+import { submitToModeration } from "@/lib/moderation";
 
 export const Route = createFileRoute("/noticias/publicar")({
   head: () => ({
@@ -37,6 +37,7 @@ const schema = z.object({
 
 function PublishPage() {
   const navigate = useNavigate();
+  const [submitted, setSubmitted] = useState(false);
   const [title, setTitle] = useState("");
   const [excerpt, setExcerpt] = useState("");
   const [content, setContent] = useState("");
@@ -77,7 +78,7 @@ function PublishPage() {
     }
     setErrors({});
     setSubmitting(true);
-    const post = createPost({
+    submitToModeration("news", {
       title: parsed.data.title,
       excerpt: parsed.data.excerpt,
       content: parsed.data.content,
@@ -86,8 +87,32 @@ function PublishPage() {
       cover: parsed.data.cover,
       author: parsed.data.author ?? "",
     });
-    navigate({ to: "/noticias/$slug", params: { slug: post.slug } });
+    setSubmitted(true);
+    setSubmitting(false);
   };
+
+  if (submitted) {
+    return (
+      <PageShell>
+        <PageHero eyebrow="Publicar" title="¡Noticia enviada!" subtitle="Tu noticia está en la cola de moderación." />
+        <section className="mx-auto max-w-2xl px-4 md:px-8 pb-20 text-center">
+          <div className="rounded-3xl border border-border bg-card p-10 shadow-card">
+            <p className="text-muted-foreground">
+              El equipo editorial la revisará antes de publicarla. Recibirás novedades por email cuando esté aprobada.
+            </p>
+            <div className="mt-6 flex justify-center gap-3">
+              <button onClick={() => navigate({ to: "/noticias" })} className="px-6 py-2.5 rounded-full bg-foreground text-background font-semibold text-sm hover:bg-coral transition">
+                Volver a noticias
+              </button>
+              <button onClick={() => { setSubmitted(false); setTitle(""); setExcerpt(""); setContent(""); setTags([]); setCover(""); setAuthor(""); }} className="px-6 py-2.5 rounded-full border border-border font-semibold text-sm hover:border-coral hover:text-coral transition">
+                Publicar otra
+              </button>
+            </div>
+          </div>
+        </section>
+      </PageShell>
+    );
+  }
 
   return (
     <PageShell>
