@@ -59,7 +59,7 @@ const kindGradient: Record<ServiceKind, string> = {
 };
 
 function ServiceShow() {
-  const { service, related } = Route.useLoaderData();
+  const { service, related } = Route.useLoaderData() as { service: Service; related: Service[] };
   const Icon = kindIcon[service.kind];
 
   useDynamicSeo({
