@@ -12,11 +12,11 @@ import {
   Stethoscope,
   Share2,
 } from "lucide-react";
-import { getService, relatedServices, type ServiceKind } from "@/lib/services-data";
+import { getService, relatedServices, type Service, type ServiceKind } from "@/lib/services-data";
 import { useDynamicSeo } from "@/lib/use-dynamic-seo";
 
 export const Route = createFileRoute("/servicios-publicos/$slug")({
-  loader: ({ params }) => {
+  loader: ({ params }): { service: Service; related: Service[] } => {
     const service = getService(params.slug);
     if (!service) throw notFound();
     return { service, related: relatedServices(params.slug) };
