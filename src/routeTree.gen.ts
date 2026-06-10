@@ -22,6 +22,7 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AccederRouteImport } from './routes/acceder'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ServiciosPublicosIndexRouteImport } from './routes/servicios-publicos.index'
+import { Route as ShoppingSlugRouteImport } from './routes/shopping.$slug'
 import { Route as ServiciosPublicosSlugRouteImport } from './routes/servicios-publicos.$slug'
 import { Route as NoticiasPublicarRouteImport } from './routes/noticias.publicar'
 import { Route as NoticiasSlugRouteImport } from './routes/noticias.$slug'
@@ -93,6 +94,11 @@ const ServiciosPublicosIndexRoute = ServiciosPublicosIndexRouteImport.update({
   path: '/',
   getParentRoute: () => ServiciosPublicosRoute,
 } as any)
+const ShoppingSlugRoute = ShoppingSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => ShoppingRoute,
+} as any)
 const ServiciosPublicosSlugRoute = ServiciosPublicosSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -130,13 +136,14 @@ export interface FileRoutesByFullPath {
   '/privacidad': typeof PrivacidadRoute
   '/publicar': typeof PublicarRoute
   '/servicios-publicos': typeof ServiciosPublicosRouteWithChildren
-  '/shopping': typeof ShoppingRoute
+  '/shopping': typeof ShoppingRouteWithChildren
   '/terminos': typeof TerminosRoute
   '/clasificados/publicar': typeof ClasificadosPublicarRoute
   '/marketplace/publicar': typeof MarketplacePublicarRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/noticias/publicar': typeof NoticiasPublicarRoute
   '/servicios-publicos/$slug': typeof ServiciosPublicosSlugRoute
+  '/shopping/$slug': typeof ShoppingSlugRoute
   '/servicios-publicos/': typeof ServiciosPublicosIndexRoute
 }
 export interface FileRoutesByTo {
@@ -149,13 +156,14 @@ export interface FileRoutesByTo {
   '/noticias': typeof NoticiasRouteWithChildren
   '/privacidad': typeof PrivacidadRoute
   '/publicar': typeof PublicarRoute
-  '/shopping': typeof ShoppingRoute
+  '/shopping': typeof ShoppingRouteWithChildren
   '/terminos': typeof TerminosRoute
   '/clasificados/publicar': typeof ClasificadosPublicarRoute
   '/marketplace/publicar': typeof MarketplacePublicarRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/noticias/publicar': typeof NoticiasPublicarRoute
   '/servicios-publicos/$slug': typeof ServiciosPublicosSlugRoute
+  '/shopping/$slug': typeof ShoppingSlugRoute
   '/servicios-publicos': typeof ServiciosPublicosIndexRoute
 }
 export interface FileRoutesById {
@@ -170,13 +178,14 @@ export interface FileRoutesById {
   '/privacidad': typeof PrivacidadRoute
   '/publicar': typeof PublicarRoute
   '/servicios-publicos': typeof ServiciosPublicosRouteWithChildren
-  '/shopping': typeof ShoppingRoute
+  '/shopping': typeof ShoppingRouteWithChildren
   '/terminos': typeof TerminosRoute
   '/clasificados/publicar': typeof ClasificadosPublicarRoute
   '/marketplace/publicar': typeof MarketplacePublicarRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/noticias/publicar': typeof NoticiasPublicarRoute
   '/servicios-publicos/$slug': typeof ServiciosPublicosSlugRoute
+  '/shopping/$slug': typeof ShoppingSlugRoute
   '/servicios-publicos/': typeof ServiciosPublicosIndexRoute
 }
 export interface FileRouteTypes {
@@ -199,6 +208,7 @@ export interface FileRouteTypes {
     | '/noticias/$slug'
     | '/noticias/publicar'
     | '/servicios-publicos/$slug'
+    | '/shopping/$slug'
     | '/servicios-publicos/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -218,6 +228,7 @@ export interface FileRouteTypes {
     | '/noticias/$slug'
     | '/noticias/publicar'
     | '/servicios-publicos/$slug'
+    | '/shopping/$slug'
     | '/servicios-publicos'
   id:
     | '__root__'
@@ -238,6 +249,7 @@ export interface FileRouteTypes {
     | '/noticias/$slug'
     | '/noticias/publicar'
     | '/servicios-publicos/$slug'
+    | '/shopping/$slug'
     | '/servicios-publicos/'
   fileRoutesById: FileRoutesById
 }
@@ -252,7 +264,7 @@ export interface RootRouteChildren {
   PrivacidadRoute: typeof PrivacidadRoute
   PublicarRoute: typeof PublicarRoute
   ServiciosPublicosRoute: typeof ServiciosPublicosRouteWithChildren
-  ShoppingRoute: typeof ShoppingRoute
+  ShoppingRoute: typeof ShoppingRouteWithChildren
   TerminosRoute: typeof TerminosRoute
 }
 
@@ -349,6 +361,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServiciosPublicosIndexRouteImport
       parentRoute: typeof ServiciosPublicosRoute
     }
+    '/shopping/$slug': {
+      id: '/shopping/$slug'
+      path: '/$slug'
+      fullPath: '/shopping/$slug'
+      preLoaderRoute: typeof ShoppingSlugRouteImport
+      parentRoute: typeof ShoppingRoute
+    }
     '/servicios-publicos/$slug': {
       id: '/servicios-publicos/$slug'
       path: '/$slug'
@@ -438,6 +457,18 @@ const ServiciosPublicosRouteChildren: ServiciosPublicosRouteChildren = {
 const ServiciosPublicosRouteWithChildren =
   ServiciosPublicosRoute._addFileChildren(ServiciosPublicosRouteChildren)
 
+interface ShoppingRouteChildren {
+  ShoppingSlugRoute: typeof ShoppingSlugRoute
+}
+
+const ShoppingRouteChildren: ShoppingRouteChildren = {
+  ShoppingSlugRoute: ShoppingSlugRoute,
+}
+
+const ShoppingRouteWithChildren = ShoppingRoute._addFileChildren(
+  ShoppingRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AccederRoute: AccederRoute,
@@ -449,9 +480,19 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacidadRoute: PrivacidadRoute,
   PublicarRoute: PublicarRoute,
   ServiciosPublicosRoute: ServiciosPublicosRouteWithChildren,
-  ShoppingRoute: ShoppingRoute,
+  ShoppingRoute: ShoppingRouteWithChildren,
   TerminosRoute: TerminosRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
