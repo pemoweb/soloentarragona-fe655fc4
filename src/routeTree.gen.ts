@@ -21,7 +21,10 @@ import { Route as ClasificadosRouteImport } from './routes/clasificados'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AccederRouteImport } from './routes/acceder'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ShoppingIndexRouteImport } from './routes/shopping.index'
 import { Route as ServiciosPublicosIndexRouteImport } from './routes/servicios-publicos.index'
+import { Route as NoticiasIndexRouteImport } from './routes/noticias.index'
+import { Route as ShoppingSlugRouteImport } from './routes/shopping.$slug'
 import { Route as ServiciosPublicosSlugRouteImport } from './routes/servicios-publicos.$slug'
 import { Route as NoticiasPublicarRouteImport } from './routes/noticias.publicar'
 import { Route as NoticiasSlugRouteImport } from './routes/noticias.$slug'
@@ -88,10 +91,25 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ShoppingIndexRoute = ShoppingIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ShoppingRoute,
+} as any)
 const ServiciosPublicosIndexRoute = ServiciosPublicosIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => ServiciosPublicosRoute,
+} as any)
+const NoticiasIndexRoute = NoticiasIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => NoticiasRoute,
+} as any)
+const ShoppingSlugRoute = ShoppingSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => ShoppingRoute,
 } as any)
 const ServiciosPublicosSlugRoute = ServiciosPublicosSlugRouteImport.update({
   id: '/$slug',
@@ -130,14 +148,17 @@ export interface FileRoutesByFullPath {
   '/privacidad': typeof PrivacidadRoute
   '/publicar': typeof PublicarRoute
   '/servicios-publicos': typeof ServiciosPublicosRouteWithChildren
-  '/shopping': typeof ShoppingRoute
+  '/shopping': typeof ShoppingRouteWithChildren
   '/terminos': typeof TerminosRoute
   '/clasificados/publicar': typeof ClasificadosPublicarRoute
   '/marketplace/publicar': typeof MarketplacePublicarRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/noticias/publicar': typeof NoticiasPublicarRoute
   '/servicios-publicos/$slug': typeof ServiciosPublicosSlugRoute
+  '/shopping/$slug': typeof ShoppingSlugRoute
+  '/noticias/': typeof NoticiasIndexRoute
   '/servicios-publicos/': typeof ServiciosPublicosIndexRoute
+  '/shopping/': typeof ShoppingIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -146,17 +167,18 @@ export interface FileRoutesByTo {
   '/clasificados': typeof ClasificadosRouteWithChildren
   '/directorio': typeof DirectorioRoute
   '/marketplace': typeof MarketplaceRouteWithChildren
-  '/noticias': typeof NoticiasRouteWithChildren
   '/privacidad': typeof PrivacidadRoute
   '/publicar': typeof PublicarRoute
-  '/shopping': typeof ShoppingRoute
   '/terminos': typeof TerminosRoute
   '/clasificados/publicar': typeof ClasificadosPublicarRoute
   '/marketplace/publicar': typeof MarketplacePublicarRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/noticias/publicar': typeof NoticiasPublicarRoute
   '/servicios-publicos/$slug': typeof ServiciosPublicosSlugRoute
+  '/shopping/$slug': typeof ShoppingSlugRoute
+  '/noticias': typeof NoticiasIndexRoute
   '/servicios-publicos': typeof ServiciosPublicosIndexRoute
+  '/shopping': typeof ShoppingIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -170,14 +192,17 @@ export interface FileRoutesById {
   '/privacidad': typeof PrivacidadRoute
   '/publicar': typeof PublicarRoute
   '/servicios-publicos': typeof ServiciosPublicosRouteWithChildren
-  '/shopping': typeof ShoppingRoute
+  '/shopping': typeof ShoppingRouteWithChildren
   '/terminos': typeof TerminosRoute
   '/clasificados/publicar': typeof ClasificadosPublicarRoute
   '/marketplace/publicar': typeof MarketplacePublicarRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/noticias/publicar': typeof NoticiasPublicarRoute
   '/servicios-publicos/$slug': typeof ServiciosPublicosSlugRoute
+  '/shopping/$slug': typeof ShoppingSlugRoute
+  '/noticias/': typeof NoticiasIndexRoute
   '/servicios-publicos/': typeof ServiciosPublicosIndexRoute
+  '/shopping/': typeof ShoppingIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -199,7 +224,10 @@ export interface FileRouteTypes {
     | '/noticias/$slug'
     | '/noticias/publicar'
     | '/servicios-publicos/$slug'
+    | '/shopping/$slug'
+    | '/noticias/'
     | '/servicios-publicos/'
+    | '/shopping/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -208,17 +236,18 @@ export interface FileRouteTypes {
     | '/clasificados'
     | '/directorio'
     | '/marketplace'
-    | '/noticias'
     | '/privacidad'
     | '/publicar'
-    | '/shopping'
     | '/terminos'
     | '/clasificados/publicar'
     | '/marketplace/publicar'
     | '/noticias/$slug'
     | '/noticias/publicar'
     | '/servicios-publicos/$slug'
+    | '/shopping/$slug'
+    | '/noticias'
     | '/servicios-publicos'
+    | '/shopping'
   id:
     | '__root__'
     | '/'
@@ -238,7 +267,10 @@ export interface FileRouteTypes {
     | '/noticias/$slug'
     | '/noticias/publicar'
     | '/servicios-publicos/$slug'
+    | '/shopping/$slug'
+    | '/noticias/'
     | '/servicios-publicos/'
+    | '/shopping/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -252,7 +284,7 @@ export interface RootRouteChildren {
   PrivacidadRoute: typeof PrivacidadRoute
   PublicarRoute: typeof PublicarRoute
   ServiciosPublicosRoute: typeof ServiciosPublicosRouteWithChildren
-  ShoppingRoute: typeof ShoppingRoute
+  ShoppingRoute: typeof ShoppingRouteWithChildren
   TerminosRoute: typeof TerminosRoute
 }
 
@@ -342,12 +374,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/shopping/': {
+      id: '/shopping/'
+      path: '/'
+      fullPath: '/shopping/'
+      preLoaderRoute: typeof ShoppingIndexRouteImport
+      parentRoute: typeof ShoppingRoute
+    }
     '/servicios-publicos/': {
       id: '/servicios-publicos/'
       path: '/'
       fullPath: '/servicios-publicos/'
       preLoaderRoute: typeof ServiciosPublicosIndexRouteImport
       parentRoute: typeof ServiciosPublicosRoute
+    }
+    '/noticias/': {
+      id: '/noticias/'
+      path: '/'
+      fullPath: '/noticias/'
+      preLoaderRoute: typeof NoticiasIndexRouteImport
+      parentRoute: typeof NoticiasRoute
+    }
+    '/shopping/$slug': {
+      id: '/shopping/$slug'
+      path: '/$slug'
+      fullPath: '/shopping/$slug'
+      preLoaderRoute: typeof ShoppingSlugRouteImport
+      parentRoute: typeof ShoppingRoute
     }
     '/servicios-publicos/$slug': {
       id: '/servicios-publicos/$slug'
@@ -414,11 +467,13 @@ const MarketplaceRouteWithChildren = MarketplaceRoute._addFileChildren(
 interface NoticiasRouteChildren {
   NoticiasSlugRoute: typeof NoticiasSlugRoute
   NoticiasPublicarRoute: typeof NoticiasPublicarRoute
+  NoticiasIndexRoute: typeof NoticiasIndexRoute
 }
 
 const NoticiasRouteChildren: NoticiasRouteChildren = {
   NoticiasSlugRoute: NoticiasSlugRoute,
   NoticiasPublicarRoute: NoticiasPublicarRoute,
+  NoticiasIndexRoute: NoticiasIndexRoute,
 }
 
 const NoticiasRouteWithChildren = NoticiasRoute._addFileChildren(
@@ -438,6 +493,20 @@ const ServiciosPublicosRouteChildren: ServiciosPublicosRouteChildren = {
 const ServiciosPublicosRouteWithChildren =
   ServiciosPublicosRoute._addFileChildren(ServiciosPublicosRouteChildren)
 
+interface ShoppingRouteChildren {
+  ShoppingSlugRoute: typeof ShoppingSlugRoute
+  ShoppingIndexRoute: typeof ShoppingIndexRoute
+}
+
+const ShoppingRouteChildren: ShoppingRouteChildren = {
+  ShoppingSlugRoute: ShoppingSlugRoute,
+  ShoppingIndexRoute: ShoppingIndexRoute,
+}
+
+const ShoppingRouteWithChildren = ShoppingRoute._addFileChildren(
+  ShoppingRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AccederRoute: AccederRoute,
@@ -449,7 +518,7 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacidadRoute: PrivacidadRoute,
   PublicarRoute: PublicarRoute,
   ServiciosPublicosRoute: ServiciosPublicosRouteWithChildren,
-  ShoppingRoute: ShoppingRoute,
+  ShoppingRoute: ShoppingRouteWithChildren,
   TerminosRoute: TerminosRoute,
 }
 export const routeTree = rootRouteImport
