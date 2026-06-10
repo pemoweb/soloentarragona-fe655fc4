@@ -1,9 +1,10 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageShell, PageHero } from "@/components/PageShell";
-import { Tag, MapPin, Sparkles, Store, RotateCcw } from "lucide-react";
+import { Tag, MapPin, Sparkles, Store, RotateCcw, ArrowRight } from "lucide-react";
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { useDynamicSeo } from "@/lib/use-dynamic-seo";
+import { SHOPS, SHOP_GROUPS } from "@/lib/shopping-data";
 
 const SHOP_SEO: Record<string, { title: string; description: string }> = {
   Todas: {
@@ -52,22 +53,10 @@ const featured = [
   { name: "Llibres del Carrer Major", deal: "20% libros catalanes", category: "Cultura", img: "https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=900&q=80" },
 ];
 
-const shops = [
-  { name: "Forn Sistaré", category: "Panadería", group: "Alimentación", location: "Carrer Major", img: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&q=80" },
-  { name: "Vins & Caves Tàrraco", category: "Vinoteca", group: "Alimentación", location: "Rambla Nova", img: "https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?w=600&q=80" },
-  { name: "Floristeria Jardí", category: "Flores", group: "Especializadas", location: "Sant Pere", img: "https://images.unsplash.com/photo-1561181286-d3fee7d55364?w=600&q=80" },
-  { name: "Joieria Mar", category: "Joyería", group: "Especializadas", location: "Centre", img: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&q=80" },
-  { name: "Zapateria Costa", category: "Calzado", group: "Moda", location: "Eixample", img: "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=600&q=80" },
-  { name: "Café Corsini", category: "Cafetería", group: "Alimentación", location: "Plaça Corsini", img: "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=600&q=80" },
-];
-
-const SHOP_FILTERS = ["Todas", "Alimentación", "Moda", "Hogar", "Cultura", "Belleza", "Especializadas"] as const;
-
 function ShoppingPage() {
   const [selectedFeatured, setSelectedFeatured] = useState<typeof featured[0] | null>(null);
-  const [selectedShop, setSelectedShop] = useState<typeof shops[0] | null>(null);
   const [shopFilter, setShopFilter] = useState<string>("Todas");
-  const filteredShops = shopFilter === "Todas" ? shops : shops.filter((s) => s.group === shopFilter);
+  const filteredShops = shopFilter === "Todas" ? SHOPS : SHOPS.filter((s) => s.group === shopFilter);
 
   const seo = SHOP_SEO[shopFilter] ?? SHOP_SEO.Todas;
   useDynamicSeo({ title: seo.title, description: seo.description });
@@ -81,7 +70,6 @@ function ShoppingPage() {
       />
 
       <section className="mx-auto max-w-7xl px-4 md:px-8 py-12">
-        {/* Featured deals */}
         <div className="flex items-center gap-2 text-coral text-sm font-bold uppercase tracking-widest">
           <Sparkles className="h-4 w-4" /> Promociones destacadas
         </div>
@@ -102,10 +90,9 @@ function ShoppingPage() {
           ))}
         </div>
 
-        {/* All shops */}
         <h2 className="mt-20 font-display text-3xl md:text-4xl font-black">Tiendas de Tarragona</h2>
         <div className="mt-6 flex gap-2 overflow-x-auto pb-2">
-          {SHOP_FILTERS.map((c) => {
+          {SHOP_GROUPS.map((c) => {
             const active = c === shopFilter;
             return (
               <button
@@ -137,23 +124,28 @@ function ShoppingPage() {
 
         <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {filteredShops.map((s) => (
-            <article key={s.name} onClick={() => setSelectedShop(s)} className="group cursor-pointer rounded-2xl bg-card border border-border overflow-hidden hover:shadow-card transition-all hover:-translate-y-1">
+            <Link
+              to="/shopping/$slug"
+              params={{ slug: s.slug }}
+              key={s.slug}
+              className="group rounded-2xl bg-card border border-border overflow-hidden hover:shadow-card transition-all hover:-translate-y-1"
+            >
               <div className="aspect-[16/10] overflow-hidden bg-muted">
                 <img src={s.img} alt={s.name} loading="lazy" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
               </div>
               <div className="p-5">
                 <div className="text-xs font-bold uppercase tracking-wider text-coral">{s.category}</div>
                 <h3 className="mt-1 font-display text-xl font-bold group-hover:text-coral transition-colors">{s.name}</h3>
-                <div className="mt-2 flex items-center gap-1 text-sm text-muted-foreground">
-                  <MapPin className="h-3 w-3" /> {s.location}
+                <div className="mt-2 flex items-center justify-between gap-2 text-sm text-muted-foreground">
+                  <span className="inline-flex items-center gap-1"><MapPin className="h-3 w-3" /> {s.location}</span>
+                  <span className="inline-flex items-center gap-1 text-coral font-semibold">Ver productos <ArrowRight className="h-3 w-3" /></span>
                 </div>
               </div>
-            </article>
+            </Link>
           ))}
         </div>
       </section>
 
-      {/* Featured Dialog */}
       <Dialog open={!!selectedFeatured} onOpenChange={(open) => !open && setSelectedFeatured(null)}>
         <DialogContent>
           {selectedFeatured && (
@@ -179,34 +171,6 @@ function ShoppingPage() {
           )}
         </DialogContent>
       </Dialog>
-
-      {/* Shop Dialog */}
-      <Dialog open={!!selectedShop} onOpenChange={(open) => !open && setSelectedShop(null)}>
-        <DialogContent>
-          {selectedShop && (
-            <>
-              <DialogHeader>
-                <div className="flex items-center gap-2 mb-2 text-xs">
-                  <span className="px-2.5 py-1 rounded-full bg-secondary text-secondary-foreground font-semibold uppercase tracking-wider">{selectedShop.category}</span>
-                </div>
-                <DialogTitle className="text-2xl">{selectedShop.name}</DialogTitle>
-                <DialogDescription className="flex items-center gap-1 mt-2">
-                  <MapPin className="h-4 w-4" /> {selectedShop.location}
-                </DialogDescription>
-              </DialogHeader>
-              <div className="aspect-[16/10] overflow-hidden rounded-xl bg-muted my-2">
-                <img src={selectedShop.img} alt={selectedShop.name} className="w-full h-full object-cover" />
-              </div>
-              <div className="flex justify-end mt-4">
-                <button className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-full bg-foreground text-background font-semibold hover:bg-coral transition">
-                  <Store className="h-4 w-4" /> Ver productos
-                </button>
-              </div>
-            </>
-          )}
-        </DialogContent>
-      </Dialog>
-
     </PageShell>
   );
 }
