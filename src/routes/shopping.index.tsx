@@ -37,7 +37,7 @@ const SHOP_SEO: Record<string, { title: string; description: string }> = {
   },
 };
 
-export const Route = createFileRoute("/shopping")({
+export const Route = createFileRoute("/shopping/")({
   head: () => ({
     meta: [
       { title: "Shopping local en Tarragona — Tiendas y promociones" },
