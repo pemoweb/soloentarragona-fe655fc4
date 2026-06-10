@@ -30,7 +30,7 @@ function newsSeo(category: string, tag: string | null) {
   };
 }
 
-export const Route = createFileRoute("/noticias")({
+export const Route = createFileRoute("/noticias/")({
   head: () => ({
     meta: [
       { title: "Noticias de Tarragona — Solo en Tarragona" },
