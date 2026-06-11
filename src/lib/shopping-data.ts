@@ -1,146 +1,170 @@
-export interface ShopProduct {
-  name: string;
-  price: string;
-  description: string;
-  img: string;
-}
-
-export interface Shop {
+export interface Product {
   slug: string;
   name: string;
   category: string;
-  group: string;
-  location: string;
-  address: string;
-  phone: string;
-  hours: string;
+  price: number;
+  oldPrice?: number;
+  shortDescription: string;
   description: string;
   img: string;
-  products: ShopProduct[];
+  gallery?: string[];
+  badge?: "Nuevo" | "Oferta" | "Edición limitada" | "Best seller";
+  stock: number;
+  origin: string;
 }
 
-export const SHOPS: Shop[] = [
+export const STORE = {
+  name: "La Botiga Solo en Tarragona",
+  tagline: "Producto local, sabor mediterráneo",
+  description:
+    "Tienda oficial de Solo en Tarragona. Selección curada de artesanía, gastronomía y diseño hechos en el Camp de Tarragona. Envío a toda España en 24-72h.",
+  address: "Rambla Nova 42, 43003 Tarragona",
+  phone: "+34 977 00 11 22",
+  hours: "Lun-Sáb 10:00 - 21:00 · Dom 11:00 - 14:00",
+  shippingFrom: 4.9,
+  freeShippingThreshold: 49,
+} as const;
+
+export const PRODUCT_CATEGORIES = [
+  "Todos",
+  "Gastronomía",
+  "Vinos & Cavas",
+  "Artesanía",
+  "Hogar",
+  "Moda",
+] as const;
+
+export const PRODUCTS: Product[] = [
   {
-    slug: "forn-sistare",
-    name: "Forn Sistaré",
-    category: "Panadería",
-    group: "Alimentación",
-    location: "Carrer Major",
-    address: "Carrer Major 23, 43003 Tarragona",
-    phone: "+34 977 21 34 56",
-    hours: "Lun-Sáb: 7:00 - 14:00 · 17:00 - 20:00",
+    slug: "aceite-arbequina-camp-tarragona",
+    name: "Aceite Arbequina del Camp",
+    category: "Gastronomía",
+    price: 14.9,
+    oldPrice: 18.5,
+    shortDescription: "AOVE primera presión en frío, cosecha temprana 2025.",
     description:
-      "Panadería artesana familiar desde 1952. Pan de masa madre, coca de recapte y bollería tradicional horneada cada día con harinas ecológicas del Camp de Tarragona.",
-    img: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&q=80",
-    products: [
-      { name: "Pan de masa madre", price: "3,80 €", description: "Hogaza de 800g, fermentación 24h.", img: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&q=80" },
-      { name: "Coca de recapte", price: "4,50 €", description: "Coca tradicional con escalivada y arenques.", img: "https://images.unsplash.com/photo-1571197119282-7c4ef4d0e1f4?w=600&q=80" },
-      { name: "Ensaimada artesana", price: "2,20 €", description: "Hojaldre mallorquín individual.", img: "https://images.unsplash.com/photo-1509365465985-25d11c17e812?w=600&q=80" },
-      { name: "Croissant de mantequilla", price: "1,80 €", description: "Mantequilla francesa AOP.", img: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=600&q=80" },
+      "Aceite de oliva virgen extra de variedad Arbequina cultivada en olivos centenarios del Camp de Tarragona. Recolección temprana a mano y molturación en frío en las primeras 6 horas. Aromas frutados intensos, ligero picor en boca y final almendrado. Botella de 500ml.",
+    img: "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=900&q=80",
+    gallery: [
+      "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=1200&q=80",
+      "https://images.unsplash.com/photo-1611171711791-b34b41b1f9bd?w=1200&q=80",
+      "https://images.unsplash.com/photo-1601000938259-9e92002320b2?w=1200&q=80",
     ],
+    badge: "Best seller",
+    stock: 42,
+    origin: "Les Borges del Camp",
   },
   {
-    slug: "vins-caves-tarraco",
-    name: "Vins & Caves Tàrraco",
-    category: "Vinoteca",
-    group: "Alimentación",
-    location: "Rambla Nova",
-    address: "Rambla Nova 78, 43003 Tarragona",
-    phone: "+34 977 24 56 78",
-    hours: "Lun-Sáb: 10:00 - 14:00 · 17:00 - 21:00",
+    slug: "vermut-reserva-tarragona",
+    name: "Vermut Reserva Tarragona 1L",
+    category: "Vinos & Cavas",
+    price: 16.5,
+    shortDescription: "Receta tradicional con botánicos del Mediterráneo.",
     description:
-      "Vinoteca especializada en DO Tarragona, Priorat y Montsant. Catas semanales y selección de cavas del Penedès.",
-    img: "https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?w=600&q=80",
-    products: [
-      { name: "Vi negre Priorat", price: "18,90 €", description: "Garnatxa i carinyena, criança 12 meses.", img: "https://images.unsplash.com/photo-1474722883778-792e7990302f?w=600&q=80" },
-      { name: "Cava Brut Nature", price: "14,50 €", description: "Macabeu, xarel·lo i parellada, 18 meses.", img: "https://images.unsplash.com/photo-1547595628-c61a29f496f0?w=600&q=80" },
-      { name: "Vermut artesano", price: "12,00 €", description: "Receta tradicional reusenca, 1L.", img: "https://images.unsplash.com/photo-1568213816046-0ee1c42bd559?w=600&q=80" },
+      "Vermut elaborado con vino blanco de la DO Tarragona, macerado con más de 30 botánicos entre los que destacan el ajenjo, la genciana y la piel de naranja amarga. Color caoba, aroma especiado y final largo. Servir muy frío con una rodaja de naranja y aceituna.",
+    img: "https://images.unsplash.com/photo-1568213816046-0ee1c42bd559?w=900&q=80",
+    gallery: [
+      "https://images.unsplash.com/photo-1568213816046-0ee1c42bd559?w=1200&q=80",
+      "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?w=1200&q=80",
     ],
+    badge: "Edición limitada",
+    stock: 18,
+    origin: "Reus",
   },
   {
-    slug: "floristeria-jardi",
-    name: "Floristeria Jardí",
-    category: "Flores",
-    group: "Especializadas",
-    location: "Sant Pere",
-    address: "Carrer Sant Pere 12, 43004 Tarragona",
-    phone: "+34 977 22 11 33",
-    hours: "Lun-Sáb: 9:00 - 14:00 · 16:30 - 20:00",
+    slug: "cava-brut-nature-penedes",
+    name: "Cava Brut Nature 18 meses",
+    category: "Vinos & Cavas",
+    price: 14.9,
+    shortDescription: "Macabeu, xarel·lo i parellada, crianza 18 meses.",
     description:
-      "Floristería de barrio con flor de temporada cultivada en el Camp de Tarragona. Ramos a medida y decoración para eventos.",
-    img: "https://images.unsplash.com/photo-1561181286-d3fee7d55364?w=600&q=80",
-    products: [
-      { name: "Ramo de temporada", price: "25,00 €", description: "Composición con flor fresca del día.", img: "https://images.unsplash.com/photo-1487530811176-3780de880c2d?w=600&q=80" },
-      { name: "Orquídea Phalaenopsis", price: "18,00 €", description: "Maceta cerámica incluida.", img: "https://images.unsplash.com/photo-1567203308233-1e3331c45a4e?w=600&q=80" },
-      { name: "Centro de mesa", price: "45,00 €", description: "Composición para eventos y bodas.", img: "https://images.unsplash.com/photo-1519378058457-4c29a0a2efac?w=600&q=80" },
-    ],
+      "Cava de coupage tradicional con larga crianza en rima. Burbuja fina y persistente, notas de bollería y fruta blanca. Ideal para aperitivo y maridajes con pescado.",
+    img: "https://images.unsplash.com/photo-1547595628-c61a29f496f0?w=900&q=80",
+    stock: 60,
+    origin: "Penedès",
   },
   {
-    slug: "joieria-mar",
-    name: "Joieria Mar",
-    category: "Joyería",
-    group: "Especializadas",
-    location: "Centre",
-    address: "Plaça de la Font 8, 43003 Tarragona",
-    phone: "+34 977 23 45 67",
-    hours: "Lun-Sáb: 10:00 - 13:30 · 17:00 - 20:30",
+    slug: "vi-negre-priorat-criança",
+    name: "Vi Negre Priorat Criança",
+    category: "Vinos & Cavas",
+    price: 22.9,
+    oldPrice: 26.0,
+    shortDescription: "Garnatxa i carinyena con 12 meses en barrica.",
     description:
-      "Joyería de autor con piezas inspiradas en el mar Mediterráneo. Diseño propio y reparación de joyas tradicionales.",
-    img: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=600&q=80",
-    products: [
-      { name: "Colgante de plata 'Onada'", price: "65,00 €", description: "Diseño exclusivo inspirado en las olas.", img: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=600&q=80" },
-      { name: "Pendientes oro 18k", price: "180,00 €", description: "Aros pequeños, fabricación artesanal.", img: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=600&q=80" },
-      { name: "Anillo con perla", price: "95,00 €", description: "Plata 925 y perla cultivada.", img: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=600&q=80" },
-    ],
+      "Vino tinto de la DOQ Priorat, elaborado con uvas viejas de garnatxa y carinyena de viñedos en licorella. Crianza de 12 meses en barrica de roble francés. Estructurado, mineral y con larga persistencia.",
+    img: "https://images.unsplash.com/photo-1474722883778-792e7990302f?w=900&q=80",
+    badge: "Oferta",
+    stock: 24,
+    origin: "Priorat",
   },
   {
-    slug: "zapateria-costa",
-    name: "Zapateria Costa",
-    category: "Calzado",
-    group: "Moda",
-    location: "Eixample",
-    address: "Avinguda Catalunya 45, 43002 Tarragona",
-    phone: "+34 977 25 67 89",
-    hours: "Lun-Sáb: 10:00 - 14:00 · 17:00 - 20:30",
+    slug: "cesta-recapte-mediterrania",
+    name: "Cesta Recapte Mediterrània",
+    category: "Gastronomía",
+    price: 49.0,
+    shortDescription: "Selección gourmet con 8 productos locales.",
     description:
-      "Zapatería familiar con calzado nacional. Marcas españolas, cuero genuino y horma anatómica para uso diario.",
-    img: "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=600&q=80",
-    products: [
-      { name: "Botín piel mujer", price: "89,00 €", description: "Fabricación española, piel napa.", img: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=600&q=80" },
-      { name: "Mocasín hombre", price: "75,00 €", description: "Estilo clásico, suela de goma.", img: "https://images.unsplash.com/photo-1614252369475-531eba835eb1?w=600&q=80" },
-      { name: "Zapatilla casual", price: "55,00 €", description: "Lona y suela ligera, varios colores.", img: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&q=80" },
-    ],
+      "Cesta de regalo con AOVE arbequina, vermut, conservas de la Costa Daurada, almendra marcona, miel del Montsant, chocolate artesano de Reus y dos copas de cava. Presentación en caja de madera reciclada con tarjeta personalizada.",
+    img: "https://images.unsplash.com/photo-1607920591413-4ec007e70023?w=900&q=80",
+    badge: "Nuevo",
+    stock: 12,
+    origin: "Tarragona",
   },
   {
-    slug: "cafe-corsini",
-    name: "Café Corsini",
-    category: "Cafetería",
-    group: "Alimentación",
-    location: "Plaça Corsini",
-    address: "Plaça Corsini 4, 43001 Tarragona",
-    phone: "+34 977 22 33 44",
-    hours: "Todos los días: 7:30 - 21:00",
+    slug: "ceramica-artesana-cosi",
+    name: "Plato cerámica artesana",
+    category: "Artesanía",
+    price: 28.0,
+    shortDescription: "Pieza única torneada a mano en taller local.",
     description:
-      "Cafetería de especialidad con tostadores propios. Café de origen, brunch y dulces caseros frente al mercado.",
-    img: "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=600&q=80",
-    products: [
-      { name: "Café de especialidad 250g", price: "9,50 €", description: "Tueste claro, origen Etiopía.", img: "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=600&q=80" },
-      { name: "Brunch completo", price: "14,90 €", description: "Café, zumo, tostada y huevos.", img: "https://images.unsplash.com/photo-1525351484163-7529414344d8?w=600&q=80" },
-      { name: "Tarta de zanahoria", price: "4,50 €", description: "Receta casera, ración individual.", img: "https://images.unsplash.com/photo-1571115177098-24ec42ed204d?w=600&q=80" },
-    ],
+      "Plato hondo de cerámica artesana torneado a mano en taller de Valls. Esmaltes naturales en tonos azules y arena inspirados en el mar Mediterráneo. Cada pieza es única, apta para lavavajillas y microondas. Diámetro 26cm.",
+    img: "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?w=900&q=80",
+    stock: 7,
+    origin: "Valls",
+  },
+  {
+    slug: "vela-soja-romani",
+    name: "Vela de soja Romaní & Mar",
+    category: "Hogar",
+    price: 19.5,
+    shortDescription: "Cera 100% vegetal, aroma a romero y salitre.",
+    description:
+      "Vela artesanal elaborada con cera de soja 100% vegetal y aceites esenciales naturales. Aroma envolvente a romero del Camp, sal y maderas marinas. 40 horas de combustión. Vaso de vidrio reciclado reutilizable.",
+    img: "https://images.unsplash.com/photo-1602874801006-e26c4c5b5e58?w=900&q=80",
+    stock: 30,
+    origin: "Tarragona",
+  },
+  {
+    slug: "tote-bag-castellers",
+    name: "Tote bag Castellers",
+    category: "Moda",
+    price: 14.0,
+    shortDescription: "Algodón orgánico con ilustración exclusiva.",
+    description:
+      "Bolsa de algodón orgánico 100% certificado GOTS con ilustración original inspirada en los castells de Tarragona. Serigrafía a una tinta hecha a mano. Asas largas, tamaño 38x42cm.",
+    img: "https://images.unsplash.com/photo-1591561954557-26941169b49e?w=900&q=80",
+    badge: "Nuevo",
+    stock: 50,
+    origin: "Tarragona",
+  },
+  {
+    slug: "miel-montsant",
+    name: "Miel cruda del Montsant 500g",
+    category: "Gastronomía",
+    price: 11.5,
+    shortDescription: "Miel de romero y tomillo, sin filtrar.",
+    description:
+      "Miel cruda de romero y tomillo recolectada en la sierra del Montsant. Sin pasteurizar y sin filtrar para conservar todas sus propiedades. Tarro de vidrio 500g.",
+    img: "https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=900&q=80",
+    stock: 35,
+    origin: "Montsant",
   },
 ];
 
-export const SHOP_GROUPS = [
-  "Todas",
-  "Alimentación",
-  "Moda",
-  "Hogar",
-  "Cultura",
-  "Belleza",
-  "Especializadas",
-] as const;
+export function getProduct(slug: string): Product | undefined {
+  return PRODUCTS.find((p) => p.slug === slug);
+}
 
-export function getShop(slug: string): Shop | undefined {
-  return SHOPS.find((s) => s.slug === slug);
+export function formatPrice(value: number): string {
+  return new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR" }).format(value);
 }
