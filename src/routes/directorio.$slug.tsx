@@ -114,7 +114,7 @@ function BusinessDetail() {
             <div>
               <h2 className="font-display text-2xl font-bold mb-4">Servicios destacados</h2>
               <div className="grid sm:grid-cols-2 gap-3">
-                {b.services.map((s) => (
+                {b.services.map((s: string) => (
                   <div key={s} className="flex items-start gap-2 p-3 rounded-xl bg-card border border-border">
                     <CheckCircle2 className="h-5 w-5 text-coral shrink-0 mt-0.5" />
                     <span className="text-sm font-medium">{s}</span>
@@ -128,7 +128,7 @@ function BusinessDetail() {
             <div>
               <h2 className="font-display text-2xl font-bold mb-4">Galería</h2>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                {b.gallery.map((g, i) => (
+                {b.gallery.map((g: string, i: number) => (
                   <div key={i} className="aspect-square overflow-hidden rounded-2xl bg-muted">
                     <img src={g} alt={`${b.name} ${i + 1}`} loading="lazy" className="h-full w-full object-cover hover:scale-105 transition-transform duration-500" />
                   </div>
