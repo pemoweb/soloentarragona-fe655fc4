@@ -1,11 +1,11 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { PageShell } from "@/components/PageShell";
 import { Star, MapPin, Phone, Mail, Globe, Clock, BadgeCheck, ArrowLeft, Instagram, Facebook, Users, Calendar, Share2, CheckCircle2 } from "lucide-react";
-import { getBusiness, businesses } from "@/lib/directorio-data";
+import { getBusiness, businesses, type Business } from "@/lib/directorio-data";
 import { useDynamicSeo } from "@/lib/use-dynamic-seo";
 
 export const Route = createFileRoute("/directorio/$slug")({
-  loader: ({ params }) => {
+  loader: ({ params }): Business => {
     const b = getBusiness(params.slug);
     if (!b || !b.verified) throw notFound();
     return b;
@@ -39,7 +39,6 @@ function BusinessDetail() {
   useDynamicSeo({
     title: `${b.name} — ${b.category} verificado en Tarragona`,
     description: b.description ?? `${b.name}, ${b.category.toLowerCase()} verificado en Tarragona.`,
-    image: b.img,
   });
 
   const related = businesses.filter((x) => x.verified && x.category === b.category && x.slug !== b.slug).slice(0, 3);
