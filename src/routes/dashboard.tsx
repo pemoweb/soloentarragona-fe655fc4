@@ -136,10 +136,10 @@ function ResumenView({
   onGo: (t: Tab) => void;
 }) {
   const stats = [
-    { label: "Anuncios Marketplace", value: marketCount, icon: Store, color: "coral", tab: "marketplace" as Tab },
-    { label: "Anuncios Clasificados", value: classifiedCount, icon: Newspaper, color: "primary", tab: "clasificados" as Tab },
-    { label: "Negocios favoritos", value: favBusinessCount, icon: Building2, color: "accent", tab: "directorio" as Tab },
-    { label: "Clasificados guardados", value: favClassifiedCount, icon: Heart, color: "coral", tab: "clasificados" as Tab },
+    { label: "Anuncios Marketplace", value: marketCount, icon: Store, cls: "bg-coral/10 text-coral", tab: "marketplace" as Tab },
+    { label: "Anuncios Clasificados", value: classifiedCount, icon: Newspaper, cls: "bg-primary/10 text-primary", tab: "clasificados" as Tab },
+    { label: "Negocios favoritos", value: favBusinessCount, icon: Building2, cls: "bg-accent/20 text-accent-foreground", tab: "directorio" as Tab },
+    { label: "Clasificados guardados", value: favClassifiedCount, icon: Heart, cls: "bg-coral/10 text-coral", tab: "clasificados" as Tab },
   ];
   return (
     <div className="space-y-8">
