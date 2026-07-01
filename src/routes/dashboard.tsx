@@ -432,25 +432,25 @@ function PerfilView() {
         <div className="grid md:grid-cols-2 gap-4">
           <Field label="Nombre completo">
             <input
-              className="input-base" value={form.name}
+              className="w-full px-3 py-2.5 rounded-xl border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-coral/40" value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
             />
           </Field>
           <Field label="Correo electrónico">
             <input
-              type="email" className="input-base" value={form.email}
+              type="email" className="w-full px-3 py-2.5 rounded-xl border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-coral/40" value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
             />
           </Field>
           <Field label="Teléfono">
             <input
-              className="input-base" value={form.phone}
+              className="w-full px-3 py-2.5 rounded-xl border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-coral/40" value={form.phone}
               onChange={(e) => setForm({ ...form, phone: e.target.value })}
             />
           </Field>
           <Field label="Barrio / Ciudad">
             <input
-              className="input-base" value={form.city}
+              className="w-full px-3 py-2.5 rounded-xl border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-coral/40" value={form.city}
               onChange={(e) => setForm({ ...form, city: e.target.value })}
             />
           </Field>
@@ -458,7 +458,7 @@ function PerfilView() {
 
         <Field label="Sobre mí">
           <textarea
-            rows={4} className="input-base"
+            rows={4} className="w-full px-3 py-2.5 rounded-xl border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-coral/40"
             value={form.bio}
             onChange={(e) => setForm({ ...form, bio: e.target.value })}
           />
