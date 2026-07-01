@@ -40,6 +40,13 @@ export function SiteHeader() {
 
         <div className="hidden lg:flex items-center gap-2">
           <Link
+            to="/dashboard"
+            className="px-3 py-2 text-sm font-medium text-muted-foreground hover:text-coral transition-colors"
+            activeProps={{ className: "px-3 py-2 text-sm font-semibold text-coral" }}
+          >
+            Mi panel
+          </Link>
+          <Link
             to="/acceder"
             className="px-4 py-2 text-sm font-medium text-foreground hover:text-coral transition-colors"
           >
