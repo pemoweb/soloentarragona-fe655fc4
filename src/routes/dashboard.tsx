@@ -150,7 +150,7 @@ function ResumenView({
             onClick={() => onGo(s.tab)}
             className="text-left rounded-2xl border border-border bg-card p-5 hover:shadow-lg hover:-translate-y-0.5 transition-all"
           >
-            <div className={`inline-grid h-10 w-10 place-items-center rounded-xl bg-${s.color}/10 text-${s.color}`}>
+            <div className={`inline-grid h-10 w-10 place-items-center rounded-xl ${s.cls}`}>
               <s.icon className="h-5 w-5" />
             </div>
             <div className="mt-3 font-display text-3xl font-black">{s.value}</div>
