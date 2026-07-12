@@ -3,12 +3,16 @@ import { useMemo, useState } from "react";
 import {
   User, Store, Building2, Newspaper, Heart, Clock, CheckCircle2, XCircle,
   Mail, Phone, MapPin, Pencil, LogOut, LayoutDashboard, Save, Camera, Star,
+  Pause, Play, Trash2, Eye, PauseCircle,
 } from "lucide-react";
 import { PageShell } from "@/components/PageShell";
-import { useModerationQueue, type ModerationItem } from "@/lib/moderation";
+import {
+  useModerationQueue, pauseItem, resumeItem, deleteItem, updateItem,
+  type ModerationItem, type ModerationStatus,
+} from "@/lib/moderation";
 import { useAllClassifieds, useFavorites } from "@/lib/classifieds-data";
 import { businesses } from "@/lib/directorio-data";
-import { loadProfile, saveProfile, useDirectorioFavs, type UserProfile } from "@/lib/profile-data";
+import { loadProfile, saveProfile, useDirectorioFavs, useDirectorioPaused, type UserProfile } from "@/lib/profile-data";
 
 export const Route = createFileRoute("/dashboard")({
   head: () => ({
@@ -37,7 +41,8 @@ function DashboardPage() {
   const queue = useModerationQueue();
   const classifieds = useAllClassifieds();
   const { favs: classifiedFavs } = useFavorites();
-  const { favs: dirFavs } = useDirectorioFavs();
+  const { favs: dirFavs, remove: removeDirFav } = useDirectorioFavs();
+  const { paused: dirPaused, toggle: toggleDirPaused } = useDirectorioPaused();
 
   const myMarketplace = useMemo(
     () => queue.filter((i) => i.kind === "marketplace"),
@@ -112,7 +117,12 @@ function DashboardPage() {
           <MarketplaceView items={myMarketplace} />
         )}
         {tab === "directorio" && (
-          <DirectorioView businesses={myFavBusinesses} />
+          <DirectorioView
+            businesses={myFavBusinesses}
+            paused={dirPaused}
+            onTogglePause={toggleDirPaused}
+            onRemove={removeDirFav}
+          />
         )}
         {tab === "clasificados" && (
           <ClasificadosView items={myClassifieds} favs={myFavClassifieds} />
@@ -193,10 +203,11 @@ function ResumenView({
 /* ---------- Marketplace ---------- */
 
 function MarketplaceView({ items }: { items: ModerationItem[] }) {
+  const [editing, setEditing] = useState<ModerationItem | null>(null);
   return (
     <SectionHeader
       title="Mis anuncios en Marketplace"
-      subtitle="Estado de tus publicaciones y anuncios pendientes de revisión."
+      subtitle="Gestiona el estado, edita o pausa tus publicaciones."
       cta={{ to: "/marketplace/publicar", label: "Nuevo anuncio" }}
     >
       {items.length === 0 ? (
@@ -208,17 +219,22 @@ function MarketplaceView({ items }: { items: ModerationItem[] }) {
       ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           {items.map((it) => it.kind === "marketplace" && (
-            <article key={it.id} className="rounded-2xl border border-border bg-card overflow-hidden hover:shadow-lg transition-shadow">
-              <div className="aspect-video bg-muted overflow-hidden">
+            <article key={it.id} className="rounded-2xl border border-border bg-card overflow-hidden hover:shadow-lg transition-shadow flex flex-col">
+              <div className="aspect-video bg-muted overflow-hidden relative">
                 {it.payload.img ? (
-                  <img src={it.payload.img} alt={it.payload.title} className="h-full w-full object-cover" />
+                  <img src={it.payload.img} alt={it.payload.title} className={`h-full w-full object-cover ${it.status === "paused" ? "opacity-40" : ""}`} />
                 ) : (
                   <div className="h-full w-full grid place-items-center text-muted-foreground">
                     <Store className="h-10 w-10" />
                   </div>
                 )}
+                {it.status === "paused" && (
+                  <div className="absolute inset-0 grid place-items-center">
+                    <PauseCircle className="h-10 w-10 text-foreground/70" />
+                  </div>
+                )}
               </div>
-              <div className="p-4 space-y-2">
+              <div className="p-4 space-y-2 flex-1 flex flex-col">
                 <div className="flex items-start justify-between gap-2">
                   <h3 className="font-semibold leading-tight">{it.payload.title}</h3>
                   <StatusPill status={it.status} />
@@ -229,11 +245,21 @@ function MarketplaceView({ items }: { items: ModerationItem[] }) {
                 </div>
                 <p className="text-xs text-muted-foreground">
                   Enviado el {new Date(it.createdAt).toLocaleDateString("es-ES")}
+                  {it.reviewedAt && ` · Revisado ${new Date(it.reviewedAt).toLocaleDateString("es-ES")}`}
                 </p>
+                {it.status === "rejected" && it.rejectReason && (
+                  <p className="text-xs text-rose-700 bg-rose-50 rounded-md px-2 py-1.5">
+                    <span className="font-semibold">Motivo:</span> {it.rejectReason}
+                  </p>
+                )}
+                <ItemActions item={it} onEdit={() => setEditing(it)} />
               </div>
             </article>
           ))}
         </div>
+      )}
+      {editing && (
+        <EditModal item={editing} onClose={() => setEditing(null)} />
       )}
     </SectionHeader>
   );
@@ -241,11 +267,18 @@ function MarketplaceView({ items }: { items: ModerationItem[] }) {
 
 /* ---------- Directorio ---------- */
 
-function DirectorioView({ businesses: favs }: { businesses: typeof businesses }) {
+function DirectorioView({
+  businesses: favs, paused, onTogglePause, onRemove,
+}: {
+  businesses: typeof businesses;
+  paused: Set<string>;
+  onTogglePause: (slug: string) => void;
+  onRemove: (slug: string) => void;
+}) {
   return (
     <SectionHeader
       title="Mis negocios favoritos"
-      subtitle="Directorio local guardado para consultar rápido."
+      subtitle="Consulta, pausa o elimina los negocios que has guardado."
       cta={{ to: "/directorio", label: "Explorar directorio" }}
     >
       {favs.length === 0 ? (
@@ -256,43 +289,67 @@ function DirectorioView({ businesses: favs }: { businesses: typeof businesses })
         />
       ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {favs.map((b) => (
-            <article key={b.slug} className="rounded-2xl border border-border bg-card overflow-hidden hover:shadow-lg transition-shadow">
-              <div className="aspect-video bg-muted overflow-hidden">
-                <img src={b.img} alt={b.name} className="h-full w-full object-cover" />
-              </div>
-              <div className="p-4 space-y-2">
-                <div className="flex items-center justify-between gap-2">
-                  <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{b.category}</span>
-                  {b.verified && (
-                    <span className="inline-flex items-center gap-1 text-xs text-coral font-semibold">
-                      <CheckCircle2 className="h-3.5 w-3.5" /> Verificado
+          {favs.map((b) => {
+            const isPaused = paused.has(b.slug);
+            return (
+              <article key={b.slug} className="rounded-2xl border border-border bg-card overflow-hidden hover:shadow-lg transition-shadow flex flex-col">
+                <div className="aspect-video bg-muted overflow-hidden relative">
+                  <img src={b.img} alt={b.name} className={`h-full w-full object-cover ${isPaused ? "opacity-40 grayscale" : ""}`} />
+                  {isPaused && (
+                    <span className="absolute top-2 left-2 inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-background/90 text-muted-foreground">
+                      <PauseCircle className="h-3 w-3" /> Pausado
                     </span>
                   )}
                 </div>
-                <h3 className="font-semibold">{b.name}</h3>
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <Star className="h-3.5 w-3.5 fill-coral text-coral" />
-                  <span>{b.rating}</span>
-                  <span>·</span>
-                  <span className="truncate">{b.address}</span>
+                <div className="p-4 space-y-2 flex-1 flex flex-col">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{b.category}</span>
+                    {b.verified && (
+                      <span className="inline-flex items-center gap-1 text-xs text-coral font-semibold">
+                        <CheckCircle2 className="h-3.5 w-3.5" /> Verificado
+                      </span>
+                    )}
+                  </div>
+                  <h3 className="font-semibold">{b.name}</h3>
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <Star className="h-3.5 w-3.5 fill-coral text-coral" />
+                    <span>{b.rating}</span>
+                    <span>·</span>
+                    <span className="truncate">{b.address}</span>
+                  </div>
+                  <div className="flex flex-wrap gap-2 pt-2 mt-auto">
+                    {b.verified ? (
+                      <Link
+                        to="/directorio/$slug"
+                        params={{ slug: b.slug }}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-coral text-coral-foreground text-xs font-semibold hover:opacity-90"
+                      >
+                        <Eye className="h-3.5 w-3.5" /> Ver ficha PRO
+                      </Link>
+                    ) : (
+                      <Link to="/directorio" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-muted text-foreground text-xs font-semibold hover:bg-muted/80">
+                        <Eye className="h-3.5 w-3.5" /> Ver
+                      </Link>
+                    )}
+                    <button
+                      onClick={() => onTogglePause(b.slug)}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border text-xs font-semibold hover:bg-muted"
+                    >
+                      {isPaused ? <><Play className="h-3.5 w-3.5" /> Reanudar</> : <><Pause className="h-3.5 w-3.5" /> Pausar</>}
+                    </button>
+                    <button
+                      onClick={() => {
+                        if (confirm(`¿Quitar "${b.name}" de tus favoritos?`)) onRemove(b.slug);
+                      }}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border text-xs font-semibold text-rose-700 hover:bg-rose-50"
+                    >
+                      <Trash2 className="h-3.5 w-3.5" /> Quitar
+                    </button>
+                  </div>
                 </div>
-                {b.verified ? (
-                  <Link
-                    to="/directorio/$slug"
-                    params={{ slug: b.slug }}
-                    className="inline-block text-sm text-coral font-medium hover:underline"
-                  >
-                    Ver ficha PRO →
-                  </Link>
-                ) : (
-                  <Link to="/directorio" className="inline-block text-sm text-coral font-medium hover:underline">
-                    Ver en directorio →
-                  </Link>
-                )}
-              </div>
-            </article>
-          ))}
+              </article>
+            );
+          })}
         </div>
       )}
     </SectionHeader>
@@ -307,11 +364,12 @@ function ClasificadosView({
   items: ModerationItem[];
   favs: ReturnType<typeof useAllClassifieds>;
 }) {
+  const [editing, setEditing] = useState<ModerationItem | null>(null);
   return (
     <div className="space-y-10">
       <SectionHeader
         title="Mis clasificados"
-        subtitle="Anuncios que has publicado y su estado de moderación."
+        subtitle="Edita, pausa o revisa el estado de tus anuncios."
         cta={{ to: "/clasificados/publicar", label: "Nuevo clasificado" }}
       >
         {items.length === 0 ? (
@@ -323,22 +381,30 @@ function ClasificadosView({
         ) : (
           <ul className="divide-y divide-border rounded-2xl border border-border bg-card">
             {items.map((it) => it.kind === "classified" && (
-              <li key={it.id} className="p-4 flex items-center gap-4">
+              <li key={it.id} className="p-4 flex flex-col sm:flex-row sm:items-center gap-4">
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-1">
+                  <div className="flex items-center gap-2 mb-1 flex-wrap">
                     <span className="text-xs px-2 py-0.5 rounded-full bg-muted font-medium">{it.payload.cat}</span>
                     <span className="text-xs text-muted-foreground">{it.payload.location}</span>
+                    <StatusPill status={it.status} />
                   </div>
                   <p className="font-semibold truncate">{it.payload.title}</p>
                   <p className="text-xs text-muted-foreground mt-0.5">
                     {it.payload.daysLeft} días · Enviado {new Date(it.createdAt).toLocaleDateString("es-ES")}
+                    {it.reviewedAt && ` · Revisado ${new Date(it.reviewedAt).toLocaleDateString("es-ES")}`}
                   </p>
+                  {it.status === "rejected" && it.rejectReason && (
+                    <p className="text-xs text-rose-700 bg-rose-50 rounded-md px-2 py-1.5 mt-2">
+                      <span className="font-semibold">Motivo:</span> {it.rejectReason}
+                    </p>
+                  )}
                 </div>
-                <StatusPill status={it.status} />
+                <ItemActions item={it} onEdit={() => setEditing(it)} />
               </li>
             ))}
           </ul>
         )}
+        {editing && <EditModal item={editing} onClose={() => setEditing(null)} />}
       </SectionHeader>
 
       <div>
@@ -493,11 +559,12 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
   );
 }
 
-function StatusPill({ status }: { status: "pending" | "approved" | "rejected" }) {
+function StatusPill({ status }: { status: ModerationStatus }) {
   const map = {
     pending: { label: "Pendiente", cls: "bg-amber-100 text-amber-800", Icon: Clock },
-    approved: { label: "Aprobado", cls: "bg-emerald-100 text-emerald-800", Icon: CheckCircle2 },
+    approved: { label: "Publicado", cls: "bg-emerald-100 text-emerald-800", Icon: CheckCircle2 },
     rejected: { label: "Rechazado", cls: "bg-rose-100 text-rose-800", Icon: XCircle },
+    paused: { label: "Pausado", cls: "bg-muted text-muted-foreground", Icon: PauseCircle },
   } as const;
   const { label, cls, Icon } = map[status];
   return (
@@ -553,6 +620,173 @@ function EmptyState({
       >
         {cta.label}
       </Link>
+    </div>
+  );
+}
+
+/* ---------- Item actions (edit / pause / delete) ---------- */
+
+function ItemActions({ item, onEdit }: { item: ModerationItem; onEdit: () => void }) {
+  const canPause = item.status === "approved" || item.status === "pending";
+  const canResume = item.status === "paused";
+  return (
+    <div className="flex flex-wrap gap-2">
+      <button
+        onClick={onEdit}
+        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border text-xs font-semibold hover:bg-muted"
+      >
+        <Pencil className="h-3.5 w-3.5" /> Editar
+      </button>
+      {canPause && (
+        <button
+          onClick={() => pauseItem(item.id)}
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border text-xs font-semibold hover:bg-muted"
+        >
+          <Pause className="h-3.5 w-3.5" /> Pausar
+        </button>
+      )}
+      {canResume && (
+        <button
+          onClick={() => resumeItem(item.id)}
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-coral text-coral-foreground text-xs font-semibold hover:opacity-90"
+        >
+          <Play className="h-3.5 w-3.5" /> Reanudar
+        </button>
+      )}
+      <button
+        onClick={() => {
+          if (confirm("¿Eliminar este anuncio? Esta acción no se puede deshacer.")) {
+            deleteItem(item.id);
+          }
+        }}
+        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border text-xs font-semibold text-rose-700 hover:bg-rose-50"
+      >
+        <Trash2 className="h-3.5 w-3.5" /> Eliminar
+      </button>
+    </div>
+  );
+}
+
+/* ---------- Edit modal ---------- */
+
+function EditModal({ item, onClose }: { item: ModerationItem; onClose: () => void }) {
+  const [form, setForm] = useState<Record<string, unknown>>(() => ({ ...item.payload }));
+
+  const onSave = (e: React.FormEvent) => {
+    e.preventDefault();
+    updateItem(item.id, form as Parameters<typeof updateItem>[1]);
+    onClose();
+  };
+
+  return (
+    <div
+      className="fixed inset-0 z-50 grid place-items-center bg-black/50 p-4"
+      onClick={onClose}
+    >
+      <form
+        onClick={(e) => e.stopPropagation()}
+        onSubmit={onSave}
+        className="w-full max-w-lg rounded-2xl bg-card border border-border shadow-2xl p-6 space-y-4 max-h-[90vh] overflow-y-auto"
+      >
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h3 className="font-display text-xl font-bold">Editar anuncio</h3>
+            <p className="text-xs text-muted-foreground mt-1">
+              Los cambios enviarán tu anuncio a revisión de nuevo.
+            </p>
+          </div>
+          <button type="button" onClick={onClose} className="text-muted-foreground hover:text-foreground">
+            <XCircle className="h-5 w-5" />
+          </button>
+        </div>
+
+        <Field label="Título">
+          <input
+            className="w-full px-3 py-2.5 rounded-xl border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-coral/40"
+            value={String(form.title ?? "")}
+            onChange={(e) => setForm({ ...form, title: e.target.value })}
+            required
+          />
+        </Field>
+
+        {item.kind === "marketplace" && (
+          <>
+            <div className="grid grid-cols-2 gap-3">
+              <Field label="Precio (€)">
+                <input
+                  type="number"
+                  className="w-full px-3 py-2.5 rounded-xl border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-coral/40"
+                  value={Number(form.price ?? 0)}
+                  onChange={(e) => setForm({ ...form, price: Number(e.target.value) })}
+                />
+              </Field>
+              <Field label="Ubicación">
+                <input
+                  className="w-full px-3 py-2.5 rounded-xl border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-coral/40"
+                  value={String(form.location ?? "")}
+                  onChange={(e) => setForm({ ...form, location: e.target.value })}
+                />
+              </Field>
+            </div>
+            <Field label="Descripción">
+              <textarea
+                rows={3}
+                className="w-full px-3 py-2.5 rounded-xl border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-coral/40"
+                value={String(form.description ?? "")}
+                onChange={(e) => setForm({ ...form, description: e.target.value })}
+              />
+            </Field>
+          </>
+        )}
+
+        {item.kind === "classified" && (
+          <>
+            <div className="grid grid-cols-2 gap-3">
+              <Field label="Ubicación">
+                <input
+                  className="w-full px-3 py-2.5 rounded-xl border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-coral/40"
+                  value={String(form.location ?? "")}
+                  onChange={(e) => setForm({ ...form, location: e.target.value })}
+                />
+              </Field>
+              <Field label="Días activo">
+                <input
+                  type="number"
+                  min={1}
+                  max={30}
+                  className="w-full px-3 py-2.5 rounded-xl border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-coral/40"
+                  value={Number(form.daysLeft ?? 7)}
+                  onChange={(e) => setForm({ ...form, daysLeft: Number(e.target.value) })}
+                />
+              </Field>
+            </div>
+            <Field label="Descripción">
+              <textarea
+                rows={3}
+                className="w-full px-3 py-2.5 rounded-xl border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-coral/40"
+                value={String(form.description ?? "")}
+                onChange={(e) => setForm({ ...form, description: e.target.value })}
+              />
+            </Field>
+          </>
+        )}
+
+        <div className="flex items-center justify-end gap-2 pt-2">
+          <button
+            type="button"
+            onClick={onClose}
+            className="px-4 py-2 rounded-full border border-border text-sm font-medium hover:bg-muted"
+          >
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-coral text-coral-foreground text-sm font-semibold hover:opacity-90"
+          >
+            <Save className="h-4 w-4" /> Guardar cambios
+          </button>
+        </div>
+      </form>
     </div>
   );
 }

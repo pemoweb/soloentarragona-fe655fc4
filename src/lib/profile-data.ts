@@ -86,5 +86,54 @@ export function useDirectorioFavs() {
       return next;
     });
   };
-  return { favs, toggle };
+  const remove = (slug: string) => {
+    setFavs((prev) => {
+      const next = new Set(prev);
+      next.delete(slug);
+      try {
+        localStorage.setItem(DIR_FAV_KEY, JSON.stringify([...next]));
+        window.dispatchEvent(new CustomEvent(DIR_FAV_EVT));
+      } catch {
+        /* ignore */
+      }
+      return next;
+    });
+  };
+  return { favs, toggle, remove };
+}
+
+// Paused favorite businesses (still favorites but hidden from active list)
+const DIR_PAUSE_KEY = "set:directorio:paused:v1";
+const DIR_PAUSE_EVT = "directorio-paused-changed";
+
+export function useDirectorioPaused() {
+  const [paused, setPaused] = useState<Set<string>>(new Set());
+  useEffect(() => {
+    const read = () => {
+      try {
+        const raw = localStorage.getItem(DIR_PAUSE_KEY);
+        setPaused(new Set(raw ? JSON.parse(raw) : []));
+      } catch {
+        setPaused(new Set());
+      }
+    };
+    read();
+    window.addEventListener(DIR_PAUSE_EVT, read);
+    return () => window.removeEventListener(DIR_PAUSE_EVT, read);
+  }, []);
+  const toggle = (slug: string) => {
+    setPaused((prev) => {
+      const next = new Set(prev);
+      if (next.has(slug)) next.delete(slug);
+      else next.add(slug);
+      try {
+        localStorage.setItem(DIR_PAUSE_KEY, JSON.stringify([...next]));
+        window.dispatchEvent(new CustomEvent(DIR_PAUSE_EVT));
+      } catch {
+        /* ignore */
+      }
+      return next;
+    });
+  };
+  return { paused, toggle };
 }
