@@ -364,11 +364,12 @@ function ClasificadosView({
   items: ModerationItem[];
   favs: ReturnType<typeof useAllClassifieds>;
 }) {
+  const [editing, setEditing] = useState<ModerationItem | null>(null);
   return (
     <div className="space-y-10">
       <SectionHeader
         title="Mis clasificados"
-        subtitle="Anuncios que has publicado y su estado de moderación."
+        subtitle="Edita, pausa o revisa el estado de tus anuncios."
         cta={{ to: "/clasificados/publicar", label: "Nuevo clasificado" }}
       >
         {items.length === 0 ? (
@@ -380,22 +381,30 @@ function ClasificadosView({
         ) : (
           <ul className="divide-y divide-border rounded-2xl border border-border bg-card">
             {items.map((it) => it.kind === "classified" && (
-              <li key={it.id} className="p-4 flex items-center gap-4">
+              <li key={it.id} className="p-4 flex flex-col sm:flex-row sm:items-center gap-4">
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-1">
+                  <div className="flex items-center gap-2 mb-1 flex-wrap">
                     <span className="text-xs px-2 py-0.5 rounded-full bg-muted font-medium">{it.payload.cat}</span>
                     <span className="text-xs text-muted-foreground">{it.payload.location}</span>
+                    <StatusPill status={it.status} />
                   </div>
                   <p className="font-semibold truncate">{it.payload.title}</p>
                   <p className="text-xs text-muted-foreground mt-0.5">
                     {it.payload.daysLeft} días · Enviado {new Date(it.createdAt).toLocaleDateString("es-ES")}
+                    {it.reviewedAt && ` · Revisado ${new Date(it.reviewedAt).toLocaleDateString("es-ES")}`}
                   </p>
+                  {it.status === "rejected" && it.rejectReason && (
+                    <p className="text-xs text-rose-700 bg-rose-50 rounded-md px-2 py-1.5 mt-2">
+                      <span className="font-semibold">Motivo:</span> {it.rejectReason}
+                    </p>
+                  )}
                 </div>
-                <StatusPill status={it.status} />
+                <ItemActions item={it} onEdit={() => setEditing(it)} />
               </li>
             ))}
           </ul>
         )}
+        {editing && <EditModal item={editing} onClose={() => setEditing(null)} />}
       </SectionHeader>
 
       <div>
