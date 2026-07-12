@@ -12,7 +12,7 @@ import {
 } from "@/lib/moderation";
 import { useAllClassifieds, useFavorites } from "@/lib/classifieds-data";
 import { businesses } from "@/lib/directorio-data";
-import { loadProfile, saveProfile, useDirectorioFavs, type UserProfile } from "@/lib/profile-data";
+import { loadProfile, saveProfile, useDirectorioFavs, useDirectorioPaused, type UserProfile } from "@/lib/profile-data";
 
 export const Route = createFileRoute("/dashboard")({
   head: () => ({
