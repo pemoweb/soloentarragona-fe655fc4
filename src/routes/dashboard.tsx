@@ -117,7 +117,12 @@ function DashboardPage() {
           <MarketplaceView items={myMarketplace} />
         )}
         {tab === "directorio" && (
-          <DirectorioView businesses={myFavBusinesses} />
+          <DirectorioView
+            businesses={myFavBusinesses}
+            paused={dirPaused}
+            onTogglePause={toggleDirPaused}
+            onRemove={removeDirFav}
+          />
         )}
         {tab === "clasificados" && (
           <ClasificadosView items={myClassifieds} favs={myFavClassifieds} />
