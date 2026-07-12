@@ -623,3 +623,170 @@ function EmptyState({
     </div>
   );
 }
+
+/* ---------- Item actions (edit / pause / delete) ---------- */
+
+function ItemActions({ item, onEdit }: { item: ModerationItem; onEdit: () => void }) {
+  const canPause = item.status === "approved" || item.status === "pending";
+  const canResume = item.status === "paused";
+  return (
+    <div className="flex flex-wrap gap-2">
+      <button
+        onClick={onEdit}
+        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border text-xs font-semibold hover:bg-muted"
+      >
+        <Pencil className="h-3.5 w-3.5" /> Editar
+      </button>
+      {canPause && (
+        <button
+          onClick={() => pauseItem(item.id)}
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border text-xs font-semibold hover:bg-muted"
+        >
+          <Pause className="h-3.5 w-3.5" /> Pausar
+        </button>
+      )}
+      {canResume && (
+        <button
+          onClick={() => resumeItem(item.id)}
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-coral text-coral-foreground text-xs font-semibold hover:opacity-90"
+        >
+          <Play className="h-3.5 w-3.5" /> Reanudar
+        </button>
+      )}
+      <button
+        onClick={() => {
+          if (confirm("¿Eliminar este anuncio? Esta acción no se puede deshacer.")) {
+            deleteItem(item.id);
+          }
+        }}
+        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border text-xs font-semibold text-rose-700 hover:bg-rose-50"
+      >
+        <Trash2 className="h-3.5 w-3.5" /> Eliminar
+      </button>
+    </div>
+  );
+}
+
+/* ---------- Edit modal ---------- */
+
+function EditModal({ item, onClose }: { item: ModerationItem; onClose: () => void }) {
+  const [form, setForm] = useState<Record<string, unknown>>(() => ({ ...item.payload }));
+
+  const onSave = (e: React.FormEvent) => {
+    e.preventDefault();
+    updateItem(item.id, form as Parameters<typeof updateItem>[1]);
+    onClose();
+  };
+
+  return (
+    <div
+      className="fixed inset-0 z-50 grid place-items-center bg-black/50 p-4"
+      onClick={onClose}
+    >
+      <form
+        onClick={(e) => e.stopPropagation()}
+        onSubmit={onSave}
+        className="w-full max-w-lg rounded-2xl bg-card border border-border shadow-2xl p-6 space-y-4 max-h-[90vh] overflow-y-auto"
+      >
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h3 className="font-display text-xl font-bold">Editar anuncio</h3>
+            <p className="text-xs text-muted-foreground mt-1">
+              Los cambios enviarán tu anuncio a revisión de nuevo.
+            </p>
+          </div>
+          <button type="button" onClick={onClose} className="text-muted-foreground hover:text-foreground">
+            <XCircle className="h-5 w-5" />
+          </button>
+        </div>
+
+        <Field label="Título">
+          <input
+            className="w-full px-3 py-2.5 rounded-xl border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-coral/40"
+            value={String(form.title ?? "")}
+            onChange={(e) => setForm({ ...form, title: e.target.value })}
+            required
+          />
+        </Field>
+
+        {item.kind === "marketplace" && (
+          <>
+            <div className="grid grid-cols-2 gap-3">
+              <Field label="Precio (€)">
+                <input
+                  type="number"
+                  className="w-full px-3 py-2.5 rounded-xl border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-coral/40"
+                  value={Number(form.price ?? 0)}
+                  onChange={(e) => setForm({ ...form, price: Number(e.target.value) })}
+                />
+              </Field>
+              <Field label="Ubicación">
+                <input
+                  className="w-full px-3 py-2.5 rounded-xl border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-coral/40"
+                  value={String(form.location ?? "")}
+                  onChange={(e) => setForm({ ...form, location: e.target.value })}
+                />
+              </Field>
+            </div>
+            <Field label="Descripción">
+              <textarea
+                rows={3}
+                className="w-full px-3 py-2.5 rounded-xl border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-coral/40"
+                value={String(form.description ?? "")}
+                onChange={(e) => setForm({ ...form, description: e.target.value })}
+              />
+            </Field>
+          </>
+        )}
+
+        {item.kind === "classified" && (
+          <>
+            <div className="grid grid-cols-2 gap-3">
+              <Field label="Ubicación">
+                <input
+                  className="w-full px-3 py-2.5 rounded-xl border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-coral/40"
+                  value={String(form.location ?? "")}
+                  onChange={(e) => setForm({ ...form, location: e.target.value })}
+                />
+              </Field>
+              <Field label="Días activo">
+                <input
+                  type="number"
+                  min={1}
+                  max={30}
+                  className="w-full px-3 py-2.5 rounded-xl border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-coral/40"
+                  value={Number(form.daysLeft ?? 7)}
+                  onChange={(e) => setForm({ ...form, daysLeft: Number(e.target.value) })}
+                />
+              </Field>
+            </div>
+            <Field label="Descripción">
+              <textarea
+                rows={3}
+                className="w-full px-3 py-2.5 rounded-xl border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-coral/40"
+                value={String(form.description ?? "")}
+                onChange={(e) => setForm({ ...form, description: e.target.value })}
+              />
+            </Field>
+          </>
+        )}
+
+        <div className="flex items-center justify-end gap-2 pt-2">
+          <button
+            type="button"
+            onClick={onClose}
+            className="px-4 py-2 rounded-full border border-border text-sm font-medium hover:bg-muted"
+          >
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-coral text-coral-foreground text-sm font-semibold hover:opacity-90"
+          >
+            <Save className="h-4 w-4" /> Guardar cambios
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+}
