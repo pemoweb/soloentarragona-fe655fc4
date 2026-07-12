@@ -41,7 +41,8 @@ function DashboardPage() {
   const queue = useModerationQueue();
   const classifieds = useAllClassifieds();
   const { favs: classifiedFavs } = useFavorites();
-  const { favs: dirFavs } = useDirectorioFavs();
+  const { favs: dirFavs, remove: removeDirFav } = useDirectorioFavs();
+  const { paused: dirPaused, toggle: toggleDirPaused } = useDirectorioPaused();
 
   const myMarketplace = useMemo(
     () => queue.filter((i) => i.kind === "marketplace"),
