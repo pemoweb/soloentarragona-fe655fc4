@@ -3,9 +3,13 @@ import { useMemo, useState } from "react";
 import {
   User, Store, Building2, Newspaper, Heart, Clock, CheckCircle2, XCircle,
   Mail, Phone, MapPin, Pencil, LogOut, LayoutDashboard, Save, Camera, Star,
+  Pause, Play, Trash2, Eye, PauseCircle,
 } from "lucide-react";
 import { PageShell } from "@/components/PageShell";
-import { useModerationQueue, type ModerationItem } from "@/lib/moderation";
+import {
+  useModerationQueue, pauseItem, resumeItem, deleteItem, updateItem,
+  type ModerationItem, type ModerationStatus,
+} from "@/lib/moderation";
 import { useAllClassifieds, useFavorites } from "@/lib/classifieds-data";
 import { businesses } from "@/lib/directorio-data";
 import { loadProfile, saveProfile, useDirectorioFavs, type UserProfile } from "@/lib/profile-data";
