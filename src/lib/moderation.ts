@@ -8,7 +8,7 @@ import { createPost, type NewsCategory } from "./news-data";
 import { addClassified } from "./classifieds-data";
 
 export type ModerationKind = "news" | "marketplace" | "classified";
-export type ModerationStatus = "pending" | "approved" | "rejected";
+export type ModerationStatus = "pending" | "approved" | "rejected" | "paused";
 
 export type NewsPayload = {
   title: string;
