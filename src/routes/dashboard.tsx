@@ -497,11 +497,12 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
   );
 }
 
-function StatusPill({ status }: { status: "pending" | "approved" | "rejected" }) {
+function StatusPill({ status }: { status: ModerationStatus }) {
   const map = {
     pending: { label: "Pendiente", cls: "bg-amber-100 text-amber-800", Icon: Clock },
-    approved: { label: "Aprobado", cls: "bg-emerald-100 text-emerald-800", Icon: CheckCircle2 },
+    approved: { label: "Publicado", cls: "bg-emerald-100 text-emerald-800", Icon: CheckCircle2 },
     rejected: { label: "Rechazado", cls: "bg-rose-100 text-rose-800", Icon: XCircle },
+    paused: { label: "Pausado", cls: "bg-muted text-muted-foreground", Icon: PauseCircle },
   } as const;
   const { label, cls, Icon } = map[status];
   return (
