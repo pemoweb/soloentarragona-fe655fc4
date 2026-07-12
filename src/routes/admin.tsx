@@ -357,6 +357,7 @@ function StatusBadge({ status }: { status: ModerationStatus }) {
     pending: { label: "Pendiente", cls: "bg-yellow-500/10 text-yellow-700", icon: Clock },
     approved: { label: "Aprobado", cls: "bg-emerald-500/10 text-emerald-700", icon: CheckCircle2 },
     rejected: { label: "Rechazado", cls: "bg-red-500/10 text-red-700", icon: XCircle },
+    paused: { label: "Pausado", cls: "bg-muted text-muted-foreground", icon: Clock },
   };
   const m = map[status];
   const I = m.icon;
