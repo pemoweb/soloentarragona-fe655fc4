@@ -203,10 +203,11 @@ function ResumenView({
 /* ---------- Marketplace ---------- */
 
 function MarketplaceView({ items }: { items: ModerationItem[] }) {
+  const [editing, setEditing] = useState<ModerationItem | null>(null);
   return (
     <SectionHeader
       title="Mis anuncios en Marketplace"
-      subtitle="Estado de tus publicaciones y anuncios pendientes de revisión."
+      subtitle="Gestiona el estado, edita o pausa tus publicaciones."
       cta={{ to: "/marketplace/publicar", label: "Nuevo anuncio" }}
     >
       {items.length === 0 ? (
@@ -218,17 +219,22 @@ function MarketplaceView({ items }: { items: ModerationItem[] }) {
       ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           {items.map((it) => it.kind === "marketplace" && (
-            <article key={it.id} className="rounded-2xl border border-border bg-card overflow-hidden hover:shadow-lg transition-shadow">
-              <div className="aspect-video bg-muted overflow-hidden">
+            <article key={it.id} className="rounded-2xl border border-border bg-card overflow-hidden hover:shadow-lg transition-shadow flex flex-col">
+              <div className="aspect-video bg-muted overflow-hidden relative">
                 {it.payload.img ? (
-                  <img src={it.payload.img} alt={it.payload.title} className="h-full w-full object-cover" />
+                  <img src={it.payload.img} alt={it.payload.title} className={`h-full w-full object-cover ${it.status === "paused" ? "opacity-40" : ""}`} />
                 ) : (
                   <div className="h-full w-full grid place-items-center text-muted-foreground">
                     <Store className="h-10 w-10" />
                   </div>
                 )}
+                {it.status === "paused" && (
+                  <div className="absolute inset-0 grid place-items-center">
+                    <PauseCircle className="h-10 w-10 text-foreground/70" />
+                  </div>
+                )}
               </div>
-              <div className="p-4 space-y-2">
+              <div className="p-4 space-y-2 flex-1 flex flex-col">
                 <div className="flex items-start justify-between gap-2">
                   <h3 className="font-semibold leading-tight">{it.payload.title}</h3>
                   <StatusPill status={it.status} />
@@ -239,11 +245,21 @@ function MarketplaceView({ items }: { items: ModerationItem[] }) {
                 </div>
                 <p className="text-xs text-muted-foreground">
                   Enviado el {new Date(it.createdAt).toLocaleDateString("es-ES")}
+                  {it.reviewedAt && ` · Revisado ${new Date(it.reviewedAt).toLocaleDateString("es-ES")}`}
                 </p>
+                {it.status === "rejected" && it.rejectReason && (
+                  <p className="text-xs text-rose-700 bg-rose-50 rounded-md px-2 py-1.5">
+                    <span className="font-semibold">Motivo:</span> {it.rejectReason}
+                  </p>
+                )}
+                <ItemActions item={it} onEdit={() => setEditing(it)} />
               </div>
             </article>
           ))}
         </div>
+      )}
+      {editing && (
+        <EditModal item={editing} onClose={() => setEditing(null)} />
       )}
     </SectionHeader>
   );
