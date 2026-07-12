@@ -117,6 +117,41 @@ export function deleteItem(id: string) {
   write(read().filter((i) => i.id !== id));
 }
 
+// Pause an approved/pending item so it's hidden from public listings.
+export function pauseItem(id: string) {
+  const items = read();
+  const idx = items.findIndex((i) => i.id === id);
+  if (idx === -1) return;
+  items[idx] = { ...items[idx], status: "paused" };
+  write(items);
+}
+
+// Resume a previously paused item back to pending review.
+export function resumeItem(id: string) {
+  const items = read();
+  const idx = items.findIndex((i) => i.id === id);
+  if (idx === -1) return;
+  if (items[idx].status !== "paused") return;
+  items[idx] = { ...items[idx], status: "pending", reviewedAt: undefined, rejectReason: undefined };
+  write(items);
+}
+
+// Update payload of an item (edit). Sends it back to pending unless already rejected.
+export function updateItem(id: string, patch: Partial<MarketplacePayload & ClassifiedPayload & NewsPayload>) {
+  const items = read();
+  const idx = items.findIndex((i) => i.id === id);
+  if (idx === -1) return;
+  const it = items[idx];
+  const nextStatus: ModerationStatus = it.status === "rejected" ? "pending" : it.status === "approved" ? "pending" : it.status;
+  items[idx] = {
+    ...it,
+    payload: { ...(it.payload as object), ...patch } as typeof it.payload,
+    status: nextStatus,
+    rejectReason: undefined,
+  } as ModerationItem;
+  write(items);
+}
+
 export function useModerationQueue() {
   const [items, setItems] = useState<ModerationItem[]>([]);
   useEffect(() => {
