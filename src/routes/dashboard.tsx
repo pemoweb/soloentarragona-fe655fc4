@@ -267,11 +267,18 @@ function MarketplaceView({ items }: { items: ModerationItem[] }) {
 
 /* ---------- Directorio ---------- */
 
-function DirectorioView({ businesses: favs }: { businesses: typeof businesses }) {
+function DirectorioView({
+  businesses: favs, paused, onTogglePause, onRemove,
+}: {
+  businesses: typeof businesses;
+  paused: Set<string>;
+  onTogglePause: (slug: string) => void;
+  onRemove: (slug: string) => void;
+}) {
   return (
     <SectionHeader
       title="Mis negocios favoritos"
-      subtitle="Directorio local guardado para consultar rápido."
+      subtitle="Consulta, pausa o elimina los negocios que has guardado."
       cta={{ to: "/directorio", label: "Explorar directorio" }}
     >
       {favs.length === 0 ? (
@@ -282,43 +289,67 @@ function DirectorioView({ businesses: favs }: { businesses: typeof businesses })
         />
       ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {favs.map((b) => (
-            <article key={b.slug} className="rounded-2xl border border-border bg-card overflow-hidden hover:shadow-lg transition-shadow">
-              <div className="aspect-video bg-muted overflow-hidden">
-                <img src={b.img} alt={b.name} className="h-full w-full object-cover" />
-              </div>
-              <div className="p-4 space-y-2">
-                <div className="flex items-center justify-between gap-2">
-                  <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{b.category}</span>
-                  {b.verified && (
-                    <span className="inline-flex items-center gap-1 text-xs text-coral font-semibold">
-                      <CheckCircle2 className="h-3.5 w-3.5" /> Verificado
+          {favs.map((b) => {
+            const isPaused = paused.has(b.slug);
+            return (
+              <article key={b.slug} className="rounded-2xl border border-border bg-card overflow-hidden hover:shadow-lg transition-shadow flex flex-col">
+                <div className="aspect-video bg-muted overflow-hidden relative">
+                  <img src={b.img} alt={b.name} className={`h-full w-full object-cover ${isPaused ? "opacity-40 grayscale" : ""}`} />
+                  {isPaused && (
+                    <span className="absolute top-2 left-2 inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-background/90 text-muted-foreground">
+                      <PauseCircle className="h-3 w-3" /> Pausado
                     </span>
                   )}
                 </div>
-                <h3 className="font-semibold">{b.name}</h3>
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <Star className="h-3.5 w-3.5 fill-coral text-coral" />
-                  <span>{b.rating}</span>
-                  <span>·</span>
-                  <span className="truncate">{b.address}</span>
+                <div className="p-4 space-y-2 flex-1 flex flex-col">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">{b.category}</span>
+                    {b.verified && (
+                      <span className="inline-flex items-center gap-1 text-xs text-coral font-semibold">
+                        <CheckCircle2 className="h-3.5 w-3.5" /> Verificado
+                      </span>
+                    )}
+                  </div>
+                  <h3 className="font-semibold">{b.name}</h3>
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <Star className="h-3.5 w-3.5 fill-coral text-coral" />
+                    <span>{b.rating}</span>
+                    <span>·</span>
+                    <span className="truncate">{b.address}</span>
+                  </div>
+                  <div className="flex flex-wrap gap-2 pt-2 mt-auto">
+                    {b.verified ? (
+                      <Link
+                        to="/directorio/$slug"
+                        params={{ slug: b.slug }}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-coral text-coral-foreground text-xs font-semibold hover:opacity-90"
+                      >
+                        <Eye className="h-3.5 w-3.5" /> Ver ficha PRO
+                      </Link>
+                    ) : (
+                      <Link to="/directorio" className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-muted text-foreground text-xs font-semibold hover:bg-muted/80">
+                        <Eye className="h-3.5 w-3.5" /> Ver
+                      </Link>
+                    )}
+                    <button
+                      onClick={() => onTogglePause(b.slug)}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border text-xs font-semibold hover:bg-muted"
+                    >
+                      {isPaused ? <><Play className="h-3.5 w-3.5" /> Reanudar</> : <><Pause className="h-3.5 w-3.5" /> Pausar</>}
+                    </button>
+                    <button
+                      onClick={() => {
+                        if (confirm(`¿Quitar "${b.name}" de tus favoritos?`)) onRemove(b.slug);
+                      }}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border text-xs font-semibold text-rose-700 hover:bg-rose-50"
+                    >
+                      <Trash2 className="h-3.5 w-3.5" /> Quitar
+                    </button>
+                  </div>
                 </div>
-                {b.verified ? (
-                  <Link
-                    to="/directorio/$slug"
-                    params={{ slug: b.slug }}
-                    className="inline-block text-sm text-coral font-medium hover:underline"
-                  >
-                    Ver ficha PRO →
-                  </Link>
-                ) : (
-                  <Link to="/directorio" className="inline-block text-sm text-coral font-medium hover:underline">
-                    Ver en directorio →
-                  </Link>
-                )}
-              </div>
-            </article>
-          ))}
+              </article>
+            );
+          })}
         </div>
       )}
     </SectionHeader>
