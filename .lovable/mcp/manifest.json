@@ -1,0 +1,196 @@
+{
+  "version": 1,
+  "sdk_version": "0.23.0",
+  "path": "/mcp",
+  "auth": {
+    "type": "oauth",
+    "issuer": "https://xnopcjofjrapaaxyzkep.supabase.co/auth/v1",
+    "accepted_audiences": [
+      "authenticated"
+    ]
+  },
+  "mcp": {
+    "server": {
+      "name": "solo-en-tarragona-mcp",
+      "version": "0.1.0",
+      "title": "Solo en Tarragona"
+    },
+    "tools": [
+      {
+        "name": "search_directorio",
+        "title": "Search local business directory",
+        "description": "Search the Solo en Tarragona local business directory. Optionally filter by category and/or verified status. Returns up to 20 matches.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "query": {
+              "description": "Free-text query matched against name, category, description.",
+              "type": "string"
+            },
+            "category": {
+              "description": "Exact category filter, e.g. 'Restaurante'.",
+              "type": "string"
+            },
+            "verifiedOnly": {
+              "description": "If true, only return verified businesses.",
+              "type": "boolean"
+            }
+          }
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_business",
+        "title": "Get business details",
+        "description": "Return the full details of a business in the directory by its slug.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "slug": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Business slug, e.g. 'el-terrat-de-sant-magi'."
+            }
+          },
+          "required": [
+            "slug"
+          ]
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_news",
+        "title": "List local news posts",
+        "description": "List recent local news posts from Solo en Tarragona. Optional category filter and free-text query. Returns up to 20 posts.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "query": {
+              "description": "Free-text match against title, excerpt, tags.",
+              "type": "string"
+            },
+            "category": {
+              "description": "Category filter, e.g. 'Cultura'.",
+              "type": "string"
+            }
+          }
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_news_post",
+        "title": "Get news post",
+        "description": "Return the full content of a news post by its slug.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "slug": {
+              "type": "string",
+              "minLength": 1,
+              "description": "News post slug."
+            }
+          },
+          "required": [
+            "slug"
+          ]
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_classifieds",
+        "title": "List classified ads",
+        "description": "List active classified ads. Optional category and location filters. Returns up to 20 ads.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "category": {
+              "type": "string",
+              "enum": [
+                "Empleo",
+                "Alquiler",
+                "Venta",
+                "Servicios"
+              ]
+            },
+            "location": {
+              "description": "Neighborhood in Tarragona, e.g. 'Part Alta'.",
+              "type": "string"
+            }
+          }
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_public_services",
+        "title": "List public services",
+        "description": "List public/emergency services in Tarragona (emergencies, pharmacies, hospitals). Filter by kind if desired.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "emergency",
+                "pharmacy",
+                "hospital"
+              ]
+            }
+          }
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "whoami",
+        "title": "Who am I",
+        "description": "Return the currently authenticated user (from the OAuth token).",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}

@@ -1,10 +1,14 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { z } from "zod";
 import { Mail, Lock, User, Check, ArrowRight } from "lucide-react";
 import { PageShell } from "@/components/PageShell";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/acceder")({
+  validateSearch: (s: Record<string, unknown>) => ({
+    next: typeof s.next === "string" ? s.next : "",
+  }),
   head: () => ({
     meta: [
       { title: "Acceder — Solo en Tarragona" },
@@ -31,15 +35,37 @@ const registerSchema = loginSchema.extend({
   name: z.string().trim().min(2, "Nombre demasiado corto").max(80),
 });
 
+// Only accept same-origin relative paths as post-auth return targets.
+function safeNext(raw: string): string | null {
+  if (!raw) return null;
+  if (!raw.startsWith("/") || raw.startsWith("//")) return null;
+  return raw;
+}
+
 function AccederPage() {
+  const { next } = Route.useSearch();
+  const navigate = useNavigate();
   const [mode, setMode] = useState<"login" | "register">("login");
   const [form, setForm] = useState({ name: "", email: "", password: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitted, setSubmitted] = useState(false);
+  const [authError, setAuthError] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
 
-  const onSubmit = (e: React.FormEvent) => {
+  const nextPath = safeNext(next);
+
+  function goNext() {
+    if (nextPath) {
+      window.location.href = nextPath;
+    } else {
+      navigate({ to: "/" });
+    }
+  }
+
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({});
+    setAuthError(null);
     const schema = mode === "login" ? loginSchema : registerSchema;
     const result = schema.safeParse(form);
     if (!result.success) {
@@ -50,7 +76,51 @@ function AccederPage() {
       setErrors(fieldErrors);
       return;
     }
-    setSubmitted(true);
+    setBusy(true);
+    try {
+      if (mode === "login") {
+        const { error } = await supabase.auth.signInWithPassword({
+          email: form.email,
+          password: form.password,
+        });
+        if (error) throw error;
+        if (nextPath) {
+          window.location.href = nextPath;
+          return;
+        }
+        setSubmitted(true);
+      } else {
+        const emailRedirectTo = nextPath
+          ? `${window.location.origin}${nextPath}`
+          : `${window.location.origin}/`;
+        const { error } = await supabase.auth.signUp({
+          email: form.email,
+          password: form.password,
+          options: {
+            data: { name: form.name },
+            emailRedirectTo,
+          },
+        });
+        if (error) throw error;
+        setSubmitted(true);
+      }
+    } catch (err) {
+      setAuthError((err as Error).message ?? "Error de autenticación");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const onGoogle = async () => {
+    setAuthError(null);
+    const redirectTo = nextPath
+      ? `${window.location.origin}${nextPath}`
+      : `${window.location.origin}/`;
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: { redirectTo },
+    });
+    if (error) setAuthError(error.message);
   };
 
   return (
@@ -66,15 +136,16 @@ function AccederPage() {
                 {mode === "login" ? "¡Sesión iniciada!" : "Cuenta creada"}
               </h1>
               <p className="mt-2 text-muted-foreground text-sm">
-                Esta es una vista de prueba sin backend. Tu información no se
-                ha guardado.
+                {mode === "register"
+                  ? "Revisa tu correo para confirmar la cuenta y luego vuelve para continuar."
+                  : "Bienvenido de vuelta."}
               </p>
-              <Link
-                to="/"
+              <button
+                onClick={goNext}
                 className="mt-6 inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-foreground text-background font-semibold text-sm hover:bg-coral transition"
               >
-                Ir al inicio <ArrowRight className="h-4 w-4" />
-              </Link>
+                Continuar <ArrowRight className="h-4 w-4" />
+              </button>
             </div>
           ) : (
             <>
@@ -114,7 +185,7 @@ function AccederPage() {
 
               <button
                 type="button"
-                onClick={() => setSubmitted(true)}
+                onClick={onGoogle}
                 className="mt-6 w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-full border border-border font-semibold text-sm hover:border-coral hover:text-coral transition"
               >
                 <GoogleIcon /> Continuar con Google
@@ -161,22 +232,20 @@ function AccederPage() {
                   placeholder="••••••••"
                 />
 
-                {mode === "login" && (
-                  <div className="text-right">
-                    <button
-                      type="button"
-                      className="text-xs text-muted-foreground hover:text-coral"
-                    >
-                      ¿Olvidaste la contraseña?
-                    </button>
-                  </div>
+                {authError && (
+                  <p className="text-xs text-red-500">{authError}</p>
                 )}
 
                 <button
                   type="submit"
-                  className="w-full px-4 py-3 rounded-full bg-coral text-coral-foreground font-semibold text-sm shadow-glow hover:scale-[1.01] transition"
+                  disabled={busy}
+                  className="w-full px-4 py-3 rounded-full bg-coral text-coral-foreground font-semibold text-sm shadow-glow hover:scale-[1.01] transition disabled:opacity-60"
                 >
-                  {mode === "login" ? "Entrar" : "Crear cuenta"}
+                  {busy
+                    ? "..."
+                    : mode === "login"
+                      ? "Entrar"
+                      : "Crear cuenta"}
                 </button>
               </form>
 

@@ -15,6 +15,7 @@ import { Route as ServiciosPublicosRouteImport } from './routes/servicios-public
 import { Route as PublicarRouteImport } from './routes/publicar'
 import { Route as PrivacidadRouteImport } from './routes/privacidad'
 import { Route as NoticiasRouteImport } from './routes/noticias'
+import { Route as McpRouteImport } from './routes/mcp'
 import { Route as MarketplaceRouteImport } from './routes/marketplace'
 import { Route as DirectorioRouteImport } from './routes/directorio'
 import { Route as DashboardRouteImport } from './routes/dashboard'
@@ -33,6 +34,10 @@ import { Route as NoticiasSlugRouteImport } from './routes/noticias.$slug'
 import { Route as MarketplacePublicarRouteImport } from './routes/marketplace.publicar'
 import { Route as DirectorioSlugRouteImport } from './routes/directorio.$slug'
 import { Route as ClasificadosPublicarRouteImport } from './routes/clasificados.publicar'
+import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
+import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
+import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
+import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 
 const TerminosRoute = TerminosRouteImport.update({
   id: '/terminos',
@@ -62,6 +67,11 @@ const PrivacidadRoute = PrivacidadRouteImport.update({
 const NoticiasRoute = NoticiasRouteImport.update({
   id: '/noticias',
   path: '/noticias',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const McpRoute = McpRouteImport.update({
+  id: '/mcp',
+  path: '/mcp',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MarketplaceRoute = MarketplaceRouteImport.update({
@@ -154,6 +164,29 @@ const ClasificadosPublicarRoute = ClasificadosPublicarRouteImport.update({
   path: '/publicar',
   getParentRoute: () => ClasificadosRoute,
 } as any)
+const Char91DotwellKnownChar93OauthProtectedResourceRoute =
+  Char91DotwellKnownChar93OauthProtectedResourceRouteImport.update({
+    id: '/.well-known/oauth-protected-resource',
+    path: '/.well-known/oauth-protected-resource',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const Char91DotmcpChar93ListToolsRoute =
+  Char91DotmcpChar93ListToolsRouteImport.update({
+    id: '/.mcp/list-tools',
+    path: '/.mcp/list-tools',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const Char91DotmcpChar93InvokeToolToolRoute =
+  Char91DotmcpChar93InvokeToolToolRouteImport.update({
+    id: '/.mcp/invoke-tool/$tool',
+    path: '/.mcp/invoke-tool/$tool',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
+  id: '/.lovable/oauth/consent',
+  path: '/.lovable/oauth/consent',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -163,12 +196,15 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardRoute
   '/directorio': typeof DirectorioRouteWithChildren
   '/marketplace': typeof MarketplaceRouteWithChildren
+  '/mcp': typeof McpRoute
   '/noticias': typeof NoticiasRouteWithChildren
   '/privacidad': typeof PrivacidadRoute
   '/publicar': typeof PublicarRoute
   '/servicios-publicos': typeof ServiciosPublicosRouteWithChildren
   '/shopping': typeof ShoppingRouteWithChildren
   '/terminos': typeof TerminosRoute
+  '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/clasificados/publicar': typeof ClasificadosPublicarRoute
   '/directorio/$slug': typeof DirectorioSlugRoute
   '/marketplace/publicar': typeof MarketplacePublicarRoute
@@ -180,6 +216,8 @@ export interface FileRoutesByFullPath {
   '/noticias/': typeof NoticiasIndexRoute
   '/servicios-publicos/': typeof ServiciosPublicosIndexRoute
   '/shopping/': typeof ShoppingIndexRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
+  '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -188,9 +226,12 @@ export interface FileRoutesByTo {
   '/clasificados': typeof ClasificadosRouteWithChildren
   '/dashboard': typeof DashboardRoute
   '/marketplace': typeof MarketplaceRouteWithChildren
+  '/mcp': typeof McpRoute
   '/privacidad': typeof PrivacidadRoute
   '/publicar': typeof PublicarRoute
   '/terminos': typeof TerminosRoute
+  '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/clasificados/publicar': typeof ClasificadosPublicarRoute
   '/directorio/$slug': typeof DirectorioSlugRoute
   '/marketplace/publicar': typeof MarketplacePublicarRoute
@@ -202,6 +243,8 @@ export interface FileRoutesByTo {
   '/noticias': typeof NoticiasIndexRoute
   '/servicios-publicos': typeof ServiciosPublicosIndexRoute
   '/shopping': typeof ShoppingIndexRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
+  '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -212,12 +255,15 @@ export interface FileRoutesById {
   '/dashboard': typeof DashboardRoute
   '/directorio': typeof DirectorioRouteWithChildren
   '/marketplace': typeof MarketplaceRouteWithChildren
+  '/mcp': typeof McpRoute
   '/noticias': typeof NoticiasRouteWithChildren
   '/privacidad': typeof PrivacidadRoute
   '/publicar': typeof PublicarRoute
   '/servicios-publicos': typeof ServiciosPublicosRouteWithChildren
   '/shopping': typeof ShoppingRouteWithChildren
   '/terminos': typeof TerminosRoute
+  '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/clasificados/publicar': typeof ClasificadosPublicarRoute
   '/directorio/$slug': typeof DirectorioSlugRoute
   '/marketplace/publicar': typeof MarketplacePublicarRoute
@@ -229,6 +275,8 @@ export interface FileRoutesById {
   '/noticias/': typeof NoticiasIndexRoute
   '/servicios-publicos/': typeof ServiciosPublicosIndexRoute
   '/shopping/': typeof ShoppingIndexRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
+  '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -240,12 +288,15 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/directorio'
     | '/marketplace'
+    | '/mcp'
     | '/noticias'
     | '/privacidad'
     | '/publicar'
     | '/servicios-publicos'
     | '/shopping'
     | '/terminos'
+    | '/.mcp/list-tools'
+    | '/.well-known/oauth-protected-resource'
     | '/clasificados/publicar'
     | '/directorio/$slug'
     | '/marketplace/publicar'
@@ -257,6 +308,8 @@ export interface FileRouteTypes {
     | '/noticias/'
     | '/servicios-publicos/'
     | '/shopping/'
+    | '/.lovable/oauth/consent'
+    | '/.mcp/invoke-tool/$tool'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -265,9 +318,12 @@ export interface FileRouteTypes {
     | '/clasificados'
     | '/dashboard'
     | '/marketplace'
+    | '/mcp'
     | '/privacidad'
     | '/publicar'
     | '/terminos'
+    | '/.mcp/list-tools'
+    | '/.well-known/oauth-protected-resource'
     | '/clasificados/publicar'
     | '/directorio/$slug'
     | '/marketplace/publicar'
@@ -279,6 +335,8 @@ export interface FileRouteTypes {
     | '/noticias'
     | '/servicios-publicos'
     | '/shopping'
+    | '/.lovable/oauth/consent'
+    | '/.mcp/invoke-tool/$tool'
   id:
     | '__root__'
     | '/'
@@ -288,12 +346,15 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/directorio'
     | '/marketplace'
+    | '/mcp'
     | '/noticias'
     | '/privacidad'
     | '/publicar'
     | '/servicios-publicos'
     | '/shopping'
     | '/terminos'
+    | '/.mcp/list-tools'
+    | '/.well-known/oauth-protected-resource'
     | '/clasificados/publicar'
     | '/directorio/$slug'
     | '/marketplace/publicar'
@@ -305,6 +366,8 @@ export interface FileRouteTypes {
     | '/noticias/'
     | '/servicios-publicos/'
     | '/shopping/'
+    | '/.lovable/oauth/consent'
+    | '/.mcp/invoke-tool/$tool'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -315,12 +378,17 @@ export interface RootRouteChildren {
   DashboardRoute: typeof DashboardRoute
   DirectorioRoute: typeof DirectorioRouteWithChildren
   MarketplaceRoute: typeof MarketplaceRouteWithChildren
+  McpRoute: typeof McpRoute
   NoticiasRoute: typeof NoticiasRouteWithChildren
   PrivacidadRoute: typeof PrivacidadRoute
   PublicarRoute: typeof PublicarRoute
   ServiciosPublicosRoute: typeof ServiciosPublicosRouteWithChildren
   ShoppingRoute: typeof ShoppingRouteWithChildren
   TerminosRoute: typeof TerminosRoute
+  Char91DotmcpChar93ListToolsRoute: typeof Char91DotmcpChar93ListToolsRoute
+  Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
+  Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -365,6 +433,13 @@ declare module '@tanstack/react-router' {
       path: '/noticias'
       fullPath: '/noticias'
       preLoaderRoute: typeof NoticiasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mcp': {
+      id: '/mcp'
+      path: '/mcp'
+      fullPath: '/mcp'
+      preLoaderRoute: typeof McpRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/marketplace': {
@@ -493,6 +568,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ClasificadosPublicarRouteImport
       parentRoute: typeof ClasificadosRoute
     }
+    '/.well-known/oauth-protected-resource': {
+      id: '/.well-known/oauth-protected-resource'
+      path: '/.well-known/oauth-protected-resource'
+      fullPath: '/.well-known/oauth-protected-resource'
+      preLoaderRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/.mcp/list-tools': {
+      id: '/.mcp/list-tools'
+      path: '/.mcp/list-tools'
+      fullPath: '/.mcp/list-tools'
+      preLoaderRoute: typeof Char91DotmcpChar93ListToolsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/.mcp/invoke-tool/$tool': {
+      id: '/.mcp/invoke-tool/$tool'
+      path: '/.mcp/invoke-tool/$tool'
+      fullPath: '/.mcp/invoke-tool/$tool'
+      preLoaderRoute: typeof Char91DotmcpChar93InvokeToolToolRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/.lovable/oauth/consent': {
+      id: '/.lovable/oauth/consent'
+      path: '/.lovable/oauth/consent'
+      fullPath: '/.lovable/oauth/consent'
+      preLoaderRoute: typeof DotlovableOauthConsentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -585,12 +688,18 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardRoute: DashboardRoute,
   DirectorioRoute: DirectorioRouteWithChildren,
   MarketplaceRoute: MarketplaceRouteWithChildren,
+  McpRoute: McpRoute,
   NoticiasRoute: NoticiasRouteWithChildren,
   PrivacidadRoute: PrivacidadRoute,
   PublicarRoute: PublicarRoute,
   ServiciosPublicosRoute: ServiciosPublicosRouteWithChildren,
   ShoppingRoute: ShoppingRouteWithChildren,
   TerminosRoute: TerminosRoute,
+  Char91DotmcpChar93ListToolsRoute: Char91DotmcpChar93ListToolsRoute,
+  Char91DotwellKnownChar93OauthProtectedResourceRoute:
+    Char91DotwellKnownChar93OauthProtectedResourceRoute,
+  DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
+  Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
