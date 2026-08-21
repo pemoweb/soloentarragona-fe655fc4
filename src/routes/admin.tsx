@@ -420,3 +420,90 @@ function PayloadPreview({ item }: { item: ModerationItem }) {
     </div>
   );
 }
+
+function ReportsPanel() {
+  const reports = useReports();
+  const open = reports.filter((r) => r.status === "open");
+
+  if (reports.length === 0) return null;
+
+  return (
+    <div className="mb-10 rounded-3xl border border-border bg-card p-6 shadow-card">
+      <div className="flex items-center gap-2 mb-4">
+        <span className="flex h-9 w-9 items-center justify-center rounded-full bg-red-500/10 text-red-600">
+          <Flag className="h-4 w-4" />
+        </span>
+        <div>
+          <h2 className="font-semibold">Denuncias de anuncios</h2>
+          <p className="text-xs text-muted-foreground">
+            {open.length} sin revisar · {reports.length} en total
+          </p>
+        </div>
+      </div>
+      <div className="space-y-3">
+        {reports.map((r) => (
+          <div
+            key={r.id}
+            className="flex flex-col gap-2 rounded-2xl border border-border p-4 sm:flex-row sm:items-center sm:justify-between"
+          >
+            <div className="min-w-0">
+              <div className="flex flex-wrap items-center gap-2 text-xs">
+                <span className="rounded-full bg-secondary px-2.5 py-0.5 font-semibold uppercase tracking-wider text-secondary-foreground">
+                  {r.target === "classified" ? "Clasificado" : "Marketplace"}
+                </span>
+                <span
+                  className={`rounded-full px-2.5 py-0.5 font-semibold ${
+                    r.status === "open"
+                      ? "bg-yellow-500/10 text-yellow-600"
+                      : r.status === "reviewed"
+                        ? "bg-emerald-500/10 text-emerald-600"
+                        : "bg-muted text-muted-foreground"
+                  }`}
+                >
+                  {r.status === "open"
+                    ? "Sin revisar"
+                    : r.status === "reviewed"
+                      ? "Revisada"
+                      : "Descartada"}
+                </span>
+                <span className="text-muted-foreground">
+                  {new Date(r.createdAt).toLocaleString("es-ES")}
+                </span>
+              </div>
+              <p className="mt-1.5 truncate font-semibold">{r.itemTitle}</p>
+              <p className="text-sm text-muted-foreground">
+                Motivo: {r.reason}
+                {r.details ? ` — ${r.details}` : ""}
+              </p>
+            </div>
+            <div className="flex shrink-0 gap-2">
+              {r.status === "open" && (
+                <>
+                  <button
+                    onClick={() => setReportStatus(r.id, "reviewed")}
+                    className="rounded-full border border-border px-3 py-1.5 text-xs font-semibold transition hover:border-emerald-500 hover:text-emerald-600"
+                  >
+                    Marcar revisada
+                  </button>
+                  <button
+                    onClick={() => setReportStatus(r.id, "dismissed")}
+                    className="rounded-full border border-border px-3 py-1.5 text-xs font-semibold transition hover:border-foreground"
+                  >
+                    Descartar
+                  </button>
+                </>
+              )}
+              <button
+                onClick={() => deleteReport(r.id)}
+                className="rounded-full border border-border p-1.5 text-muted-foreground transition hover:border-red-500 hover:text-red-500"
+                aria-label="Eliminar denuncia"
+              >
+                <Trash2 className="h-3.5 w-3.5" />
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
