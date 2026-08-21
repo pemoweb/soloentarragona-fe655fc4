@@ -151,6 +151,31 @@
         "outputSchema": null
       },
       {
+        "name": "get_classified",
+        "title": "Get classified ad details",
+        "description": "Return the full details of a classified ad by its id. Contact information (name, phone, email) is only included when the caller is authenticated.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Classified ad id, e.g. 'c1'."
+            }
+          },
+          "required": [
+            "id"
+          ]
+        },
+        "outputSchema": null
+      },
+      {
         "name": "list_public_services",
         "title": "List public services",
         "description": "List public/emergency services in Tarragona (emergencies, pharmacies, hospitals). Filter by kind if desired.",

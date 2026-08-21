@@ -4,6 +4,7 @@ import getBusiness from "./tools/get-business";
 import listNews from "./tools/list-news";
 import getNews from "./tools/get-news";
 import listClassifieds from "./tools/list-classifieds";
+import getClassified from "./tools/get-classified";
 import listServices from "./tools/list-services";
 import whoami from "./tools/whoami";
 
@@ -15,7 +16,7 @@ export default defineMcp({
   title: "Solo en Tarragona",
   version: "0.1.0",
   instructions:
-    "Herramientas para consultar el directorio local, noticias, clasificados y servicios públicos de Tarragona (Solo en Tarragona). Usa search_directorio y get_business para negocios, list_news y get_news_post para noticias, list_classifieds para anuncios y list_public_services para emergencias/farmacias/hospitales.",
+    "Herramientas para consultar el directorio local, noticias, clasificados y servicios públicos de Tarragona (Solo en Tarragona). Usa search_directorio y get_business para negocios, list_news y get_news_post para noticias, list_classifieds y get_classified para anuncios y list_public_services para emergencias/farmacias/hospitales.",
   auth: auth.oauth.issuer({
     issuer: `https://${projectRef}.supabase.co/auth/v1`,
     acceptedAudiences: "authenticated",
@@ -26,6 +27,7 @@ export default defineMcp({
     listNews,
     getNews,
     listClassifieds,
+    getClassified,
     listServices,
     whoami,
   ],
