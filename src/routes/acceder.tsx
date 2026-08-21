@@ -36,7 +36,7 @@ const registerSchema = loginSchema.extend({
 });
 
 // Only accept same-origin relative paths as post-auth return targets.
-function safeNext(raw: string): string | null {
+function safeNext(raw: string | undefined): string | null {
   if (!raw) return null;
   if (!raw.startsWith("/") || raw.startsWith("//")) return null;
   return raw;
