@@ -390,9 +390,10 @@ function ClasificadosPage() {
                     <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100 text-green-600 mb-4">
                       <Check className="h-6 w-6" />
                     </div>
-                    <h3 className="text-xl font-bold">Denuncia enviada</h3>
+                    <h3 className="text-xl font-bold">Denuncia registrada</h3>
                     <p className="text-muted-foreground mt-2 text-sm">
-                      Gracias por ayudarnos a mantener la comunidad segura.
+                      Nuestro equipo de moderación revisará este anuncio. Gracias
+                      por ayudarnos a mantener la comunidad segura.
                     </p>
                     <button
                       onClick={() => handleOpenChange(false)}
@@ -404,14 +405,31 @@ function ClasificadosPage() {
                 ) : (
                   <div className="py-2 mt-4">
                     <p className="text-sm text-muted-foreground mb-4">
-                      Por favor, indícanos el motivo por el que denuncias este
-                      anuncio para que podamos revisarlo.
+                      Indícanos el motivo por el que denuncias este anuncio. La
+                      denuncia queda registrada para su moderación.
                     </p>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">
+                      Motivo
+                    </label>
+                    <select
+                      value={reportCategory}
+                      onChange={(e) => setReportCategory(e.target.value)}
+                      className="w-full p-3 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-coral/50 mb-4 text-sm"
+                    >
+                      {REPORT_REASONS.map((r) => (
+                        <option key={r} value={r}>
+                          {r}
+                        </option>
+                      ))}
+                    </select>
+                    <label className="block text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">
+                      Detalles (opcional)
+                    </label>
                     <textarea
                       value={reportReason}
                       onChange={(e) => setReportReason(e.target.value)}
-                      placeholder="Motivo (ej. spam, falso, ofensivo...)"
-                      className="w-full min-h-[100px] p-3 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-coral/50 mb-4 resize-none text-sm"
+                      placeholder="Cuéntanos qué ocurre con este anuncio..."
+                      className="w-full min-h-[90px] p-3 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-coral/50 mb-4 resize-none text-sm"
                     />
                     <div className="flex justify-end gap-2">
                       <button
@@ -421,15 +439,15 @@ function ClasificadosPage() {
                         Cancelar
                       </button>
                       <button
-                        disabled={!reportReason.trim()}
-                        onClick={() => setReportSubmitted(true)}
-                        className="px-4 py-2 rounded-full bg-red-500 text-white font-semibold text-sm hover:bg-red-600 transition disabled:opacity-50"
+                        onClick={sendReport}
+                        className="px-4 py-2 rounded-full bg-red-500 text-white font-semibold text-sm hover:bg-red-600 transition"
                       >
                         Enviar denuncia
                       </button>
                     </div>
                   </div>
                 )
+
               ) : (
                 <>
                   {selectedAd.description && (
