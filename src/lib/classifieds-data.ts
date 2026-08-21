@@ -43,6 +43,7 @@ export type SortOption = (typeof SORT_OPTIONS)[number]["value"];
 export const CLASSIFIEDS_SEED: Classified[] = [
   {
     id: "c1",
+    contact: { name: "Marta Ferré", phone: "+34 977 210 145", email: "marta@restaurantpartalta.cat" },
     cat: "Empleo",
     title: "Camarero/a fines de semana — Restaurante Part Alta",
     location: "Part Alta",
@@ -53,6 +54,7 @@ export const CLASSIFIEDS_SEED: Classified[] = [
   },
   {
     id: "c2",
+    contact: { name: "Jordi Puig", phone: "+34 634 118 902", email: "jordi.puig@gmail.com" },
     cat: "Alquiler",
     title: "Habitación en piso compartido cerca URV — 350€/mes",
     location: "Sant Pere i Sant Pau",
@@ -63,6 +65,7 @@ export const CLASSIFIEDS_SEED: Classified[] = [
   },
   {
     id: "c3",
+    contact: { name: "Alex Roca", phone: "+34 655 402 771", email: "clases.alexroca@gmail.com" },
     cat: "Servicios",
     title: "Clases particulares matemáticas ESO y Bachillerato",
     location: "Eixample",
@@ -73,6 +76,7 @@ export const CLASSIFIEDS_SEED: Classified[] = [
   },
   {
     id: "c4",
+    contact: { name: "Familia Soler", phone: "+34 977 552 310", email: "soler.mudanza@gmail.com" },
     cat: "Venta",
     title: "Mudanza completa: muebles, electrodomésticos, deco",
     location: "Bonavista",
@@ -83,6 +87,7 @@ export const CLASSIFIEDS_SEED: Classified[] = [
   },
   {
     id: "c5",
+    contact: { name: "Salón Nova Imatge", phone: "+34 977 240 388", email: "info@novaimatge.cat" },
     cat: "Empleo",
     title: "Buscamos peluquera con experiencia — incorporación inmediata",
     location: "Centre",
@@ -93,6 +98,7 @@ export const CLASSIFIEDS_SEED: Classified[] = [
   },
   {
     id: "c6",
+    contact: { name: "Carles Vidal", phone: "+34 699 320 145", email: "carles.vidal@outlook.es" },
     cat: "Alquiler",
     title: "Plaza de parking Rambla Nova — 80€/mes",
     location: "Rambla Nova",
