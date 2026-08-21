@@ -6,8 +6,8 @@ import { PageShell } from "@/components/PageShell";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/acceder")({
-  validateSearch: (s: Record<string, unknown>) => ({
-    next: typeof s.next === "string" ? s.next : "",
+  validateSearch: (s: Record<string, unknown>): { next?: string } => ({
+    next: typeof s.next === "string" ? s.next : undefined,
   }),
   head: () => ({
     meta: [
@@ -36,7 +36,7 @@ const registerSchema = loginSchema.extend({
 });
 
 // Only accept same-origin relative paths as post-auth return targets.
-function safeNext(raw: string): string | null {
+function safeNext(raw: string | undefined): string | null {
   if (!raw) return null;
   if (!raw.startsWith("/") || raw.startsWith("//")) return null;
   return raw;
