@@ -145,6 +145,10 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
           <StatCard label="Rechazados" value={counts.rejected} icon={XCircle} tone="bg-red-500/10 text-red-600" />
         </div>
 
+        <ReportsPanel />
+
+
+
         <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
           <div className="flex flex-wrap gap-2">
             {STATUS_TABS.map((t) => (
