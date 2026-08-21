@@ -75,6 +75,7 @@ function ClasificadosPage() {
 
   const [selectedAd, setSelectedAd] = useState<Classified | null>(null);
   const [isReporting, setIsReporting] = useState(false);
+  const [reportCategory, setReportCategory] = useState<string>(REPORT_REASONS[0]);
   const [reportReason, setReportReason] = useState("");
   const [reportSubmitted, setReportSubmitted] = useState(false);
 
@@ -87,16 +88,30 @@ function ClasificadosPage() {
   const seo = classifiedsSeo(category, zone);
   useDynamicSeo({ title: seo.title, description: seo.description });
 
+  const sendReport = () => {
+    if (!selectedAd) return;
+    submitReport({
+      target: "classified",
+      itemId: selectedAd.id,
+      itemTitle: selectedAd.title,
+      reason: reportCategory,
+      details: reportReason.trim() || undefined,
+    });
+    setReportSubmitted(true);
+  };
+
   const handleOpenChange = (open: boolean) => {
     if (!open) {
       setSelectedAd(null);
       setTimeout(() => {
         setIsReporting(false);
+        setReportCategory(REPORT_REASONS[0]);
         setReportReason("");
         setReportSubmitted(false);
       }, 300);
     }
   };
+
 
   const filtered = useMemo(() => {
     let list = ads.filter((a) => {
