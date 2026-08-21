@@ -35,6 +35,8 @@ import {
   useFavorites,
 } from "@/lib/classifieds-data";
 import { useDynamicSeo } from "@/lib/use-dynamic-seo";
+import { REPORT_REASONS, submitReport } from "@/lib/reports";
+
 
 export const Route = createFileRoute("/clasificados")({
   head: () => ({
