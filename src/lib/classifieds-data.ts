@@ -8,6 +8,8 @@ export type Classified = {
   time: string;
   description?: string;
   daysLeft: number;
+  /** Datos de contacto: solo se exponen a usuarios autenticados. */
+  contact?: { name?: string; phone?: string; email?: string };
 };
 
 export const CLASSIFIED_CATEGORIES = [
