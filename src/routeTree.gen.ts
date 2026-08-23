@@ -26,6 +26,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ShoppingIndexRouteImport } from './routes/shopping.index'
 import { Route as ServiciosPublicosIndexRouteImport } from './routes/servicios-publicos.index'
 import { Route as NoticiasIndexRouteImport } from './routes/noticias.index'
+import { Route as MarketplaceIndexRouteImport } from './routes/marketplace.index'
 import { Route as DirectorioIndexRouteImport } from './routes/directorio.index'
 import { Route as ShoppingSlugRouteImport } from './routes/shopping.$slug'
 import { Route as ServiciosPublicosSlugRouteImport } from './routes/servicios-publicos.$slug'
@@ -124,6 +125,11 @@ const NoticiasIndexRoute = NoticiasIndexRouteImport.update({
   path: '/',
   getParentRoute: () => NoticiasRoute,
 } as any)
+const MarketplaceIndexRoute = MarketplaceIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => MarketplaceRoute,
+} as any)
 const DirectorioIndexRoute = DirectorioIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -213,6 +219,7 @@ export interface FileRoutesByFullPath {
   '/servicios-publicos/$slug': typeof ServiciosPublicosSlugRoute
   '/shopping/$slug': typeof ShoppingSlugRoute
   '/directorio/': typeof DirectorioIndexRoute
+  '/marketplace/': typeof MarketplaceIndexRoute
   '/noticias/': typeof NoticiasIndexRoute
   '/servicios-publicos/': typeof ServiciosPublicosIndexRoute
   '/shopping/': typeof ShoppingIndexRoute
@@ -225,7 +232,6 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminRoute
   '/clasificados': typeof ClasificadosRouteWithChildren
   '/dashboard': typeof DashboardRoute
-  '/marketplace': typeof MarketplaceRouteWithChildren
   '/mcp': typeof McpRoute
   '/privacidad': typeof PrivacidadRoute
   '/publicar': typeof PublicarRoute
@@ -240,6 +246,7 @@ export interface FileRoutesByTo {
   '/servicios-publicos/$slug': typeof ServiciosPublicosSlugRoute
   '/shopping/$slug': typeof ShoppingSlugRoute
   '/directorio': typeof DirectorioIndexRoute
+  '/marketplace': typeof MarketplaceIndexRoute
   '/noticias': typeof NoticiasIndexRoute
   '/servicios-publicos': typeof ServiciosPublicosIndexRoute
   '/shopping': typeof ShoppingIndexRoute
@@ -272,6 +279,7 @@ export interface FileRoutesById {
   '/servicios-publicos/$slug': typeof ServiciosPublicosSlugRoute
   '/shopping/$slug': typeof ShoppingSlugRoute
   '/directorio/': typeof DirectorioIndexRoute
+  '/marketplace/': typeof MarketplaceIndexRoute
   '/noticias/': typeof NoticiasIndexRoute
   '/servicios-publicos/': typeof ServiciosPublicosIndexRoute
   '/shopping/': typeof ShoppingIndexRoute
@@ -305,6 +313,7 @@ export interface FileRouteTypes {
     | '/servicios-publicos/$slug'
     | '/shopping/$slug'
     | '/directorio/'
+    | '/marketplace/'
     | '/noticias/'
     | '/servicios-publicos/'
     | '/shopping/'
@@ -317,7 +326,6 @@ export interface FileRouteTypes {
     | '/admin'
     | '/clasificados'
     | '/dashboard'
-    | '/marketplace'
     | '/mcp'
     | '/privacidad'
     | '/publicar'
@@ -332,6 +340,7 @@ export interface FileRouteTypes {
     | '/servicios-publicos/$slug'
     | '/shopping/$slug'
     | '/directorio'
+    | '/marketplace'
     | '/noticias'
     | '/servicios-publicos'
     | '/shopping'
@@ -363,6 +372,7 @@ export interface FileRouteTypes {
     | '/servicios-publicos/$slug'
     | '/shopping/$slug'
     | '/directorio/'
+    | '/marketplace/'
     | '/noticias/'
     | '/servicios-publicos/'
     | '/shopping/'
@@ -512,6 +522,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NoticiasIndexRouteImport
       parentRoute: typeof NoticiasRoute
     }
+    '/marketplace/': {
+      id: '/marketplace/'
+      path: '/'
+      fullPath: '/marketplace/'
+      preLoaderRoute: typeof MarketplaceIndexRouteImport
+      parentRoute: typeof MarketplaceRoute
+    }
     '/directorio/': {
       id: '/directorio/'
       path: '/'
@@ -627,10 +644,12 @@ const DirectorioRouteWithChildren = DirectorioRoute._addFileChildren(
 
 interface MarketplaceRouteChildren {
   MarketplacePublicarRoute: typeof MarketplacePublicarRoute
+  MarketplaceIndexRoute: typeof MarketplaceIndexRoute
 }
 
 const MarketplaceRouteChildren: MarketplaceRouteChildren = {
   MarketplacePublicarRoute: MarketplacePublicarRoute,
+  MarketplaceIndexRoute: MarketplaceIndexRoute,
 }
 
 const MarketplaceRouteWithChildren = MarketplaceRoute._addFileChildren(
