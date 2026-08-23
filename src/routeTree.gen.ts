@@ -26,12 +26,14 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ShoppingIndexRouteImport } from './routes/shopping.index'
 import { Route as ServiciosPublicosIndexRouteImport } from './routes/servicios-publicos.index'
 import { Route as NoticiasIndexRouteImport } from './routes/noticias.index'
+import { Route as MarketplaceIndexRouteImport } from './routes/marketplace.index'
 import { Route as DirectorioIndexRouteImport } from './routes/directorio.index'
 import { Route as ShoppingSlugRouteImport } from './routes/shopping.$slug'
 import { Route as ServiciosPublicosSlugRouteImport } from './routes/servicios-publicos.$slug'
 import { Route as NoticiasPublicarRouteImport } from './routes/noticias.publicar'
 import { Route as NoticiasSlugRouteImport } from './routes/noticias.$slug'
 import { Route as MarketplacePublicarRouteImport } from './routes/marketplace.publicar'
+import { Route as MarketplaceSlugRouteImport } from './routes/marketplace.$slug'
 import { Route as DirectorioSlugRouteImport } from './routes/directorio.$slug'
 import { Route as ClasificadosPublicarRouteImport } from './routes/clasificados.publicar'
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
@@ -124,6 +126,11 @@ const NoticiasIndexRoute = NoticiasIndexRouteImport.update({
   path: '/',
   getParentRoute: () => NoticiasRoute,
 } as any)
+const MarketplaceIndexRoute = MarketplaceIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => MarketplaceRoute,
+} as any)
 const DirectorioIndexRoute = DirectorioIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -152,6 +159,11 @@ const NoticiasSlugRoute = NoticiasSlugRouteImport.update({
 const MarketplacePublicarRoute = MarketplacePublicarRouteImport.update({
   id: '/publicar',
   path: '/publicar',
+  getParentRoute: () => MarketplaceRoute,
+} as any)
+const MarketplaceSlugRoute = MarketplaceSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
   getParentRoute: () => MarketplaceRoute,
 } as any)
 const DirectorioSlugRoute = DirectorioSlugRouteImport.update({
@@ -207,12 +219,14 @@ export interface FileRoutesByFullPath {
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/clasificados/publicar': typeof ClasificadosPublicarRoute
   '/directorio/$slug': typeof DirectorioSlugRoute
+  '/marketplace/$slug': typeof MarketplaceSlugRoute
   '/marketplace/publicar': typeof MarketplacePublicarRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/noticias/publicar': typeof NoticiasPublicarRoute
   '/servicios-publicos/$slug': typeof ServiciosPublicosSlugRoute
   '/shopping/$slug': typeof ShoppingSlugRoute
   '/directorio/': typeof DirectorioIndexRoute
+  '/marketplace/': typeof MarketplaceIndexRoute
   '/noticias/': typeof NoticiasIndexRoute
   '/servicios-publicos/': typeof ServiciosPublicosIndexRoute
   '/shopping/': typeof ShoppingIndexRoute
@@ -225,7 +239,6 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminRoute
   '/clasificados': typeof ClasificadosRouteWithChildren
   '/dashboard': typeof DashboardRoute
-  '/marketplace': typeof MarketplaceRouteWithChildren
   '/mcp': typeof McpRoute
   '/privacidad': typeof PrivacidadRoute
   '/publicar': typeof PublicarRoute
@@ -234,12 +247,14 @@ export interface FileRoutesByTo {
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/clasificados/publicar': typeof ClasificadosPublicarRoute
   '/directorio/$slug': typeof DirectorioSlugRoute
+  '/marketplace/$slug': typeof MarketplaceSlugRoute
   '/marketplace/publicar': typeof MarketplacePublicarRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/noticias/publicar': typeof NoticiasPublicarRoute
   '/servicios-publicos/$slug': typeof ServiciosPublicosSlugRoute
   '/shopping/$slug': typeof ShoppingSlugRoute
   '/directorio': typeof DirectorioIndexRoute
+  '/marketplace': typeof MarketplaceIndexRoute
   '/noticias': typeof NoticiasIndexRoute
   '/servicios-publicos': typeof ServiciosPublicosIndexRoute
   '/shopping': typeof ShoppingIndexRoute
@@ -266,12 +281,14 @@ export interface FileRoutesById {
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/clasificados/publicar': typeof ClasificadosPublicarRoute
   '/directorio/$slug': typeof DirectorioSlugRoute
+  '/marketplace/$slug': typeof MarketplaceSlugRoute
   '/marketplace/publicar': typeof MarketplacePublicarRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/noticias/publicar': typeof NoticiasPublicarRoute
   '/servicios-publicos/$slug': typeof ServiciosPublicosSlugRoute
   '/shopping/$slug': typeof ShoppingSlugRoute
   '/directorio/': typeof DirectorioIndexRoute
+  '/marketplace/': typeof MarketplaceIndexRoute
   '/noticias/': typeof NoticiasIndexRoute
   '/servicios-publicos/': typeof ServiciosPublicosIndexRoute
   '/shopping/': typeof ShoppingIndexRoute
@@ -299,12 +316,14 @@ export interface FileRouteTypes {
     | '/.well-known/oauth-protected-resource'
     | '/clasificados/publicar'
     | '/directorio/$slug'
+    | '/marketplace/$slug'
     | '/marketplace/publicar'
     | '/noticias/$slug'
     | '/noticias/publicar'
     | '/servicios-publicos/$slug'
     | '/shopping/$slug'
     | '/directorio/'
+    | '/marketplace/'
     | '/noticias/'
     | '/servicios-publicos/'
     | '/shopping/'
@@ -317,7 +336,6 @@ export interface FileRouteTypes {
     | '/admin'
     | '/clasificados'
     | '/dashboard'
-    | '/marketplace'
     | '/mcp'
     | '/privacidad'
     | '/publicar'
@@ -326,12 +344,14 @@ export interface FileRouteTypes {
     | '/.well-known/oauth-protected-resource'
     | '/clasificados/publicar'
     | '/directorio/$slug'
+    | '/marketplace/$slug'
     | '/marketplace/publicar'
     | '/noticias/$slug'
     | '/noticias/publicar'
     | '/servicios-publicos/$slug'
     | '/shopping/$slug'
     | '/directorio'
+    | '/marketplace'
     | '/noticias'
     | '/servicios-publicos'
     | '/shopping'
@@ -357,12 +377,14 @@ export interface FileRouteTypes {
     | '/.well-known/oauth-protected-resource'
     | '/clasificados/publicar'
     | '/directorio/$slug'
+    | '/marketplace/$slug'
     | '/marketplace/publicar'
     | '/noticias/$slug'
     | '/noticias/publicar'
     | '/servicios-publicos/$slug'
     | '/shopping/$slug'
     | '/directorio/'
+    | '/marketplace/'
     | '/noticias/'
     | '/servicios-publicos/'
     | '/shopping/'
@@ -512,6 +534,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NoticiasIndexRouteImport
       parentRoute: typeof NoticiasRoute
     }
+    '/marketplace/': {
+      id: '/marketplace/'
+      path: '/'
+      fullPath: '/marketplace/'
+      preLoaderRoute: typeof MarketplaceIndexRouteImport
+      parentRoute: typeof MarketplaceRoute
+    }
     '/directorio/': {
       id: '/directorio/'
       path: '/'
@@ -552,6 +581,13 @@ declare module '@tanstack/react-router' {
       path: '/publicar'
       fullPath: '/marketplace/publicar'
       preLoaderRoute: typeof MarketplacePublicarRouteImport
+      parentRoute: typeof MarketplaceRoute
+    }
+    '/marketplace/$slug': {
+      id: '/marketplace/$slug'
+      path: '/$slug'
+      fullPath: '/marketplace/$slug'
+      preLoaderRoute: typeof MarketplaceSlugRouteImport
       parentRoute: typeof MarketplaceRoute
     }
     '/directorio/$slug': {
@@ -626,11 +662,15 @@ const DirectorioRouteWithChildren = DirectorioRoute._addFileChildren(
 )
 
 interface MarketplaceRouteChildren {
+  MarketplaceSlugRoute: typeof MarketplaceSlugRoute
   MarketplacePublicarRoute: typeof MarketplacePublicarRoute
+  MarketplaceIndexRoute: typeof MarketplaceIndexRoute
 }
 
 const MarketplaceRouteChildren: MarketplaceRouteChildren = {
+  MarketplaceSlugRoute: MarketplaceSlugRoute,
   MarketplacePublicarRoute: MarketplacePublicarRoute,
+  MarketplaceIndexRoute: MarketplaceIndexRoute,
 }
 
 const MarketplaceRouteWithChildren = MarketplaceRoute._addFileChildren(
