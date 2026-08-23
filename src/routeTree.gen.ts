@@ -33,6 +33,7 @@ import { Route as ServiciosPublicosSlugRouteImport } from './routes/servicios-pu
 import { Route as NoticiasPublicarRouteImport } from './routes/noticias.publicar'
 import { Route as NoticiasSlugRouteImport } from './routes/noticias.$slug'
 import { Route as MarketplacePublicarRouteImport } from './routes/marketplace.publicar'
+import { Route as MarketplaceSlugRouteImport } from './routes/marketplace.$slug'
 import { Route as DirectorioSlugRouteImport } from './routes/directorio.$slug'
 import { Route as ClasificadosPublicarRouteImport } from './routes/clasificados.publicar'
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
@@ -160,6 +161,11 @@ const MarketplacePublicarRoute = MarketplacePublicarRouteImport.update({
   path: '/publicar',
   getParentRoute: () => MarketplaceRoute,
 } as any)
+const MarketplaceSlugRoute = MarketplaceSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => MarketplaceRoute,
+} as any)
 const DirectorioSlugRoute = DirectorioSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -213,6 +219,7 @@ export interface FileRoutesByFullPath {
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/clasificados/publicar': typeof ClasificadosPublicarRoute
   '/directorio/$slug': typeof DirectorioSlugRoute
+  '/marketplace/$slug': typeof MarketplaceSlugRoute
   '/marketplace/publicar': typeof MarketplacePublicarRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/noticias/publicar': typeof NoticiasPublicarRoute
@@ -240,6 +247,7 @@ export interface FileRoutesByTo {
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/clasificados/publicar': typeof ClasificadosPublicarRoute
   '/directorio/$slug': typeof DirectorioSlugRoute
+  '/marketplace/$slug': typeof MarketplaceSlugRoute
   '/marketplace/publicar': typeof MarketplacePublicarRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/noticias/publicar': typeof NoticiasPublicarRoute
@@ -273,6 +281,7 @@ export interface FileRoutesById {
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/clasificados/publicar': typeof ClasificadosPublicarRoute
   '/directorio/$slug': typeof DirectorioSlugRoute
+  '/marketplace/$slug': typeof MarketplaceSlugRoute
   '/marketplace/publicar': typeof MarketplacePublicarRoute
   '/noticias/$slug': typeof NoticiasSlugRoute
   '/noticias/publicar': typeof NoticiasPublicarRoute
@@ -307,6 +316,7 @@ export interface FileRouteTypes {
     | '/.well-known/oauth-protected-resource'
     | '/clasificados/publicar'
     | '/directorio/$slug'
+    | '/marketplace/$slug'
     | '/marketplace/publicar'
     | '/noticias/$slug'
     | '/noticias/publicar'
@@ -334,6 +344,7 @@ export interface FileRouteTypes {
     | '/.well-known/oauth-protected-resource'
     | '/clasificados/publicar'
     | '/directorio/$slug'
+    | '/marketplace/$slug'
     | '/marketplace/publicar'
     | '/noticias/$slug'
     | '/noticias/publicar'
@@ -366,6 +377,7 @@ export interface FileRouteTypes {
     | '/.well-known/oauth-protected-resource'
     | '/clasificados/publicar'
     | '/directorio/$slug'
+    | '/marketplace/$slug'
     | '/marketplace/publicar'
     | '/noticias/$slug'
     | '/noticias/publicar'
@@ -571,6 +583,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MarketplacePublicarRouteImport
       parentRoute: typeof MarketplaceRoute
     }
+    '/marketplace/$slug': {
+      id: '/marketplace/$slug'
+      path: '/$slug'
+      fullPath: '/marketplace/$slug'
+      preLoaderRoute: typeof MarketplaceSlugRouteImport
+      parentRoute: typeof MarketplaceRoute
+    }
     '/directorio/$slug': {
       id: '/directorio/$slug'
       path: '/$slug'
@@ -643,11 +662,13 @@ const DirectorioRouteWithChildren = DirectorioRoute._addFileChildren(
 )
 
 interface MarketplaceRouteChildren {
+  MarketplaceSlugRoute: typeof MarketplaceSlugRoute
   MarketplacePublicarRoute: typeof MarketplacePublicarRoute
   MarketplaceIndexRoute: typeof MarketplaceIndexRoute
 }
 
 const MarketplaceRouteChildren: MarketplaceRouteChildren = {
+  MarketplaceSlugRoute: MarketplaceSlugRoute,
   MarketplacePublicarRoute: MarketplacePublicarRoute,
   MarketplaceIndexRoute: MarketplaceIndexRoute,
 }
