@@ -124,7 +124,6 @@ export const sitios: Sitio[] = [
       "https://images.unsplash.com/photo-1558642084-fd07fae5282e?w=1600&q=80",
       "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=1600&q=80",
     ],
-    highstyleFix: undefined as never,
     highlights: ["Rutas de senderismo", "Área de pícnic", "Aparcamiento gratuito"],
     coords: { lat: 41.1494, lng: 1.2438 },
   },
