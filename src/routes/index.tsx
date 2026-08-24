@@ -107,7 +107,7 @@ function HomePage() {
                 <Sparkles className="h-4 w-4" /> Explora la ciudad
               </span>
               <h2 className="mt-3 font-display text-4xl md:text-6xl font-black text-balance max-w-2xl">
-                Seis formas de vivir <span className="text-coral italic">Tarragona</span>
+                Siete formas de vivir <span className="text-coral italic">Tarragona</span>
               </h2>
             </div>
             <p className="max-w-sm text-muted-foreground">
