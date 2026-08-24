@@ -30,6 +30,7 @@ import { Route as ServiciosPublicosIndexRouteImport } from './routes/servicios-p
 import { Route as NoticiasIndexRouteImport } from './routes/noticias.index'
 import { Route as MarketplaceIndexRouteImport } from './routes/marketplace.index'
 import { Route as DirectorioIndexRouteImport } from './routes/directorio.index'
+import { Route as SitiosDeInteresSlugRouteImport } from './routes/sitios-de-interes.$slug'
 import { Route as ShoppingSlugRouteImport } from './routes/shopping.$slug'
 import { Route as ServiciosPublicosSlugRouteImport } from './routes/servicios-publicos.$slug'
 import { Route as NoticiasPublicarRouteImport } from './routes/noticias.publicar'
@@ -148,6 +149,11 @@ const DirectorioIndexRoute = DirectorioIndexRouteImport.update({
   path: '/',
   getParentRoute: () => DirectorioRoute,
 } as any)
+const SitiosDeInteresSlugRoute = SitiosDeInteresSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => SitiosDeInteresRoute,
+} as any)
 const ShoppingSlugRoute = ShoppingSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -238,6 +244,7 @@ export interface FileRoutesByFullPath {
   '/noticias/publicar': typeof NoticiasPublicarRoute
   '/servicios-publicos/$slug': typeof ServiciosPublicosSlugRoute
   '/shopping/$slug': typeof ShoppingSlugRoute
+  '/sitios-de-interes/$slug': typeof SitiosDeInteresSlugRoute
   '/directorio/': typeof DirectorioIndexRoute
   '/marketplace/': typeof MarketplaceIndexRoute
   '/noticias/': typeof NoticiasIndexRoute
@@ -267,6 +274,7 @@ export interface FileRoutesByTo {
   '/noticias/publicar': typeof NoticiasPublicarRoute
   '/servicios-publicos/$slug': typeof ServiciosPublicosSlugRoute
   '/shopping/$slug': typeof ShoppingSlugRoute
+  '/sitios-de-interes/$slug': typeof SitiosDeInteresSlugRoute
   '/directorio': typeof DirectorioIndexRoute
   '/marketplace': typeof MarketplaceIndexRoute
   '/noticias': typeof NoticiasIndexRoute
@@ -303,6 +311,7 @@ export interface FileRoutesById {
   '/noticias/publicar': typeof NoticiasPublicarRoute
   '/servicios-publicos/$slug': typeof ServiciosPublicosSlugRoute
   '/shopping/$slug': typeof ShoppingSlugRoute
+  '/sitios-de-interes/$slug': typeof SitiosDeInteresSlugRoute
   '/directorio/': typeof DirectorioIndexRoute
   '/marketplace/': typeof MarketplaceIndexRoute
   '/noticias/': typeof NoticiasIndexRoute
@@ -340,6 +349,7 @@ export interface FileRouteTypes {
     | '/noticias/publicar'
     | '/servicios-publicos/$slug'
     | '/shopping/$slug'
+    | '/sitios-de-interes/$slug'
     | '/directorio/'
     | '/marketplace/'
     | '/noticias/'
@@ -369,6 +379,7 @@ export interface FileRouteTypes {
     | '/noticias/publicar'
     | '/servicios-publicos/$slug'
     | '/shopping/$slug'
+    | '/sitios-de-interes/$slug'
     | '/directorio'
     | '/marketplace'
     | '/noticias'
@@ -404,6 +415,7 @@ export interface FileRouteTypes {
     | '/noticias/publicar'
     | '/servicios-publicos/$slug'
     | '/shopping/$slug'
+    | '/sitios-de-interes/$slug'
     | '/directorio/'
     | '/marketplace/'
     | '/noticias/'
@@ -585,6 +597,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DirectorioIndexRouteImport
       parentRoute: typeof DirectorioRoute
     }
+    '/sitios-de-interes/$slug': {
+      id: '/sitios-de-interes/$slug'
+      path: '/$slug'
+      fullPath: '/sitios-de-interes/$slug'
+      preLoaderRoute: typeof SitiosDeInteresSlugRouteImport
+      parentRoute: typeof SitiosDeInteresRoute
+    }
     '/shopping/$slug': {
       id: '/shopping/$slug'
       path: '/$slug'
@@ -758,10 +777,12 @@ const ShoppingRouteWithChildren = ShoppingRoute._addFileChildren(
 )
 
 interface SitiosDeInteresRouteChildren {
+  SitiosDeInteresSlugRoute: typeof SitiosDeInteresSlugRoute
   SitiosDeInteresIndexRoute: typeof SitiosDeInteresIndexRoute
 }
 
 const SitiosDeInteresRouteChildren: SitiosDeInteresRouteChildren = {
+  SitiosDeInteresSlugRoute: SitiosDeInteresSlugRoute,
   SitiosDeInteresIndexRoute: SitiosDeInteresIndexRoute,
 }
 
