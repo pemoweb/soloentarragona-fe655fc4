@@ -24,6 +24,7 @@ import { Route as ClasificadosRouteImport } from './routes/clasificados'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AccederRouteImport } from './routes/acceder'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SitiosDeInteresIndexRouteImport } from './routes/sitios-de-interes.index'
 import { Route as ShoppingIndexRouteImport } from './routes/shopping.index'
 import { Route as ServiciosPublicosIndexRouteImport } from './routes/servicios-publicos.index'
 import { Route as NoticiasIndexRouteImport } from './routes/noticias.index'
@@ -116,6 +117,11 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const SitiosDeInteresIndexRoute = SitiosDeInteresIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => SitiosDeInteresRoute,
 } as any)
 const ShoppingIndexRoute = ShoppingIndexRouteImport.update({
   id: '/',
@@ -220,7 +226,7 @@ export interface FileRoutesByFullPath {
   '/publicar': typeof PublicarRoute
   '/servicios-publicos': typeof ServiciosPublicosRouteWithChildren
   '/shopping': typeof ShoppingRouteWithChildren
-  '/sitios-de-interes': typeof SitiosDeInteresRoute
+  '/sitios-de-interes': typeof SitiosDeInteresRouteWithChildren
   '/terminos': typeof TerminosRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
@@ -237,6 +243,7 @@ export interface FileRoutesByFullPath {
   '/noticias/': typeof NoticiasIndexRoute
   '/servicios-publicos/': typeof ServiciosPublicosIndexRoute
   '/shopping/': typeof ShoppingIndexRoute
+  '/sitios-de-interes/': typeof SitiosDeInteresIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
 }
@@ -249,7 +256,6 @@ export interface FileRoutesByTo {
   '/mcp': typeof McpRoute
   '/privacidad': typeof PrivacidadRoute
   '/publicar': typeof PublicarRoute
-  '/sitios-de-interes': typeof SitiosDeInteresRoute
   '/terminos': typeof TerminosRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
@@ -266,6 +272,7 @@ export interface FileRoutesByTo {
   '/noticias': typeof NoticiasIndexRoute
   '/servicios-publicos': typeof ServiciosPublicosIndexRoute
   '/shopping': typeof ShoppingIndexRoute
+  '/sitios-de-interes': typeof SitiosDeInteresIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
 }
@@ -284,7 +291,7 @@ export interface FileRoutesById {
   '/publicar': typeof PublicarRoute
   '/servicios-publicos': typeof ServiciosPublicosRouteWithChildren
   '/shopping': typeof ShoppingRouteWithChildren
-  '/sitios-de-interes': typeof SitiosDeInteresRoute
+  '/sitios-de-interes': typeof SitiosDeInteresRouteWithChildren
   '/terminos': typeof TerminosRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
@@ -301,6 +308,7 @@ export interface FileRoutesById {
   '/noticias/': typeof NoticiasIndexRoute
   '/servicios-publicos/': typeof ServiciosPublicosIndexRoute
   '/shopping/': typeof ShoppingIndexRoute
+  '/sitios-de-interes/': typeof SitiosDeInteresIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
 }
@@ -337,6 +345,7 @@ export interface FileRouteTypes {
     | '/noticias/'
     | '/servicios-publicos/'
     | '/shopping/'
+    | '/sitios-de-interes/'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
   fileRoutesByTo: FileRoutesByTo
@@ -349,7 +358,6 @@ export interface FileRouteTypes {
     | '/mcp'
     | '/privacidad'
     | '/publicar'
-    | '/sitios-de-interes'
     | '/terminos'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
@@ -366,6 +374,7 @@ export interface FileRouteTypes {
     | '/noticias'
     | '/servicios-publicos'
     | '/shopping'
+    | '/sitios-de-interes'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
   id:
@@ -400,6 +409,7 @@ export interface FileRouteTypes {
     | '/noticias/'
     | '/servicios-publicos/'
     | '/shopping/'
+    | '/sitios-de-interes/'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
   fileRoutesById: FileRoutesById
@@ -418,7 +428,7 @@ export interface RootRouteChildren {
   PublicarRoute: typeof PublicarRoute
   ServiciosPublicosRoute: typeof ServiciosPublicosRouteWithChildren
   ShoppingRoute: typeof ShoppingRouteWithChildren
-  SitiosDeInteresRoute: typeof SitiosDeInteresRoute
+  SitiosDeInteresRoute: typeof SitiosDeInteresRouteWithChildren
   TerminosRoute: typeof TerminosRoute
   Char91DotmcpChar93ListToolsRoute: typeof Char91DotmcpChar93ListToolsRoute
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
@@ -532,6 +542,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/sitios-de-interes/': {
+      id: '/sitios-de-interes/'
+      path: '/'
+      fullPath: '/sitios-de-interes/'
+      preLoaderRoute: typeof SitiosDeInteresIndexRouteImport
+      parentRoute: typeof SitiosDeInteresRoute
     }
     '/shopping/': {
       id: '/shopping/'
@@ -740,6 +757,18 @@ const ShoppingRouteWithChildren = ShoppingRoute._addFileChildren(
   ShoppingRouteChildren,
 )
 
+interface SitiosDeInteresRouteChildren {
+  SitiosDeInteresIndexRoute: typeof SitiosDeInteresIndexRoute
+}
+
+const SitiosDeInteresRouteChildren: SitiosDeInteresRouteChildren = {
+  SitiosDeInteresIndexRoute: SitiosDeInteresIndexRoute,
+}
+
+const SitiosDeInteresRouteWithChildren = SitiosDeInteresRoute._addFileChildren(
+  SitiosDeInteresRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AccederRoute: AccederRoute,
@@ -754,7 +783,7 @@ const rootRouteChildren: RootRouteChildren = {
   PublicarRoute: PublicarRoute,
   ServiciosPublicosRoute: ServiciosPublicosRouteWithChildren,
   ShoppingRoute: ShoppingRouteWithChildren,
-  SitiosDeInteresRoute: SitiosDeInteresRoute,
+  SitiosDeInteresRoute: SitiosDeInteresRouteWithChildren,
   TerminosRoute: TerminosRoute,
   Char91DotmcpChar93ListToolsRoute: Char91DotmcpChar93ListToolsRoute,
   Char91DotwellKnownChar93OauthProtectedResourceRoute:
