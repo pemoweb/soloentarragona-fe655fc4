@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TerminosRouteImport } from './routes/terminos'
+import { Route as SitiosDeInteresRouteImport } from './routes/sitios-de-interes'
 import { Route as ShoppingRouteImport } from './routes/shopping'
 import { Route as ServiciosPublicosRouteImport } from './routes/servicios-publicos'
 import { Route as PublicarRouteImport } from './routes/publicar'
@@ -44,6 +45,11 @@ import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.
 const TerminosRoute = TerminosRouteImport.update({
   id: '/terminos',
   path: '/terminos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitiosDeInteresRoute = SitiosDeInteresRouteImport.update({
+  id: '/sitios-de-interes',
+  path: '/sitios-de-interes',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ShoppingRoute = ShoppingRouteImport.update({
@@ -214,6 +220,7 @@ export interface FileRoutesByFullPath {
   '/publicar': typeof PublicarRoute
   '/servicios-publicos': typeof ServiciosPublicosRouteWithChildren
   '/shopping': typeof ShoppingRouteWithChildren
+  '/sitios-de-interes': typeof SitiosDeInteresRoute
   '/terminos': typeof TerminosRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
@@ -242,6 +249,7 @@ export interface FileRoutesByTo {
   '/mcp': typeof McpRoute
   '/privacidad': typeof PrivacidadRoute
   '/publicar': typeof PublicarRoute
+  '/sitios-de-interes': typeof SitiosDeInteresRoute
   '/terminos': typeof TerminosRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
@@ -276,6 +284,7 @@ export interface FileRoutesById {
   '/publicar': typeof PublicarRoute
   '/servicios-publicos': typeof ServiciosPublicosRouteWithChildren
   '/shopping': typeof ShoppingRouteWithChildren
+  '/sitios-de-interes': typeof SitiosDeInteresRoute
   '/terminos': typeof TerminosRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
@@ -311,6 +320,7 @@ export interface FileRouteTypes {
     | '/publicar'
     | '/servicios-publicos'
     | '/shopping'
+    | '/sitios-de-interes'
     | '/terminos'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
@@ -339,6 +349,7 @@ export interface FileRouteTypes {
     | '/mcp'
     | '/privacidad'
     | '/publicar'
+    | '/sitios-de-interes'
     | '/terminos'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
@@ -372,6 +383,7 @@ export interface FileRouteTypes {
     | '/publicar'
     | '/servicios-publicos'
     | '/shopping'
+    | '/sitios-de-interes'
     | '/terminos'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
@@ -406,6 +418,7 @@ export interface RootRouteChildren {
   PublicarRoute: typeof PublicarRoute
   ServiciosPublicosRoute: typeof ServiciosPublicosRouteWithChildren
   ShoppingRoute: typeof ShoppingRouteWithChildren
+  SitiosDeInteresRoute: typeof SitiosDeInteresRoute
   TerminosRoute: typeof TerminosRoute
   Char91DotmcpChar93ListToolsRoute: typeof Char91DotmcpChar93ListToolsRoute
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
@@ -420,6 +433,13 @@ declare module '@tanstack/react-router' {
       path: '/terminos'
       fullPath: '/terminos'
       preLoaderRoute: typeof TerminosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitios-de-interes': {
+      id: '/sitios-de-interes'
+      path: '/sitios-de-interes'
+      fullPath: '/sitios-de-interes'
+      preLoaderRoute: typeof SitiosDeInteresRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/shopping': {
@@ -734,6 +754,7 @@ const rootRouteChildren: RootRouteChildren = {
   PublicarRoute: PublicarRoute,
   ServiciosPublicosRoute: ServiciosPublicosRouteWithChildren,
   ShoppingRoute: ShoppingRouteWithChildren,
+  SitiosDeInteresRoute: SitiosDeInteresRoute,
   TerminosRoute: TerminosRoute,
   Char91DotmcpChar93ListToolsRoute: Char91DotmcpChar93ListToolsRoute,
   Char91DotwellKnownChar93OauthProtectedResourceRoute:
