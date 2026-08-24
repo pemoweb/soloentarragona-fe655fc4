@@ -21,6 +21,7 @@ const modules = [
   { to: "/clasificados", icon: Megaphone, title: "Clasificados", desc: "Empleo, alquiler, servicios. Gratis 7 días.", color: "from-emerald-500 to-teal-400" },
   { to: "/shopping", icon: Store, title: "Shopping", desc: "Las mejores tiendas y promos locales.", color: "from-amber-500 to-yellow-400" },
   { to: "/servicios-publicos", icon: Building2, title: "Servicios", desc: "Farmacias, urgencias, policía y más.", color: "from-rose-500 to-pink-400" },
+  { to: "/sitios-de-interes", icon: Landmark, title: "Sitios de Interés", desc: "Patrimonio, playas, museos y miradores.", color: "from-sky-600 to-indigo-400" },
 ] as const;
 
 const featuredNews = [
