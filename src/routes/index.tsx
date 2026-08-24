@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Search, Newspaper, ShoppingBag, Briefcase, Megaphone, Store, Building2, MapPin, ArrowUpRight, Sparkles } from "lucide-react";
+import { Search, Newspaper, ShoppingBag, Briefcase, Megaphone, Store, Building2, Landmark, MapPin, ArrowUpRight, Sparkles } from "lucide-react";
 import heroImg from "@/assets/hero-tarragona.jpg";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
