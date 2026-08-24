@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Search, Newspaper, ShoppingBag, Briefcase, Megaphone, Store, Building2, MapPin, ArrowUpRight, Sparkles } from "lucide-react";
+import { Search, Newspaper, ShoppingBag, Briefcase, Megaphone, Store, Building2, Landmark, MapPin, ArrowUpRight, Sparkles } from "lucide-react";
 import heroImg from "@/assets/hero-tarragona.jpg";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
@@ -21,6 +21,7 @@ const modules = [
   { to: "/clasificados", icon: Megaphone, title: "Clasificados", desc: "Empleo, alquiler, servicios. Gratis 7 días.", color: "from-emerald-500 to-teal-400" },
   { to: "/shopping", icon: Store, title: "Shopping", desc: "Las mejores tiendas y promos locales.", color: "from-amber-500 to-yellow-400" },
   { to: "/servicios-publicos", icon: Building2, title: "Servicios", desc: "Farmacias, urgencias, policía y más.", color: "from-rose-500 to-pink-400" },
+  { to: "/sitios-de-interes", icon: Landmark, title: "Sitios de Interés", desc: "Patrimonio, playas, museos y miradores.", color: "from-sky-600 to-indigo-400" },
 ] as const;
 
 const featuredNews = [
@@ -106,7 +107,7 @@ function HomePage() {
                 <Sparkles className="h-4 w-4" /> Explora la ciudad
               </span>
               <h2 className="mt-3 font-display text-4xl md:text-6xl font-black text-balance max-w-2xl">
-                Seis formas de vivir <span className="text-coral italic">Tarragona</span>
+                Siete formas de vivir <span className="text-coral italic">Tarragona</span>
               </h2>
             </div>
             <p className="max-w-sm text-muted-foreground">

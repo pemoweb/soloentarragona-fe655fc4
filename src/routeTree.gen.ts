@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TerminosRouteImport } from './routes/terminos'
+import { Route as SitiosDeInteresRouteImport } from './routes/sitios-de-interes'
 import { Route as ShoppingRouteImport } from './routes/shopping'
 import { Route as ServiciosPublicosRouteImport } from './routes/servicios-publicos'
 import { Route as PublicarRouteImport } from './routes/publicar'
@@ -23,11 +24,13 @@ import { Route as ClasificadosRouteImport } from './routes/clasificados'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AccederRouteImport } from './routes/acceder'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SitiosDeInteresIndexRouteImport } from './routes/sitios-de-interes.index'
 import { Route as ShoppingIndexRouteImport } from './routes/shopping.index'
 import { Route as ServiciosPublicosIndexRouteImport } from './routes/servicios-publicos.index'
 import { Route as NoticiasIndexRouteImport } from './routes/noticias.index'
 import { Route as MarketplaceIndexRouteImport } from './routes/marketplace.index'
 import { Route as DirectorioIndexRouteImport } from './routes/directorio.index'
+import { Route as SitiosDeInteresSlugRouteImport } from './routes/sitios-de-interes.$slug'
 import { Route as ShoppingSlugRouteImport } from './routes/shopping.$slug'
 import { Route as ServiciosPublicosSlugRouteImport } from './routes/servicios-publicos.$slug'
 import { Route as NoticiasPublicarRouteImport } from './routes/noticias.publicar'
@@ -44,6 +47,11 @@ import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.
 const TerminosRoute = TerminosRouteImport.update({
   id: '/terminos',
   path: '/terminos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitiosDeInteresRoute = SitiosDeInteresRouteImport.update({
+  id: '/sitios-de-interes',
+  path: '/sitios-de-interes',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ShoppingRoute = ShoppingRouteImport.update({
@@ -111,6 +119,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SitiosDeInteresIndexRoute = SitiosDeInteresIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => SitiosDeInteresRoute,
+} as any)
 const ShoppingIndexRoute = ShoppingIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -135,6 +148,11 @@ const DirectorioIndexRoute = DirectorioIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => DirectorioRoute,
+} as any)
+const SitiosDeInteresSlugRoute = SitiosDeInteresSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => SitiosDeInteresRoute,
 } as any)
 const ShoppingSlugRoute = ShoppingSlugRouteImport.update({
   id: '/$slug',
@@ -214,6 +232,7 @@ export interface FileRoutesByFullPath {
   '/publicar': typeof PublicarRoute
   '/servicios-publicos': typeof ServiciosPublicosRouteWithChildren
   '/shopping': typeof ShoppingRouteWithChildren
+  '/sitios-de-interes': typeof SitiosDeInteresRouteWithChildren
   '/terminos': typeof TerminosRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
@@ -225,11 +244,13 @@ export interface FileRoutesByFullPath {
   '/noticias/publicar': typeof NoticiasPublicarRoute
   '/servicios-publicos/$slug': typeof ServiciosPublicosSlugRoute
   '/shopping/$slug': typeof ShoppingSlugRoute
+  '/sitios-de-interes/$slug': typeof SitiosDeInteresSlugRoute
   '/directorio/': typeof DirectorioIndexRoute
   '/marketplace/': typeof MarketplaceIndexRoute
   '/noticias/': typeof NoticiasIndexRoute
   '/servicios-publicos/': typeof ServiciosPublicosIndexRoute
   '/shopping/': typeof ShoppingIndexRoute
+  '/sitios-de-interes/': typeof SitiosDeInteresIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
 }
@@ -253,11 +274,13 @@ export interface FileRoutesByTo {
   '/noticias/publicar': typeof NoticiasPublicarRoute
   '/servicios-publicos/$slug': typeof ServiciosPublicosSlugRoute
   '/shopping/$slug': typeof ShoppingSlugRoute
+  '/sitios-de-interes/$slug': typeof SitiosDeInteresSlugRoute
   '/directorio': typeof DirectorioIndexRoute
   '/marketplace': typeof MarketplaceIndexRoute
   '/noticias': typeof NoticiasIndexRoute
   '/servicios-publicos': typeof ServiciosPublicosIndexRoute
   '/shopping': typeof ShoppingIndexRoute
+  '/sitios-de-interes': typeof SitiosDeInteresIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
 }
@@ -276,6 +299,7 @@ export interface FileRoutesById {
   '/publicar': typeof PublicarRoute
   '/servicios-publicos': typeof ServiciosPublicosRouteWithChildren
   '/shopping': typeof ShoppingRouteWithChildren
+  '/sitios-de-interes': typeof SitiosDeInteresRouteWithChildren
   '/terminos': typeof TerminosRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
@@ -287,11 +311,13 @@ export interface FileRoutesById {
   '/noticias/publicar': typeof NoticiasPublicarRoute
   '/servicios-publicos/$slug': typeof ServiciosPublicosSlugRoute
   '/shopping/$slug': typeof ShoppingSlugRoute
+  '/sitios-de-interes/$slug': typeof SitiosDeInteresSlugRoute
   '/directorio/': typeof DirectorioIndexRoute
   '/marketplace/': typeof MarketplaceIndexRoute
   '/noticias/': typeof NoticiasIndexRoute
   '/servicios-publicos/': typeof ServiciosPublicosIndexRoute
   '/shopping/': typeof ShoppingIndexRoute
+  '/sitios-de-interes/': typeof SitiosDeInteresIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
 }
@@ -311,6 +337,7 @@ export interface FileRouteTypes {
     | '/publicar'
     | '/servicios-publicos'
     | '/shopping'
+    | '/sitios-de-interes'
     | '/terminos'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
@@ -322,11 +349,13 @@ export interface FileRouteTypes {
     | '/noticias/publicar'
     | '/servicios-publicos/$slug'
     | '/shopping/$slug'
+    | '/sitios-de-interes/$slug'
     | '/directorio/'
     | '/marketplace/'
     | '/noticias/'
     | '/servicios-publicos/'
     | '/shopping/'
+    | '/sitios-de-interes/'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
   fileRoutesByTo: FileRoutesByTo
@@ -350,11 +379,13 @@ export interface FileRouteTypes {
     | '/noticias/publicar'
     | '/servicios-publicos/$slug'
     | '/shopping/$slug'
+    | '/sitios-de-interes/$slug'
     | '/directorio'
     | '/marketplace'
     | '/noticias'
     | '/servicios-publicos'
     | '/shopping'
+    | '/sitios-de-interes'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
   id:
@@ -372,6 +403,7 @@ export interface FileRouteTypes {
     | '/publicar'
     | '/servicios-publicos'
     | '/shopping'
+    | '/sitios-de-interes'
     | '/terminos'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
@@ -383,11 +415,13 @@ export interface FileRouteTypes {
     | '/noticias/publicar'
     | '/servicios-publicos/$slug'
     | '/shopping/$slug'
+    | '/sitios-de-interes/$slug'
     | '/directorio/'
     | '/marketplace/'
     | '/noticias/'
     | '/servicios-publicos/'
     | '/shopping/'
+    | '/sitios-de-interes/'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
   fileRoutesById: FileRoutesById
@@ -406,6 +440,7 @@ export interface RootRouteChildren {
   PublicarRoute: typeof PublicarRoute
   ServiciosPublicosRoute: typeof ServiciosPublicosRouteWithChildren
   ShoppingRoute: typeof ShoppingRouteWithChildren
+  SitiosDeInteresRoute: typeof SitiosDeInteresRouteWithChildren
   TerminosRoute: typeof TerminosRoute
   Char91DotmcpChar93ListToolsRoute: typeof Char91DotmcpChar93ListToolsRoute
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
@@ -420,6 +455,13 @@ declare module '@tanstack/react-router' {
       path: '/terminos'
       fullPath: '/terminos'
       preLoaderRoute: typeof TerminosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitios-de-interes': {
+      id: '/sitios-de-interes'
+      path: '/sitios-de-interes'
+      fullPath: '/sitios-de-interes'
+      preLoaderRoute: typeof SitiosDeInteresRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/shopping': {
@@ -513,6 +555,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sitios-de-interes/': {
+      id: '/sitios-de-interes/'
+      path: '/'
+      fullPath: '/sitios-de-interes/'
+      preLoaderRoute: typeof SitiosDeInteresIndexRouteImport
+      parentRoute: typeof SitiosDeInteresRoute
+    }
     '/shopping/': {
       id: '/shopping/'
       path: '/'
@@ -547,6 +596,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/directorio/'
       preLoaderRoute: typeof DirectorioIndexRouteImport
       parentRoute: typeof DirectorioRoute
+    }
+    '/sitios-de-interes/$slug': {
+      id: '/sitios-de-interes/$slug'
+      path: '/$slug'
+      fullPath: '/sitios-de-interes/$slug'
+      preLoaderRoute: typeof SitiosDeInteresSlugRouteImport
+      parentRoute: typeof SitiosDeInteresRoute
     }
     '/shopping/$slug': {
       id: '/shopping/$slug'
@@ -720,6 +776,20 @@ const ShoppingRouteWithChildren = ShoppingRoute._addFileChildren(
   ShoppingRouteChildren,
 )
 
+interface SitiosDeInteresRouteChildren {
+  SitiosDeInteresSlugRoute: typeof SitiosDeInteresSlugRoute
+  SitiosDeInteresIndexRoute: typeof SitiosDeInteresIndexRoute
+}
+
+const SitiosDeInteresRouteChildren: SitiosDeInteresRouteChildren = {
+  SitiosDeInteresSlugRoute: SitiosDeInteresSlugRoute,
+  SitiosDeInteresIndexRoute: SitiosDeInteresIndexRoute,
+}
+
+const SitiosDeInteresRouteWithChildren = SitiosDeInteresRoute._addFileChildren(
+  SitiosDeInteresRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AccederRoute: AccederRoute,
@@ -734,6 +804,7 @@ const rootRouteChildren: RootRouteChildren = {
   PublicarRoute: PublicarRoute,
   ServiciosPublicosRoute: ServiciosPublicosRouteWithChildren,
   ShoppingRoute: ShoppingRouteWithChildren,
+  SitiosDeInteresRoute: SitiosDeInteresRouteWithChildren,
   TerminosRoute: TerminosRoute,
   Char91DotmcpChar93ListToolsRoute: Char91DotmcpChar93ListToolsRoute,
   Char91DotwellKnownChar93OauthProtectedResourceRoute:

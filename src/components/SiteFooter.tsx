@@ -27,6 +27,7 @@ export function SiteFooter() {
           <h4 className="font-display text-base font-semibold mb-4">Ciudad</h4>
           <ul className="space-y-2 text-sm opacity-80">
             <li><Link to="/servicios-publicos">Servicios públicos</Link></li>
+            <li><Link to="/sitios-de-interes">Sitios de interés</Link></li>
             <li><Link to="/shopping">Tiendas locales</Link></li>
             <li><Link to="/privacidad">Privacidad</Link></li>
             <li><Link to="/terminos">Términos</Link></li>

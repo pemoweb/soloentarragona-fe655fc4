@@ -9,6 +9,7 @@ const navLinks = [
   { to: "/clasificados", label: "Clasificados" },
   { to: "/shopping", label: "Shopping" },
   { to: "/servicios-publicos", label: "Servicios" },
+  { to: "/sitios-de-interes", label: "Sitios de Interés" },
 ] as const;
 
 export function SiteHeader() {
