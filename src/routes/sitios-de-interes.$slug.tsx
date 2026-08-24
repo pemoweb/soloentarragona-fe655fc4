@@ -66,7 +66,13 @@ function SitioDetailPage() {
 
         <div className="mt-6 grid gap-10 lg:grid-cols-[1.4fr_1fr]">
           <div>
-            <MiniCarousel images={sitio.gallery} alt={sitio.name} />
+            <MiniCarousel
+              images={sitio.gallery}
+              alt={sitio.name}
+              className="aspect-[16/10]"
+              rounded="rounded-3xl"
+              showThumbs
+            />
             <span className="mt-6 inline-block px-2.5 py-1 rounded-full bg-coral/10 text-coral text-xs font-semibold uppercase tracking-wider">
               {sitio.category}
             </span>
