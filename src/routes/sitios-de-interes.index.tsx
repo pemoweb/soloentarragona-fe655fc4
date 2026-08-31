@@ -45,7 +45,7 @@ export const categoryIcons: Record<string, LucideIcon> = {
   Todos: LayoutGrid,
   Patrimonio: Landmark,
   Playas: Umbrella,
-  Museos: Museum,
+  Museos: Building2,
   Naturaleza: TreePine,
   Miradores: Binoculars,
 };
