@@ -1,9 +1,8 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { PageShell, PageHero } from "@/components/PageShell";
+import { PageShell } from "@/components/PageShell";
 import { Search, MapPin, Heart, Filter, RotateCcw, ArrowRight } from "lucide-react";
 import { useState } from "react";
 import { useDynamicSeo } from "@/lib/use-dynamic-seo";
-import { MiniCarousel } from "@/components/MiniCarousel";
 import { MARKETPLACE_ITEMS, MARKETPLACE_CATEGORIES, formatEuro } from "@/lib/marketplace-data";
 
 const SEO_BY_CAT: Record<string, { title: string; description: string }> = {
@@ -69,17 +68,45 @@ function MarketplacePage() {
     return true;
   });
 
+  const featured = filtered[0];
+  const rest = filtered.slice(1);
+
+  const countFor = (c: string) =>
+    c === "Todo" ? MARKETPLACE_ITEMS.length : MARKETPLACE_ITEMS.filter((i) => i.category === c).length;
+
   return (
     <PageShell>
-      <PageHero
-        eyebrow="Marketplace"
-        title="Compra y vende en tu barrio"
-        subtitle="Miles de productos publicados por vecinos y comercios locales, sin intermediarios."
-      />
+      {/* Editorial hero */}
+      <section className="relative overflow-hidden bg-gradient-sea text-primary-foreground">
+        <div className="absolute inset-0 opacity-20 [background-image:radial-gradient(circle_at_20%_20%,white,transparent_45%),radial-gradient(circle_at_80%_10%,white,transparent_40%)]" />
+        <div className="relative mx-auto max-w-7xl px-4 md:px-8 py-16 md:py-24">
+          <p className="text-xs font-bold uppercase tracking-[0.25em] opacity-80">Marketplace local</p>
+          <h1 className="mt-4 font-display text-4xl md:text-6xl font-black leading-[1.05] max-w-3xl">
+            Compra y vende<br />en tu barrio
+          </h1>
+          <p className="mt-5 max-w-xl text-base md:text-lg opacity-90">
+            Objetos con historia, precios de vecino y trato directo. Sin intermediarios, sin envíos: solo Tarragona.
+          </p>
+          <div className="mt-8 flex flex-wrap gap-6 text-sm">
+            <div>
+              <div className="font-display text-3xl font-black">{MARKETPLACE_ITEMS.length}</div>
+              <div className="opacity-80">anuncios activos</div>
+            </div>
+            <div>
+              <div className="font-display text-3xl font-black">{MARKETPLACE_CATEGORIES.length - 1}</div>
+              <div className="opacity-80">categorías</div>
+            </div>
+            <div>
+              <div className="font-display text-3xl font-black">24h</div>
+              <div className="opacity-80">media de respuesta</div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <section className="mx-auto max-w-7xl px-4 md:px-8 py-12">
         {/* Search bar */}
-        <div className="flex flex-col md:flex-row gap-3 p-3 rounded-2xl bg-card border border-border shadow-card">
+        <div className="flex flex-col md:flex-row gap-3 p-3 rounded-2xl bg-card border border-border shadow-card -mt-20 relative z-10">
           <div className="flex-1 flex items-center gap-2 px-3">
             <Search className="h-5 w-5 text-muted-foreground" />
             <input
@@ -108,11 +135,12 @@ function MarketplacePage() {
               <button
                 key={c}
                 onClick={() => setCategory(c)}
-                className={`shrink-0 px-4 py-2 rounded-full text-sm font-semibold border transition ${
+                className={`shrink-0 px-4 py-2 rounded-full text-sm font-semibold border transition inline-flex items-center gap-2 ${
                   active ? "bg-foreground text-background border-foreground" : "bg-card text-muted-foreground border-border hover:border-coral hover:text-coral"
                 }`}
               >
                 {c}
+                <span className={`text-[11px] font-bold ${active ? "opacity-70" : "opacity-60"}`}>{countFor(c)}</span>
               </button>
             );
           })}
@@ -132,42 +160,88 @@ function MarketplacePage() {
           </div>
         )}
 
+        {/* Featured item */}
+        {featured && (
+          <article
+            onClick={() => navigate({ to: "/marketplace/$slug", params: { slug: featured.slug } })}
+            className="group mt-10 grid cursor-pointer overflow-hidden rounded-3xl border border-border bg-card shadow-card transition hover:shadow-glow lg:grid-cols-2"
+          >
+            <div className="relative aspect-[4/3] lg:aspect-auto lg:h-full overflow-hidden">
+              <img
+                src={featured.gallery[0]}
+                alt={featured.title}
+                width={1024}
+                height={768}
+                className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+              />
+              <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-coral text-coral-foreground text-xs font-bold uppercase tracking-wider shadow-lg">
+                Destacado
+              </span>
+            </div>
+            <div className="p-8 md:p-10 flex flex-col justify-center">
+              <span className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">{featured.category}</span>
+              <h2 className="mt-3 font-display text-3xl md:text-4xl font-black leading-tight">{featured.title}</h2>
+              <p className="mt-4 text-muted-foreground line-clamp-3">{featured.description}</p>
+              <div className="mt-6 flex items-center gap-4">
+                <span className="font-display text-4xl font-black text-coral">{formatEuro(featured.price)}</span>
+                <span className="inline-flex items-center gap-1 text-sm text-muted-foreground">
+                  <MapPin className="h-4 w-4" /> {featured.location}
+                </span>
+              </div>
+              <Link
+                to="/marketplace/$slug"
+                params={{ slug: featured.slug }}
+                onClick={(e) => e.stopPropagation()}
+                className="mt-8 inline-flex w-fit items-center gap-2 rounded-full bg-foreground px-6 py-3 text-sm font-semibold text-background transition hover:bg-coral hover:text-coral-foreground"
+              >
+                Ver anuncio <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+          </article>
+        )}
+
         {/* Products */}
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {filtered.map((p) => (
+        <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {rest.map((p) => (
             <article
               key={p.slug}
               onClick={() => navigate({ to: "/marketplace/$slug", params: { slug: p.slug } })}
               className="group cursor-pointer rounded-2xl bg-card border border-border overflow-hidden hover:shadow-glow transition-all hover:-translate-y-1"
             >
-              <div className="relative">
-                <MiniCarousel images={p.gallery} alt={p.title} />
+              <div className="relative aspect-[4/3] overflow-hidden">
+                <img
+                  src={p.gallery[0]}
+                  alt={p.title}
+                  loading="lazy"
+                  width={1024}
+                  height={768}
+                  className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-transparent to-transparent opacity-80" />
+                <span className="absolute bottom-3 left-3 font-display text-2xl font-black text-background drop-shadow">
+                  {formatEuro(p.price)}
+                </span>
                 {p.featured && (
-                  <span className="absolute top-3 left-3 z-10 px-2.5 py-1 rounded-full bg-coral text-coral-foreground text-xs font-bold uppercase tracking-wider shadow-lg">
+                  <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-coral text-coral-foreground text-xs font-bold uppercase tracking-wider shadow-lg">
                     Destacado
                   </span>
                 )}
                 <button
                   aria-label="Guardar en favoritos"
                   onClick={(e) => e.stopPropagation()}
-                  className="absolute top-3 right-3 z-10 grid h-9 w-9 place-items-center rounded-full bg-background/90 backdrop-blur hover:bg-coral hover:text-coral-foreground transition"
+                  className="absolute top-3 right-3 grid h-9 w-9 place-items-center rounded-full bg-background/90 backdrop-blur hover:bg-coral hover:text-coral-foreground transition"
                 >
                   <Heart className="h-4 w-4" />
                 </button>
               </div>
               <div className="p-4">
-                <div className="font-display text-2xl font-black text-coral">{formatEuro(p.price)}</div>
+                <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">{p.category}</span>
                 <h3 className="mt-1 font-semibold leading-tight line-clamp-2">{p.title}</h3>
-                <div className="mt-2 flex items-center justify-between text-xs text-muted-foreground">
+                <div className="mt-3 flex items-center justify-between text-xs text-muted-foreground">
                   <span className="inline-flex items-center gap-1"><MapPin className="h-3 w-3" /> {p.location}</span>
-                  <Link
-                    to="/marketplace/$slug"
-                    params={{ slug: p.slug }}
-                    onClick={(e) => e.stopPropagation()}
-                    className="inline-flex items-center gap-1 font-semibold text-coral"
-                  >
+                  <span className="inline-flex items-center gap-1 font-semibold text-coral">
                     Ver detalle <ArrowRight className="h-3 w-3" />
-                  </Link>
+                  </span>
                 </div>
               </div>
             </article>
