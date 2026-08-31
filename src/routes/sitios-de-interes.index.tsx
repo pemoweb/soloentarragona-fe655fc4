@@ -8,7 +8,7 @@ import {
   RotateCcw,
   Landmark,
   Umbrella,
-  Museum,
+  Building2,
   TreePine,
   Binoculars,
   LayoutGrid,
