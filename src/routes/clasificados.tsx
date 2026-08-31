@@ -153,15 +153,34 @@ function ClasificadosPage() {
 
   return (
     <PageShell>
-      <PageHero
-        eyebrow="Clasificados"
-        title={
-          category === "Todos"
-            ? "Publica gratis durante 7 días"
-            : `${category}${zone !== "Todas" ? ` en ${zone}` : " en Tarragona"}`
-        }
-        subtitle="Empleo, alquiler, venta o servicios. Sin comisiones, sin intermediarios. Renueva o destaca tu anuncio cuando quieras."
-      />
+      <section className="relative overflow-hidden bg-gradient-sea text-primary-foreground">
+        <div className="absolute inset-0 opacity-15 [background-image:radial-gradient(circle_at_15%_25%,white,transparent_45%),radial-gradient(circle_at_85%_15%,white,transparent_40%)]" />
+        <div className="relative mx-auto max-w-7xl px-4 md:px-8 py-16 md:py-24">
+          <p className="text-xs font-bold uppercase tracking-[0.25em] opacity-80">Clasificados de Tarragona</p>
+          <h1 className="mt-4 max-w-3xl font-display text-4xl md:text-6xl font-black leading-[1.05]">
+            {category === "Todos"
+              ? "Publica gratis durante 7 días"
+              : `${category}${zone !== "Todas" ? ` en ${zone}` : " en Tarragona"}`}
+          </h1>
+          <p className="mt-5 max-w-xl text-base md:text-lg opacity-90">
+            Empleo, alquiler, venta o servicios. Sin comisiones, sin intermediarios. Renueva o destaca tu anuncio cuando quieras.
+          </p>
+          <div className="mt-8 flex flex-wrap gap-6 text-sm">
+            <div>
+              <div className="font-display text-3xl font-black">{ads.length}</div>
+              <div className="opacity-80">anuncios vivos</div>
+            </div>
+            <div>
+              <div className="font-display text-3xl font-black">7</div>
+              <div className="opacity-80">días gratis</div>
+            </div>
+            <div>
+              <div className="font-display text-3xl font-black">0€</div>
+              <div className="opacity-80">comisiones</div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <section className="mx-auto max-w-7xl px-4 md:px-8 py-12">
         {/* CTA */}
