@@ -1,9 +1,8 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { PageShell, PageHero } from "@/components/PageShell";
+import { PageShell } from "@/components/PageShell";
 import { Search, MapPin, Heart, Filter, RotateCcw, ArrowRight } from "lucide-react";
 import { useState } from "react";
 import { useDynamicSeo } from "@/lib/use-dynamic-seo";
-import { MiniCarousel } from "@/components/MiniCarousel";
 import { MARKETPLACE_ITEMS, MARKETPLACE_CATEGORIES, formatEuro } from "@/lib/marketplace-data";
 
 const SEO_BY_CAT: Record<string, { title: string; description: string }> = {
