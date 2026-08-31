@@ -312,23 +312,52 @@ function ClasificadosPage() {
             No hay anuncios con estos filtros.
           </div>
         ) : (
-          <div className="mt-6 divide-y divide-border rounded-2xl bg-card border border-border overflow-hidden">
+          <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {filtered.map((a) => {
               const isFav = favs.has(a.id);
+              const Icon = catMeta[a.cat]?.icon ?? ShoppingBag;
               return (
                 <article
                   key={a.id}
                   onClick={() => setSelectedAd(a)}
-                  className="group p-6 flex items-start justify-between gap-4 hover:bg-secondary/40 cursor-pointer transition"
+                  className="group cursor-pointer overflow-hidden rounded-2xl border border-border bg-card transition-all hover:-translate-y-1 hover:shadow-glow"
                 >
-                  <div className="flex-1">
-                    <span className="text-xs font-bold uppercase tracking-wider text-coral">
-                      {a.cat}
+                  <div className="relative aspect-[16/10] overflow-hidden">
+                    <img
+                      src={classifiedImage(a.cat)}
+                      alt={a.cat}
+                      loading="lazy"
+                      width={1024}
+                      height={768}
+                      className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/10 to-transparent" />
+                    <span className="absolute top-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-background/90 px-3 py-1 text-[11px] font-bold uppercase tracking-wider backdrop-blur">
+                      <Icon className="h-3.5 w-3.5" /> {a.cat}
                     </span>
-                    <h3 className="mt-1 font-semibold text-lg group-hover:text-coral transition-colors">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggle(a.id);
+                      }}
+                      aria-label={isFav ? "Quitar de favoritos" : "Guardar"}
+                      className={`absolute top-3 right-3 grid h-9 w-9 place-items-center rounded-full backdrop-blur transition ${
+                        isFav
+                          ? "bg-coral text-coral-foreground"
+                          : "bg-background/90 hover:bg-coral hover:text-coral-foreground"
+                      }`}
+                    >
+                      <Heart className={`h-4 w-4 ${isFav ? "fill-current" : ""}`} />
+                    </button>
+                    <h3 className="absolute bottom-3 left-4 right-4 font-display text-xl font-bold leading-tight text-background drop-shadow">
                       {a.title}
                     </h3>
-                    <div className="mt-2 flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
+                  </div>
+                  <div className="p-4">
+                    {a.description && (
+                      <p className="text-sm text-muted-foreground line-clamp-2">{a.description}</p>
+                    )}
+                    <div className="mt-3 flex items-center justify-between text-xs text-muted-foreground">
                       <span className="inline-flex items-center gap-1">
                         <MapPin className="h-3 w-3" /> {a.location}
                       </span>
@@ -336,25 +365,12 @@ function ClasificadosPage() {
                         <Clock className="h-3 w-3" /> {a.time}
                       </span>
                     </div>
-                  </div>
-                  <div className="shrink-0 flex items-center gap-2">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        toggle(a.id);
-                      }}
-                      aria-label={isFav ? "Quitar de favoritos" : "Guardar"}
-                      className={`grid h-9 w-9 place-items-center rounded-full border transition ${
-                        isFav
-                          ? "bg-coral text-coral-foreground border-coral"
-                          : "border-border hover:border-coral hover:text-coral"
-                      }`}
-                    >
-                      <Heart className={`h-4 w-4 ${isFav ? "fill-current" : ""}`} />
-                    </button>
-                    <button className="px-4 py-2 rounded-full text-sm font-semibold border border-border hover:border-coral hover:text-coral transition">
-                      Ver
-                    </button>
+                    <div className="mt-4 flex items-center justify-between">
+                      <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                        Caduca en {a.daysLeft} días
+                      </span>
+                      <span className="text-sm font-semibold text-coral">Ver anuncio</span>
+                    </div>
                   </div>
                 </article>
               );
