@@ -1,5 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { PageShell } from "@/components/PageShell";
+import { MiniCarousel } from "@/components/MiniCarousel";
+
 import { Search, MapPin, Heart, Filter, RotateCcw, ArrowRight } from "lucide-react";
 import { useState } from "react";
 import { useDynamicSeo } from "@/lib/use-dynamic-seo";
