@@ -23,7 +23,8 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import { PageShell, PageHero } from "@/components/PageShell";
+import { PageShell } from "@/components/PageShell";
+import { classifiedImage } from "@/lib/clasificados-images";
 import {
   CLASSIFIED_CATEGORIES,
   TARRAGONA_ZONES,
