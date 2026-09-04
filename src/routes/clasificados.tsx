@@ -332,7 +332,7 @@ function ClasificadosPage() {
             No hay anuncios con estos filtros.
           </div>
         ) : (
-          <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-6 flex flex-col gap-4 sm:grid sm:gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {filtered.map((a) => {
               const isFav = favs.has(a.id);
               const Icon = catMeta[a.cat]?.icon ?? ShoppingBag;
@@ -340,9 +340,9 @@ function ClasificadosPage() {
                 <article
                   key={a.id}
                   onClick={() => setSelectedAd(a)}
-                  className="group cursor-pointer overflow-hidden rounded-2xl border border-border bg-card transition-all hover:-translate-y-1 hover:shadow-glow"
+                  className="group flex cursor-pointer overflow-hidden rounded-2xl border border-border bg-card transition-all hover:-translate-y-1 hover:shadow-glow sm:block"
                 >
-                  <div className="relative aspect-[16/10] overflow-hidden">
+                  <div className="relative aspect-[16/10] w-32 shrink-0 overflow-hidden sm:w-auto">
                     <img
                       src={classifiedImage(a.cat)}
                       alt={a.cat}
@@ -352,8 +352,8 @@ function ClasificadosPage() {
                       className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/10 to-transparent" />
-                    <span className="absolute top-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-background/90 px-3 py-1 text-[11px] font-bold uppercase tracking-wider backdrop-blur">
-                      <Icon className="h-3.5 w-3.5" /> {a.cat}
+                    <span className="absolute top-2 left-2 sm:top-3 sm:left-3 inline-flex items-center gap-1.5 rounded-full bg-background/90 px-2 py-0.5 sm:px-3 sm:py-1 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider backdrop-blur">
+                      <Icon className="h-3 w-3 sm:h-3.5 sm:w-3.5" /> {a.cat}
                     </span>
                     <button
                       onClick={(e) => {
@@ -361,7 +361,7 @@ function ClasificadosPage() {
                         toggle(a.id);
                       }}
                       aria-label={isFav ? "Quitar de favoritos" : "Guardar"}
-                      className={`absolute top-3 right-3 grid h-9 w-9 place-items-center rounded-full backdrop-blur transition ${
+                      className={`absolute top-3 right-3 hidden sm:grid h-9 w-9 place-items-center rounded-full backdrop-blur transition ${
                         isFav
                           ? "bg-coral text-coral-foreground"
                           : "bg-background/90 hover:bg-coral hover:text-coral-foreground"
@@ -369,33 +369,37 @@ function ClasificadosPage() {
                     >
                       <Heart className={`h-4 w-4 ${isFav ? "fill-current" : ""}`} />
                     </button>
-                    <h3 className="absolute bottom-3 left-4 right-4 font-display text-xl font-bold leading-tight text-background drop-shadow">
+                    <h3 className="absolute bottom-3 left-4 right-4 hidden font-display text-xl font-bold leading-tight text-background drop-shadow sm:block">
                       {a.title}
                     </h3>
                   </div>
-                  <div className="p-4">
+                  <div className="min-w-0 flex-1 p-4">
+                    <h3 className="font-display text-base font-bold leading-tight line-clamp-2 sm:hidden">
+                      {a.title}
+                    </h3>
                     {a.description && (
-                      <p className="text-sm text-muted-foreground line-clamp-2">{a.description}</p>
+                      <p className="mt-1 text-sm text-muted-foreground line-clamp-2 sm:mt-0">{a.description}</p>
                     )}
-                    <div className="mt-3 flex items-center justify-between text-xs text-muted-foreground">
-                      <span className="inline-flex items-center gap-1">
-                        <MapPin className="h-3 w-3" /> {a.location}
+                    <div className="mt-3 flex items-center justify-between gap-2 text-xs text-muted-foreground">
+                      <span className="inline-flex min-w-0 items-center gap-1">
+                        <MapPin className="h-3 w-3 shrink-0" /> <span className="truncate">{a.location}</span>
                       </span>
-                      <span className="inline-flex items-center gap-1">
+                      <span className="inline-flex shrink-0 items-center gap-1">
                         <Clock className="h-3 w-3" /> {a.time}
                       </span>
                     </div>
-                    <div className="mt-4 flex items-center justify-between">
+                    <div className="mt-3 sm:mt-4 flex items-center justify-between gap-2">
                       <span className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
                         Caduca en {a.daysLeft} días
                       </span>
-                      <span className="text-sm font-semibold text-coral">Ver anuncio</span>
+                      <span className="text-sm font-semibold text-coral whitespace-nowrap">Ver anuncio</span>
                     </div>
                   </div>
                 </article>
               );
             })}
           </div>
+
         )}
       </section>
 
