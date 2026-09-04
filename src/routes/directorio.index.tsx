@@ -96,37 +96,38 @@ function DirectorioIndex() {
           </div>
         )}
 
-        <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-10 flex flex-col gap-4 md:grid md:gap-6 md:grid-cols-2 lg:grid-cols-3">
           {filtered.map((b) => {
             const Card = (
-              <article className="group h-full cursor-pointer rounded-3xl bg-card border border-border overflow-hidden hover:shadow-glow transition-all">
-                <div className="aspect-[16/10] overflow-hidden bg-muted relative">
+              <article className="group flex h-full cursor-pointer rounded-3xl bg-card border border-border overflow-hidden hover:shadow-glow transition-all md:block">
+                <div className="aspect-[16/10] w-32 shrink-0 overflow-hidden bg-muted relative md:w-auto">
                   <img src={b.img} alt={b.name} loading="lazy" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
                   {b.verified && (
-                    <span className="absolute top-3 left-3 inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-foreground/90 backdrop-blur text-background text-xs font-semibold">
-                      <BadgeCheck className="h-3.5 w-3.5 text-coral" /> PRO Verificado
+                    <span className="absolute top-2 left-2 md:top-3 md:left-3 inline-flex items-center gap-1 px-2 py-0.5 md:px-2.5 md:py-1 rounded-full bg-foreground/90 backdrop-blur text-background text-[10px] md:text-xs font-semibold">
+                      <BadgeCheck className="h-3.5 w-3.5 text-coral" /> <span className="hidden md:inline">PRO Verificado</span><span className="md:hidden">PRO</span>
                     </span>
                   )}
                 </div>
-                <div className="p-6">
+                <div className="min-w-0 flex-1 p-4 md:p-6">
                   <div className="flex items-center gap-2 text-xs">
                     <span className="px-2.5 py-1 rounded-full bg-secondary text-secondary-foreground font-semibold uppercase tracking-wider">{b.category}</span>
                   </div>
-                  <h3 className="mt-3 font-display text-2xl font-bold group-hover:text-coral transition-colors">{b.name}</h3>
+                  <h3 className="mt-2 md:mt-3 font-display text-lg md:text-2xl font-bold group-hover:text-coral transition-colors line-clamp-2">{b.name}</h3>
                   <div className="mt-2 flex items-center gap-1 text-sm">
                     <Star className="h-4 w-4 fill-coral text-coral" />
                     <span className="font-bold">{b.rating}</span>
                     <span className="text-muted-foreground">({b.reviews} reseñas)</span>
                   </div>
-                  <div className="mt-3 flex items-center gap-1.5 text-sm text-muted-foreground">
-                    <MapPin className="h-4 w-4 shrink-0" /> {b.address}
+                  <div className="mt-2 md:mt-3 flex items-center gap-1.5 text-sm text-muted-foreground">
+                    <MapPin className="h-4 w-4 shrink-0" /> <span className="truncate">{b.address}</span>
                   </div>
-                  <div className="mt-5 w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-full bg-foreground text-background font-semibold text-sm group-hover:bg-coral transition">
+                  <div className="mt-4 md:mt-5 w-full inline-flex items-center justify-center gap-2 px-4 py-2 md:py-2.5 rounded-full bg-foreground text-background font-semibold text-xs md:text-sm group-hover:bg-coral transition">
                     {b.verified ? (<>Ver ficha PRO <ArrowRight className="h-4 w-4" /></>) : (<><Phone className="h-4 w-4" /> Ver contacto</>)}
                   </div>
                 </div>
               </article>
             );
+
 
             return b.verified ? (
               <Link key={b.slug} to="/directorio/$slug" params={{ slug: b.slug }} className="block">
