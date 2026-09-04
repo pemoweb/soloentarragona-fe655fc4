@@ -83,7 +83,10 @@ function MarketplaceDetail() {
   const [details, setDetails] = useState("");
   const [reported, setReported] = useState(false);
 
-  const related = MARKETPLACE_ITEMS.filter((p) => p.slug !== item.slug && p.category === item.category).slice(0, 3);
+  const sameCategory = MARKETPLACE_ITEMS.filter((p) => p.slug !== item.slug && p.category === item.category);
+  const others = MARKETPLACE_ITEMS.filter((p) => p.slug !== item.slug && p.category !== item.category);
+  const related = [...sameCategory, ...others].slice(0, 3);
+
   const discount = item.oldPrice ? Math.round((1 - item.price / item.oldPrice) * 100) : 0;
 
   const handleShare = () => {
