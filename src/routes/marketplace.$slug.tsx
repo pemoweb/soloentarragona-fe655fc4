@@ -12,24 +12,51 @@ export const Route = createFileRoute("/marketplace/$slug")({
     if (!item) throw notFound();
     return item;
   },
-  head: ({ loaderData }) => {
+  head: ({ params, loaderData }) => {
     if (!loaderData) {
       return { meta: [{ title: "Anuncio no encontrado — Marketplace Tarragona" }, { name: "robots", content: "noindex" }] };
     }
     const title = `${loaderData.title} — ${formatEuro(loaderData.price)} en Tarragona`;
+    const description = loaderData.description.slice(0, 155);
+    const url = `https://soloentarragona.lovable.app/marketplace/${params.slug}`;
     return {
       meta: [
         { title },
-        { name: "description", content: loaderData.description.slice(0, 155) },
+        { name: "description", content: description },
         { property: "og:type", content: "product" },
         { property: "og:title", content: title },
-        { property: "og:description", content: loaderData.description.slice(0, 155) },
-        { property: "og:image", content: loaderData.gallery[0] },
+        { property: "og:description", content: description },
+        { property: "og:url", content: url },
+        { property: "product:price:amount", content: String(loaderData.price) },
+        { property: "product:price:currency", content: "EUR" },
         { name: "twitter:card", content: "summary_large_image" },
-        { name: "twitter:image", content: loaderData.gallery[0] },
+      ],
+      links: [{ rel: "canonical", href: url }],
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Product",
+            name: loaderData.title,
+            description: loaderData.description,
+            category: loaderData.category,
+            itemCondition: "https://schema.org/UsedCondition",
+            offers: {
+              "@type": "Offer",
+              price: loaderData.price,
+              priceCurrency: "EUR",
+              availability: "https://schema.org/InStock",
+              url,
+              areaServed: loaderData.location,
+              seller: { "@type": "Person", name: loaderData.seller.name },
+            },
+          }),
+        },
       ],
     };
   },
+
   notFoundComponent: MarketplaceNotFound,
   component: MarketplaceDetail,
 });
@@ -56,7 +83,10 @@ function MarketplaceDetail() {
   const [details, setDetails] = useState("");
   const [reported, setReported] = useState(false);
 
-  const related = MARKETPLACE_ITEMS.filter((p) => p.slug !== item.slug && p.category === item.category).slice(0, 3);
+  const sameCategory = MARKETPLACE_ITEMS.filter((p) => p.slug !== item.slug && p.category === item.category);
+  const others = MARKETPLACE_ITEMS.filter((p) => p.slug !== item.slug && p.category !== item.category);
+  const related = [...sameCategory, ...others].slice(0, 3);
+
   const discount = item.oldPrice ? Math.round((1 - item.price / item.oldPrice) * 100) : 0;
 
   const handleShare = () => {

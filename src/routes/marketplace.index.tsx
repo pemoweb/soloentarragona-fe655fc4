@@ -1,5 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { PageShell } from "@/components/PageShell";
+import { MiniCarousel } from "@/components/MiniCarousel";
+
 import { Search, MapPin, Heart, Filter, RotateCcw, ArrowRight } from "lucide-react";
 import { useState } from "react";
 import { useDynamicSeo } from "@/lib/use-dynamic-seo";
@@ -166,18 +168,13 @@ function MarketplacePage() {
             onClick={() => navigate({ to: "/marketplace/$slug", params: { slug: featured.slug } })}
             className="group mt-10 grid cursor-pointer overflow-hidden rounded-3xl border border-border bg-card shadow-card transition hover:shadow-glow lg:grid-cols-2"
           >
-            <div className="relative aspect-[4/3] lg:aspect-auto lg:h-full overflow-hidden">
-              <img
-                src={featured.gallery[0]}
-                alt={featured.title}
-                width={1024}
-                height={768}
-                className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
-              />
-              <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-coral text-coral-foreground text-xs font-bold uppercase tracking-wider shadow-lg">
+            <div className="relative">
+              <MiniCarousel images={featured.gallery} alt={featured.title} className="aspect-[4/3] lg:aspect-square" />
+              <span className="pointer-events-none absolute top-4 left-4 px-3 py-1 rounded-full bg-coral text-coral-foreground text-xs font-bold uppercase tracking-wider shadow-lg">
                 Destacado
               </span>
             </div>
+
             <div className="p-8 md:p-10 flex flex-col justify-center">
               <span className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">{featured.category}</span>
               <h2 className="mt-3 font-display text-3xl md:text-4xl font-black leading-tight">{featured.title}</h2>
@@ -208,32 +205,26 @@ function MarketplacePage() {
               onClick={() => navigate({ to: "/marketplace/$slug", params: { slug: p.slug } })}
               className="group cursor-pointer rounded-2xl bg-card border border-border overflow-hidden hover:shadow-glow transition-all hover:-translate-y-1"
             >
-              <div className="relative aspect-[4/3] overflow-hidden">
-                <img
-                  src={p.gallery[0]}
-                  alt={p.title}
-                  loading="lazy"
-                  width={1024}
-                  height={768}
-                  className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-transparent to-transparent opacity-80" />
-                <span className="absolute bottom-3 left-3 font-display text-2xl font-black text-background drop-shadow">
+              <div className="relative">
+                <MiniCarousel images={p.gallery} alt={p.title} className="aspect-[4/3]" />
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-foreground/70 via-transparent to-transparent opacity-80" />
+                <span className="pointer-events-none absolute bottom-3 left-3 font-display text-2xl font-black text-background drop-shadow">
                   {formatEuro(p.price)}
                 </span>
                 {p.featured && (
-                  <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-coral text-coral-foreground text-xs font-bold uppercase tracking-wider shadow-lg">
+                  <span className="pointer-events-none absolute top-3 left-3 px-2.5 py-1 rounded-full bg-coral text-coral-foreground text-xs font-bold uppercase tracking-wider shadow-lg">
                     Destacado
                   </span>
                 )}
                 <button
                   aria-label="Guardar en favoritos"
                   onClick={(e) => e.stopPropagation()}
-                  className="absolute top-3 right-3 grid h-9 w-9 place-items-center rounded-full bg-background/90 backdrop-blur hover:bg-coral hover:text-coral-foreground transition"
+                  className="absolute top-3 right-3 z-10 grid h-9 w-9 place-items-center rounded-full bg-background/90 backdrop-blur hover:bg-coral hover:text-coral-foreground transition"
                 >
                   <Heart className="h-4 w-4" />
                 </button>
               </div>
+
               <div className="p-4">
                 <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">{p.category}</span>
                 <h3 className="mt-1 font-semibold leading-tight line-clamp-2">{p.title}</h3>
