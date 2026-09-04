@@ -230,16 +230,18 @@ function MarketplaceDetail() {
         {related.length > 0 && (
           <section className="mt-20">
             <h2 className="font-display text-3xl font-black mb-8">Anuncios similares</h2>
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="flex flex-col gap-4 lg:grid lg:grid-cols-3 lg:gap-6">
               {related.map((p) => (
-                <article key={p.slug} className="rounded-2xl bg-card border border-border overflow-hidden hover:shadow-card transition-all hover:-translate-y-1">
-                  <MiniCarousel images={p.gallery} alt={p.title} />
-                  <div className="p-5">
+                <article key={p.slug} className="rounded-2xl bg-card border border-border overflow-hidden hover:shadow-card transition-all hover:-translate-y-1 flex lg:block">
+                  <div className="w-32 shrink-0 sm:w-44 lg:w-auto">
+                    <MiniCarousel images={p.gallery} alt={p.title} />
+                  </div>
+                  <div className="p-4 sm:p-5 flex-1 flex flex-col justify-center lg:block">
                     <div className="text-xs font-bold uppercase tracking-wider text-coral">{p.category}</div>
-                    <h3 className="mt-1 font-display text-lg font-bold">{p.title}</h3>
-                    <div className="mt-2 flex items-center justify-between">
-                      <span className="font-display text-lg font-black">{formatEuro(p.price)}</span>
-                      <Link to="/marketplace/$slug" params={{ slug: p.slug }} className="text-sm font-semibold text-coral hover:underline">
+                    <h3 className="mt-1 font-display text-base sm:text-lg font-bold line-clamp-2">{p.title}</h3>
+                    <div className="mt-2 flex items-center justify-between gap-2">
+                      <span className="font-display text-base sm:text-lg font-black">{formatEuro(p.price)}</span>
+                      <Link to="/marketplace/$slug" params={{ slug: p.slug }} className="text-sm font-semibold text-coral hover:underline whitespace-nowrap">
                         Ver detalle
                       </Link>
                     </div>
