@@ -208,32 +208,26 @@ function MarketplacePage() {
               onClick={() => navigate({ to: "/marketplace/$slug", params: { slug: p.slug } })}
               className="group cursor-pointer rounded-2xl bg-card border border-border overflow-hidden hover:shadow-glow transition-all hover:-translate-y-1"
             >
-              <div className="relative aspect-[4/3] overflow-hidden">
-                <img
-                  src={p.gallery[0]}
-                  alt={p.title}
-                  loading="lazy"
-                  width={1024}
-                  height={768}
-                  className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-transparent to-transparent opacity-80" />
-                <span className="absolute bottom-3 left-3 font-display text-2xl font-black text-background drop-shadow">
+              <div className="relative">
+                <MiniCarousel images={p.gallery} alt={p.title} className="aspect-[4/3]" />
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-foreground/70 via-transparent to-transparent opacity-80" />
+                <span className="pointer-events-none absolute bottom-3 left-3 font-display text-2xl font-black text-background drop-shadow">
                   {formatEuro(p.price)}
                 </span>
                 {p.featured && (
-                  <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-coral text-coral-foreground text-xs font-bold uppercase tracking-wider shadow-lg">
+                  <span className="pointer-events-none absolute top-3 left-3 px-2.5 py-1 rounded-full bg-coral text-coral-foreground text-xs font-bold uppercase tracking-wider shadow-lg">
                     Destacado
                   </span>
                 )}
                 <button
                   aria-label="Guardar en favoritos"
                   onClick={(e) => e.stopPropagation()}
-                  className="absolute top-3 right-3 grid h-9 w-9 place-items-center rounded-full bg-background/90 backdrop-blur hover:bg-coral hover:text-coral-foreground transition"
+                  className="absolute top-3 right-3 z-10 grid h-9 w-9 place-items-center rounded-full bg-background/90 backdrop-blur hover:bg-coral hover:text-coral-foreground transition"
                 >
                   <Heart className="h-4 w-4" />
                 </button>
               </div>
+
               <div className="p-4">
                 <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">{p.category}</span>
                 <h3 className="mt-1 font-semibold leading-tight line-clamp-2">{p.title}</h3>
