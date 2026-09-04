@@ -166,18 +166,13 @@ function MarketplacePage() {
             onClick={() => navigate({ to: "/marketplace/$slug", params: { slug: featured.slug } })}
             className="group mt-10 grid cursor-pointer overflow-hidden rounded-3xl border border-border bg-card shadow-card transition hover:shadow-glow lg:grid-cols-2"
           >
-            <div className="relative aspect-[4/3] lg:aspect-auto lg:h-full overflow-hidden">
-              <img
-                src={featured.gallery[0]}
-                alt={featured.title}
-                width={1024}
-                height={768}
-                className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
-              />
-              <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-coral text-coral-foreground text-xs font-bold uppercase tracking-wider shadow-lg">
+            <div className="relative">
+              <MiniCarousel images={featured.gallery} alt={featured.title} className="aspect-[4/3] lg:aspect-square" />
+              <span className="pointer-events-none absolute top-4 left-4 px-3 py-1 rounded-full bg-coral text-coral-foreground text-xs font-bold uppercase tracking-wider shadow-lg">
                 Destacado
               </span>
             </div>
+
             <div className="p-8 md:p-10 flex flex-col justify-center">
               <span className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">{featured.category}</span>
               <h2 className="mt-3 font-display text-3xl md:text-4xl font-black leading-tight">{featured.title}</h2>
