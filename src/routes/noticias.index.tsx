@@ -177,15 +177,15 @@ function NewsPage() {
 
         {/* Grid */}
         {rest.length > 0 && (
-          <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-16 flex flex-col gap-5 sm:grid sm:gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {rest.map((n) => (
               <Link
                 to="/noticias/$slug"
                 params={{ slug: n.slug }}
                 key={n.slug}
-                className="group"
+                className="group flex gap-4 sm:block"
               >
-                <div className="aspect-[4/3] overflow-hidden rounded-2xl bg-muted">
+                <div className="aspect-[4/3] w-32 shrink-0 overflow-hidden rounded-2xl bg-muted sm:w-auto">
                   <img
                     src={n.cover}
                     alt={n.title}
@@ -193,21 +193,24 @@ function NewsPage() {
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                 </div>
-                <div className="mt-4 flex items-center gap-2 text-xs">
-                  <span className="px-2.5 py-1 rounded-full bg-coral/10 text-coral font-semibold uppercase tracking-wider">
-                    {n.category}
-                  </span>
-                  <span className="text-muted-foreground">
-                    · {formatRelativeDate(n.publishedAt)}
-                  </span>
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-2 text-xs sm:mt-4">
+                    <span className="px-2.5 py-1 rounded-full bg-coral/10 text-coral font-semibold uppercase tracking-wider">
+                      {n.category}
+                    </span>
+                    <span className="text-muted-foreground">
+                      · {formatRelativeDate(n.publishedAt)}
+                    </span>
+                  </div>
+                  <h3 className="mt-2 font-display text-lg sm:text-xl font-bold leading-snug group-hover:text-coral transition-colors line-clamp-2">
+                    {n.title}
+                  </h3>
+                  <p className="mt-2 text-sm text-muted-foreground line-clamp-2">{n.excerpt}</p>
                 </div>
-                <h3 className="mt-3 font-display text-xl font-bold leading-snug group-hover:text-coral transition-colors">
-                  {n.title}
-                </h3>
-                <p className="mt-2 text-sm text-muted-foreground line-clamp-2">{n.excerpt}</p>
               </Link>
             ))}
           </div>
+
         )}
       </section>
     </PageShell>
