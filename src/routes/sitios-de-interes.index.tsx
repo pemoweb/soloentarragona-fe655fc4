@@ -50,17 +50,15 @@ export const categoryIcons: Record<string, LucideIcon> = {
   Miradores: Binoculars,
 };
 
-function SitioCard({ sitio, featured = false }: { sitio: Sitio; featured?: boolean }) {
+function FeaturedSitioCard({ sitio }: { sitio: Sitio }) {
   const Icon = categoryIcons[sitio.category] ?? Landmark;
   return (
     <Link
       to="/sitios-de-interes/$slug"
       params={{ slug: sitio.slug }}
-      className={`group relative flex flex-col overflow-hidden rounded-3xl bg-card border border-border shadow-card transition-all duration-300 hover:-translate-y-1.5 hover:shadow-glow ${
-        featured ? "sm:col-span-2 lg:col-span-2" : ""
-      }`}
+      className="group relative flex flex-col overflow-hidden rounded-3xl bg-card border border-border shadow-card transition-all duration-300 hover:-translate-y-1.5 hover:shadow-glow sm:col-span-2 lg:col-span-3"
     >
-      <div className={`relative overflow-hidden bg-muted ${featured ? "aspect-[16/8]" : "aspect-[4/3]"}`}>
+      <div className="relative overflow-hidden bg-muted aspect-[16/9] md:aspect-[16/6]">
         <img
           src={sitio.img}
           alt={sitio.name}
@@ -69,7 +67,7 @@ function SitioCard({ sitio, featured = false }: { sitio: Sitio; featured?: boole
           height={1024}
           className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-primary/70 via-primary/10 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/20 to-transparent" />
         <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-background/90 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-foreground backdrop-blur">
           <Icon className="h-3.5 w-3.5 text-coral" />
           {sitio.category}
@@ -79,40 +77,61 @@ function SitioCard({ sitio, featured = false }: { sitio: Sitio; featured?: boole
             {sitio.price.split("·")[0].trim()}
           </span>
         )}
-        <div className="absolute inset-x-0 bottom-0 p-5">
-          <h2
-            className={`font-display font-black text-primary-foreground text-balance leading-tight ${
-              featured ? "text-3xl md:text-4xl" : "text-2xl"
-            }`}
-          >
+        <div className="absolute inset-x-0 bottom-0 p-6 md:p-10">
+          <h2 className="font-display font-black text-primary-foreground text-balance leading-tight text-3xl md:text-5xl">
             {sitio.name}
           </h2>
+          <p className="mt-3 max-w-2xl text-sm md:text-lg text-primary-foreground/80 line-clamp-2">
+            {sitio.short}
+          </p>
         </div>
       </div>
+    </Link>
+  );
+}
 
-      <div className="flex flex-1 flex-col p-6">
-        <p className="text-sm leading-relaxed text-muted-foreground">{sitio.short}</p>
-        <div className="mt-4 space-y-1.5 text-xs text-muted-foreground">
-          <div className="flex items-center gap-2">
-            <MapPin className="h-3.5 w-3.5 shrink-0 text-coral" /> {sitio.address}
-          </div>
-          {sitio.hours && (
-            <div className="flex items-center gap-2">
-              <Clock className="h-3.5 w-3.5 shrink-0 text-coral" /> {sitio.hours}
-            </div>
-          )}
-          {sitio.price && (
-            <div className="flex items-center gap-2">
-              <Ticket className="h-3.5 w-3.5 shrink-0 text-coral" /> {sitio.price}
-            </div>
-          )}
-        </div>
-        <div className="mt-auto pt-5">
-          <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-foreground transition-colors group-hover:text-coral">
-            Ver ficha
-            <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+function SitioListCard({ sitio }: { sitio: Sitio }) {
+  const Icon = categoryIcons[sitio.category] ?? Landmark;
+  return (
+    <Link
+      to="/sitios-de-interes/$slug"
+      params={{ slug: sitio.slug }}
+      className="group flex gap-4 sm:block"
+    >
+      <div className="relative aspect-[4/3] w-32 shrink-0 overflow-hidden rounded-2xl bg-muted sm:w-auto">
+        <img
+          src={sitio.img}
+          alt={sitio.name}
+          loading="lazy"
+          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+        />
+        <span className="absolute left-2 top-2 inline-flex items-center gap-1 rounded-full bg-background/90 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-foreground backdrop-blur sm:hidden">
+          <Icon className="h-3 w-3 text-coral" />
+          {sitio.category}
+        </span>
+      </div>
+      <div className="min-w-0 flex-1">
+        <div className="flex items-center gap-2 text-xs sm:mt-4">
+          <span className="hidden sm:inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-coral/10 text-coral font-semibold uppercase tracking-wider">
+            <Icon className="h-3 w-3" />
+            {sitio.category}
           </span>
+          {sitio.price && (
+            <span className="text-muted-foreground">· {sitio.price.split("·")[0].trim()}</span>
+          )}
         </div>
+        <h3 className="mt-2 font-display text-lg sm:text-xl font-bold leading-snug group-hover:text-coral transition-colors line-clamp-2">
+          {sitio.name}
+        </h3>
+        <p className="mt-2 text-sm text-muted-foreground line-clamp-2">{sitio.short}</p>
+        <div className="mt-2 flex items-center gap-1.5 text-xs text-muted-foreground">
+          <MapPin className="h-3 w-3 shrink-0 text-coral" />
+          <span className="truncate">{sitio.address}</span>
+        </div>
+        <span className="mt-2 hidden sm:inline-flex items-center gap-1.5 text-sm font-semibold text-foreground transition-colors group-hover:text-coral">
+          Ver ficha
+          <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+        </span>
       </div>
     </Link>
   );
