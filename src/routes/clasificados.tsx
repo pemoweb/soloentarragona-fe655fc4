@@ -401,8 +401,16 @@ function ClasificadosPage() {
         <DialogContent>
           {selectedAd && (
             <>
+              <div className="relative -mx-6 -mt-6 aspect-[16/9] overflow-hidden">
+                <img
+                  src={classifiedImage(selectedAd.cat)}
+                  alt={selectedAd.cat}
+                  className="h-full w-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent" />
+              </div>
               <DialogHeader>
-                <div className="flex items-center gap-2 mb-2 text-xs">
+                <div className="flex items-center gap-2 -mt-2 text-xs">
                   <span className="px-2.5 py-1 rounded-full bg-secondary text-secondary-foreground font-semibold uppercase tracking-wider">
                     {selectedAd.cat}
                   </span>
