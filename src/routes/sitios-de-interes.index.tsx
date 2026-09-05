@@ -241,13 +241,21 @@ function SitiosIndexPage() {
           {list.length} {list.length === 1 ? "sitio" : "sitios"} encontrados
         </p>
 
-        {/* Grid con destacado */}
-        <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {featured && <SitioCard sitio={featured} featured />}
-          {rest.map((s) => (
-            <SitioCard key={s.slug} sitio={s} />
-          ))}
-        </div>
+        {/* Destacado */}
+        {featured && (
+          <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <FeaturedSitioCard sitio={featured} />
+          </div>
+        )}
+
+        {/* Resto: lista en móvil, cuadrícula en escritorio */}
+        {rest.length > 0 && (
+          <div className="mt-10 flex flex-col gap-5 sm:grid sm:gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {rest.map((s) => (
+              <SitioListCard key={s.slug} sitio={s} />
+            ))}
+          </div>
+        )}
       </section>
     </PageShell>
   );
