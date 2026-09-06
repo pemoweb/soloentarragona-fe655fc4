@@ -73,6 +73,8 @@ function SitioDetailPage() {
   const { sitio } = Route.useLoaderData();
   const related = sitios.filter((s) => s.slug !== sitio.slug && s.category === sitio.category).slice(0, 3);
   const Icon = categoryIcons[sitio.category] ?? MapPin;
+  const [mapOpen, setMapOpen] = useState(false);
+
 
   return (
     <PageShell>
