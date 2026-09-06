@@ -1,4 +1,5 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { useState } from "react";
 import {
   MapPin,
   Clock,
@@ -9,10 +10,20 @@ import {
   Check,
   Navigation,
   Hourglass,
+  Map,
 } from "lucide-react";
 import { PageShell } from "@/components/PageShell";
+import { SitiosMap } from "@/components/SitiosMap";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { getSitio, sitios } from "@/lib/sitios-data";
 import { categoryIcons } from "./sitios-de-interes.index";
+
 
 export const Route = createFileRoute("/sitios-de-interes/$slug")({
   loader: ({ params }) => {
@@ -62,6 +73,8 @@ function SitioDetailPage() {
   const { sitio } = Route.useLoaderData();
   const related = sitios.filter((s) => s.slug !== sitio.slug && s.category === sitio.category).slice(0, 3);
   const Icon = categoryIcons[sitio.category] ?? MapPin;
+  const [mapOpen, setMapOpen] = useState(false);
+
 
   return (
     <PageShell>
@@ -194,15 +207,44 @@ function SitioDetailPage() {
               </div>
 
               {sitio.coords && (
-                <div className="overflow-hidden rounded-3xl border border-border shadow-card">
-                  <iframe
-                    title={`Mapa de ${sitio.name}`}
-                    loading="lazy"
-                    className="h-64 w-full"
-                    src={`https://www.google.com/maps?q=${sitio.coords.lat},${sitio.coords.lng}&z=15&output=embed`}
-                  />
-                </div>
+                <>
+                  <button
+                    type="button"
+                    onClick={() => setMapOpen(true)}
+                    className="flex w-full items-center justify-center gap-2 rounded-3xl border border-border bg-card px-5 py-4 font-semibold shadow-card transition-colors hover:border-coral/60 hover:text-coral"
+                  >
+                    <Map className="h-4 w-4 text-coral" /> Ver en el mapa interactivo
+                  </button>
+
+                  <Dialog open={mapOpen} onOpenChange={setMapOpen}>
+                    <DialogContent className="max-w-3xl">
+                      <DialogHeader>
+                        <DialogTitle className="font-display text-2xl font-black">
+                          {sitio.name} en el mapa
+                        </DialogTitle>
+                        <DialogDescription>
+                          Marcador coral: este lugar. Pulsa cualquier otro marcador para ver su ficha.
+                        </DialogDescription>
+                      </DialogHeader>
+                      <SitiosMap
+                        sitios={sitios}
+                        activeSlug={sitio.slug}
+                        className="h-[300px] md:h-[440px]"
+                      />
+                    </DialogContent>
+                  </Dialog>
+
+                  <div className="overflow-hidden rounded-3xl border border-border shadow-card">
+                    <iframe
+                      title={`Mapa de ${sitio.name}`}
+                      loading="lazy"
+                      className="h-64 w-full"
+                      src={`https://www.google.com/maps?q=${sitio.coords.lat},${sitio.coords.lng}&z=15&output=embed`}
+                    />
+                  </div>
+                </>
               )}
+
             </aside>
           </div>
 

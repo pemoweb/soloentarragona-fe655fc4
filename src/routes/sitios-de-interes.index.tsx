@@ -14,8 +14,10 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { PageShell } from "@/components/PageShell";
+import { SitiosMap } from "@/components/SitiosMap";
 import { sitios, siteCategories, type SiteCategory, type Sitio } from "@/lib/sitios-data";
 import { useDynamicSeo } from "@/lib/use-dynamic-seo";
+
 
 export const Route = createFileRoute("/sitios-de-interes/")({
   head: () => ({
@@ -254,7 +256,23 @@ function SitiosIndexPage() {
             ))}
           </div>
         )}
+
+        {/* Mapa interactivo */}
+        <div className="mt-16">
+          <div className="flex items-end justify-between gap-4">
+            <div>
+              <h2 className="font-display text-3xl font-black">Todos los lugares en el mapa</h2>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Pulsa un marcador para ver el nombre y abrir su ficha.
+              </p>
+            </div>
+          </div>
+          <div className="mt-6">
+            <SitiosMap sitios={list} className="h-[380px] md:h-[520px]" />
+          </div>
+        </div>
       </section>
+
     </PageShell>
   );
 }
