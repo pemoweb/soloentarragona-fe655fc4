@@ -1,4 +1,5 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { useState } from "react";
 import {
   MapPin,
   Clock,
@@ -9,10 +10,20 @@ import {
   Check,
   Navigation,
   Hourglass,
+  Map,
 } from "lucide-react";
 import { PageShell } from "@/components/PageShell";
+import { SitiosMap } from "@/components/SitiosMap";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { getSitio, sitios } from "@/lib/sitios-data";
 import { categoryIcons } from "./sitios-de-interes.index";
+
 
 export const Route = createFileRoute("/sitios-de-interes/$slug")({
   loader: ({ params }) => {
