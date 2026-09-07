@@ -22,20 +22,45 @@ import { useDynamicSeo } from "@/lib/use-dynamic-seo";
 export const Route = createFileRoute("/sitios-de-interes/")({
   head: () => ({
     meta: [
-      { title: "Sitios de Interés en Tarragona — Qué ver y visitar" },
+      { title: "Qué ver en Tarragona: 6 sitios de interés imprescindibles" },
       {
         name: "description",
         content:
-          "Guía de los sitios de interés de Tarragona: patrimonio romano, playas, museos, miradores y naturaleza, con horarios, precios y cómo llegar.",
+          "Qué visitar en Tarragona: anfiteatro romano, catedral, Balcó del Mediterrani, playas, museos y miradores, con horarios, precios, duración y mapa interactivo.",
       },
-      { property: "og:title", content: "Sitios de Interés en Tarragona — Qué ver y visitar" },
+      {
+        name: "keywords",
+        content:
+          "qué ver en Tarragona, sitios de interés Tarragona, turismo Tarragona, anfiteatro romano Tarragona, playas Tarragona, museos Tarragona",
+      },
+      { property: "og:title", content: "Qué ver en Tarragona: sitios de interés imprescindibles" },
       {
         property: "og:description",
         content:
-          "Patrimonio UNESCO, playas urbanas, museos y miradores: descubre los lugares imprescindibles de Tarragona.",
+          "Patrimonio romano UNESCO, playas urbanas, museos y miradores: los lugares imprescindibles de Tarragona con horarios y mapa.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://soloentarragona.lovable.app/sitios-de-interes" },
+      { property: "og:locale", content: "es_ES" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "geo.placename", content: "Tarragona, Catalunya, España" },
+      { name: "geo.region", content: "ES-T" },
+    ],
+    links: [{ rel: "canonical", href: "https://soloentarragona.lovable.app/sitios-de-interes" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          name: "Sitios de interés en Tarragona",
+          description:
+            "Guía de lugares imprescindibles de Tarragona: patrimonio romano, playas, museos, miradores y naturaleza.",
+          url: "https://soloentarragona.lovable.app/sitios-de-interes",
+          inLanguage: "es-ES",
+          about: { "@type": "City", name: "Tarragona" },
+        }),
+      },
     ],
   }),
   component: SitiosIndexPage,

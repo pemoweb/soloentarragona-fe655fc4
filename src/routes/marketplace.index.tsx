@@ -45,12 +45,41 @@ const SEO_BY_CAT: Record<string, { title: string; description: string }> = {
 export const Route = createFileRoute("/marketplace/")({
   head: () => ({
     meta: [
-      { title: "Marketplace de Tarragona — Compra y vende cerca de ti" },
-      { name: "description", content: "Compra y vende productos de segunda mano y nuevos en Tarragona y alrededores." },
+      { title: "Segunda mano en Tarragona — Marketplace local para comprar y vender" },
+      {
+        name: "description",
+        content:
+          "Compra y vende de segunda mano en Tarragona: electrónica, muebles, moda, deporte y vehículos. Anuncios de vecinos y comercios locales, sin intermediarios.",
+      },
+      {
+        name: "keywords",
+        content:
+          "segunda mano Tarragona, marketplace Tarragona, comprar y vender Tarragona, anuncios Tarragona, muebles Tarragona, móviles Tarragona",
+      },
       { property: "og:type", content: "website" },
-      { property: "og:title", content: "Marketplace de Tarragona — Compra y vende cerca de ti" },
-      { property: "og:description", content: "Miles de productos publicados por vecinos y comercios locales de Tarragona." },
+      { property: "og:title", content: "Segunda mano en Tarragona — Marketplace local" },
+      { property: "og:description", content: "Productos de segunda mano publicados por vecinos y comercios locales de Tarragona." },
+      { property: "og:url", content: "https://soloentarragona.lovable.app/marketplace" },
+      { property: "og:locale", content: "es_ES" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "geo.placename", content: "Tarragona, Catalunya, España" },
+      { name: "geo.region", content: "ES-T" },
+    ],
+    links: [{ rel: "canonical", href: "https://soloentarragona.lovable.app/marketplace" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          name: "Marketplace de segunda mano en Tarragona",
+          description:
+            "Anuncios de compraventa de segunda mano en Tarragona: electrónica, hogar, moda, deporte y vehículos.",
+          url: "https://soloentarragona.lovable.app/marketplace",
+          inLanguage: "es-ES",
+          about: { "@type": "City", name: "Tarragona" },
+        }),
+      },
     ],
   }),
   component: MarketplacePage,
