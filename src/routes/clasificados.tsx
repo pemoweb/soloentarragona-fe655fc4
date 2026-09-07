@@ -42,20 +42,47 @@ import { REPORT_REASONS, submitReport } from "@/lib/reports";
 export const Route = createFileRoute("/clasificados")({
   head: () => ({
     meta: [
-      { title: "Clasificados gratis en Tarragona — 7 días" },
+      { title: "Clasificados en Tarragona: empleo, alquiler, venta y servicios" },
       {
         name: "description",
         content:
-          "Publica tu anuncio gratis durante 7 días: empleo, alquiler, venta y servicios en Tarragona.",
+          "Anuncios clasificados de Tarragona: ofertas de empleo, pisos de alquiler, compraventa de segunda mano y servicios por barrios. Publica gratis 7 días.",
       },
       {
+        name: "keywords",
+        content:
+          "clasificados Tarragona, anuncios Tarragona, empleo Tarragona, alquiler Tarragona, segunda mano Tarragona, servicios Tarragona",
+      },
+      { property: "og:type", content: "website" },
+      {
         property: "og:title",
-        content: "Clasificados gratis en Tarragona",
+        content: "Clasificados en Tarragona: empleo, alquiler, venta y servicios",
       },
       {
         property: "og:description",
         content:
-          "Empleo, alquiler, venta y servicios entre vecinos de Tarragona.",
+          "Empleo, alquiler, segunda mano y servicios entre vecinos de Tarragona, por barrios y con contacto directo.",
+      },
+      { property: "og:url", content: "https://soloentarragona.lovable.app/clasificados" },
+      { property: "og:locale", content: "es_ES" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "geo.placename", content: "Tarragona, Catalunya, España" },
+      { name: "geo.region", content: "ES-T" },
+    ],
+    links: [{ rel: "canonical", href: "https://soloentarragona.lovable.app/clasificados" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          name: "Clasificados en Tarragona",
+          description:
+            "Anuncios clasificados de empleo, alquiler, venta de segunda mano y servicios en Tarragona.",
+          url: "https://soloentarragona.lovable.app/clasificados",
+          inLanguage: "es-ES",
+          about: { "@type": "City", name: "Tarragona", address: { "@type": "PostalAddress", addressLocality: "Tarragona", addressRegion: "Catalunya", addressCountry: "ES" } },
+        }),
       },
     ],
   }),

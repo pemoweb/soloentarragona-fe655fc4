@@ -33,16 +33,44 @@ function newsSeo(category: string, tag: string | null) {
 export const Route = createFileRoute("/noticias/")({
   head: () => ({
     meta: [
-      { title: "Noticias de Tarragona — Solo en Tarragona" },
+      { title: "Noticias de Tarragona hoy: actualidad, cultura y sucesos" },
       {
         name: "description",
         content:
-          "Toda la actualidad, cultura, deportes y sucesos de Tarragona, actualizado a diario.",
+          "Últimas noticias de Tarragona hoy: actualidad de la ciudad y comarca, cultura, deportes, fiestas y sucesos, actualizado a diario por la comunidad local.",
       },
-      { property: "og:title", content: "Noticias de Tarragona" },
+      {
+        name: "keywords",
+        content:
+          "noticias Tarragona, Tarragona hoy, actualidad Tarragona, sucesos Tarragona, cultura Tarragona, deportes Tarragona",
+      },
+      { property: "og:type", content: "website" },
+      { property: "og:title", content: "Noticias de Tarragona hoy" },
       {
         property: "og:description",
-        content: "Lo último de la ciudad, contado por la comunidad.",
+        content:
+          "Actualidad, cultura, deportes y sucesos de Tarragona y su comarca, contados por la comunidad.",
+      },
+      { property: "og:url", content: "https://soloentarragona.lovable.app/noticias" },
+      { property: "og:locale", content: "es_ES" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "geo.placename", content: "Tarragona, Catalunya, España" },
+      { name: "geo.region", content: "ES-T" },
+    ],
+    links: [{ rel: "canonical", href: "https://soloentarragona.lovable.app/noticias" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          name: "Noticias de Tarragona",
+          description:
+            "Últimas noticias de Tarragona: actualidad, cultura, deportes y sucesos de la ciudad y su comarca.",
+          url: "https://soloentarragona.lovable.app/noticias",
+          inLanguage: "es-ES",
+          about: { "@type": "City", name: "Tarragona" },
+        }),
       },
     ],
   }),
