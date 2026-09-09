@@ -7,7 +7,10 @@ export type Classified = {
   location: string;
   time: string;
   description?: string;
+  /** Foto del anuncio (URL o dataURL). Si falta, se usa la de la categoría. */
+  img?: string;
   daysLeft: number;
+
   /** Datos de contacto: solo se exponen a usuarios autenticados. */
   contact?: { name?: string; phone?: string; email?: string };
 };
