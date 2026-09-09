@@ -1,4 +1,6 @@
+import { useEffect, useState } from "react";
 import imgBicicletaUrbanaOrbea from "@/assets/marketplace/bicicleta-urbana-orbea.jpg";
+
 import imgSofaNordico3Plazas from "@/assets/marketplace/sofa-nordico-3-plazas.jpg";
 import imgIphone13128gb from "@/assets/marketplace/iphone-13-128gb.jpg";
 import imgMesaComedorMaderaMaciza from "@/assets/marketplace/mesa-comedor-madera-maciza.jpg";
@@ -144,10 +146,100 @@ export const MARKETPLACE_ITEMS: MarketplaceItem[] = [
   },
 ];
 
+const MP_STORAGE_KEY = "set_marketplace_user_v1";
+
+export function slugifyTitle(value: string) {
+  return value
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 60);
+}
+
+export function loadUserMarketplaceItems(): MarketplaceItem[] {
+  if (typeof window === "undefined") return [];
+  try {
+    return JSON.parse(localStorage.getItem(MP_STORAGE_KEY) ?? "[]");
+  } catch {
+    return [];
+  }
+}
+
+function saveUserMarketplaceItems(items: MarketplaceItem[]) {
+  try {
+    localStorage.setItem(MP_STORAGE_KEY, JSON.stringify(items));
+    window.dispatchEvent(new CustomEvent("marketplace-changed"));
+  } catch {
+    /* ignore */
+  }
+}
+
+export type NewMarketplaceItem = {
+  title: string;
+  price: number;
+  location: string;
+  category: string;
+  condition: string;
+  description: string;
+  img: string;
+  sellerName: string;
+  sellerPhone: string;
+};
+
+export function addMarketplaceItem(input: NewMarketplaceItem) {
+  const base = slugifyTitle(input.title) || `anuncio-${Date.now()}`;
+  const existing = loadUserMarketplaceItems();
+  const taken = new Set([...MARKETPLACE_ITEMS, ...existing].map((i) => i.slug));
+  let slug = base;
+  let n = 2;
+  while (taken.has(slug)) slug = `${base}-${n++}`;
+
+  const item: MarketplaceItem = {
+    slug,
+    title: input.title,
+    price: input.price,
+    location: input.location,
+    category: input.category,
+    condition: input.condition,
+    publishedAgo: "hace unos minutos",
+    description: input.description,
+    gallery: input.img ? [input.img] : [],
+    seller: {
+      name: input.sellerName || "Solo en Tarragona",
+      since: String(new Date().getFullYear()),
+      rating: 5,
+      phone: input.sellerPhone || "+34 977 000 000",
+    },
+  };
+  saveUserMarketplaceItems([item, ...existing]);
+  return item;
+}
+
+export function removeUserMarketplaceItem(slug: string) {
+  saveUserMarketplaceItems(loadUserMarketplaceItems().filter((i) => i.slug !== slug));
+}
+
+export function useAllMarketplaceItems() {
+  const [items, setItems] = useState<MarketplaceItem[]>(MARKETPLACE_ITEMS);
+  useEffect(() => {
+    const sync = () => setItems([...loadUserMarketplaceItems(), ...MARKETPLACE_ITEMS]);
+    sync();
+    window.addEventListener("marketplace-changed", sync);
+    return () => window.removeEventListener("marketplace-changed", sync);
+  }, []);
+  return items;
+}
+
 export function getMarketplaceItem(slug: string) {
-  return MARKETPLACE_ITEMS.find((i) => i.slug === slug);
+  return (
+    MARKETPLACE_ITEMS.find((i) => i.slug === slug) ??
+    loadUserMarketplaceItems().find((i) => i.slug === slug)
+  );
 }
 
 export function formatEuro(value: number) {
   return `${value} €`;
 }
+

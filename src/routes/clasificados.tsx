@@ -370,11 +370,17 @@ function ClasificadosPage() {
                   onClick={() => setSelectedAd(a)}
                   className="group relative flex cursor-pointer items-start gap-4 rounded-2xl border border-border bg-card p-5 transition-all hover:-translate-y-0.5 hover:shadow-card"
                 >
-                  <div
-                    className={`hidden sm:grid h-14 w-14 shrink-0 place-items-center rounded-xl bg-gradient-to-br ${meta?.color ?? "from-coral to-orange-400"} text-white`}
-                  >
-                    <Icon className="h-7 w-7" />
+                  <div className="h-20 w-20 sm:h-24 sm:w-24 shrink-0 overflow-hidden rounded-xl bg-muted">
+                    <img
+                      src={classifiedAdImage(a)}
+                      alt={a.title}
+                      loading="lazy"
+                      width={1536}
+                      height={1024}
+                      className="h-full w-full object-cover transition group-hover:scale-105"
+                    />
                   </div>
+
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center justify-between gap-2">
                       <span className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-coral">
