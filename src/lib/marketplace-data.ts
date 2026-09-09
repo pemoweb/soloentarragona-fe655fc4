@@ -1,4 +1,6 @@
+import { useEffect, useState } from "react";
 import imgBicicletaUrbanaOrbea from "@/assets/marketplace/bicicleta-urbana-orbea.jpg";
+
 import imgSofaNordico3Plazas from "@/assets/marketplace/sofa-nordico-3-plazas.jpg";
 import imgIphone13128gb from "@/assets/marketplace/iphone-13-128gb.jpg";
 import imgMesaComedorMaderaMaciza from "@/assets/marketplace/mesa-comedor-madera-maciza.jpg";
