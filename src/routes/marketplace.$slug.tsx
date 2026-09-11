@@ -1,6 +1,7 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, MapPin, Heart, Share2, ShieldCheck, Clock, Star, Phone, AlertTriangle, Check, Tag } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
 import { PageShell } from "@/components/PageShell";
 import { MiniCarousel } from "@/components/MiniCarousel";
 import { MARKETPLACE_ITEMS, getMarketplaceItem, formatEuro, type MarketplaceItem } from "@/lib/marketplace-data";
@@ -73,18 +74,27 @@ function MarketplaceNotFound() {
 }
 
 function MarketplaceDetail() {
-  const item = Route.useLoaderData() as MarketplaceItem;
+  const loaded = Route.useLoaderData() as MarketplaceItem | null;
+  const { slug } = Route.useParams();
+  const [item, setItem] = useState<MarketplaceItem | null>(loaded);
   const [showPhone, setShowPhone] = useState(false);
   const [reporting, setReporting] = useState(false);
   const [reason, setReason] = useState<string>(REPORT_REASONS[0]);
   const [details, setDetails] = useState("");
   const [reported, setReported] = useState(false);
 
+  useEffect(() => {
+    setItem(loaded ?? getMarketplaceItem(slug) ?? null);
+  }, [loaded, slug]);
+
+  if (!item) return <MarketplaceNotFound />;
+
   const sameCategory = MARKETPLACE_ITEMS.filter((p) => p.slug !== item.slug && p.category === item.category);
   const others = MARKETPLACE_ITEMS.filter((p) => p.slug !== item.slug && p.category !== item.category);
   const related = [...sameCategory, ...others].slice(0, 3);
 
   const discount = item.oldPrice ? Math.round((1 - item.price / item.oldPrice) * 100) : 0;
+
 
   const handleShare = () => {
     if (typeof navigator === "undefined") return;
