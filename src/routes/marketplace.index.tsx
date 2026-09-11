@@ -123,7 +123,7 @@ function MarketplacePage() {
           </p>
           <div className="mt-8 flex flex-wrap gap-6 text-sm">
             <div>
-              <div className="font-display text-3xl font-black">{MARKETPLACE_ITEMS.length}</div>
+              <div className="font-display text-3xl font-black">{allItems.length}</div>
               <div className="opacity-80">anuncios activos</div>
             </div>
             <div>
