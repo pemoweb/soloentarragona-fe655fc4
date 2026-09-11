@@ -7,11 +7,8 @@ import { MARKETPLACE_ITEMS, getMarketplaceItem, formatEuro, type MarketplaceItem
 import { REPORT_REASONS, submitReport } from "@/lib/reports";
 
 export const Route = createFileRoute("/marketplace/$slug")({
-  loader: ({ params }): MarketplaceItem => {
-    const item = getMarketplaceItem(params.slug);
-    if (!item) throw notFound();
-    return item;
-  },
+  loader: ({ params }): MarketplaceItem | null => getMarketplaceItem(params.slug) ?? null,
+
   head: ({ params, loaderData }) => {
     if (!loaderData) {
       return { meta: [{ title: "Anuncio no encontrado — Marketplace Tarragona" }, { name: "robots", content: "noindex" }] };
