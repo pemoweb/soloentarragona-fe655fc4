@@ -24,7 +24,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { PageShell } from "@/components/PageShell";
-import { classifiedImage } from "@/lib/clasificados-images";
+import { classifiedAdImage } from "@/lib/clasificados-images";
 import {
   CLASSIFIED_CATEGORIES,
   TARRAGONA_ZONES,
@@ -363,7 +363,7 @@ function ClasificadosPage() {
             {filtered.map((a) => {
               const isFav = favs.has(a.id);
               const Icon = catMeta[a.cat]?.icon ?? ShoppingBag;
-              const meta = catMeta[a.cat];
+              void catMeta[a.cat];
               return (
                 <article
                   key={a.id}
@@ -436,7 +436,7 @@ function ClasificadosPage() {
             <>
               <div className="relative -mx-6 -mt-6 aspect-[16/9] overflow-hidden">
                 <img
-                  src={classifiedImage(selectedAd.cat)}
+                  src={classifiedAdImage(selectedAd)}
                   alt={selectedAd.cat}
                   className="h-full w-full object-cover"
                 />
