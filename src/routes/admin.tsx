@@ -26,7 +26,9 @@ import {
   type ModerationStatus,
 } from "@/lib/moderation";
 import { deleteReport, setReportStatus, useReports } from "@/lib/reports";
+import { AdminPublishForm } from "@/components/AdminPublishForm";
 import { Flag } from "lucide-react";
+
 
 
 export const Route = createFileRoute("/admin")({
@@ -145,7 +147,10 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
           <StatCard label="Rechazados" value={counts.rejected} icon={XCircle} tone="bg-red-500/10 text-red-600" />
         </div>
 
+        <AdminPublishForm />
+
         <ReportsPanel />
+
 
 
 

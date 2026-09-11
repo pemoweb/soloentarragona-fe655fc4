@@ -5,7 +5,7 @@ import { MiniCarousel } from "@/components/MiniCarousel";
 import { Search, MapPin, Heart, Filter, RotateCcw, ArrowRight } from "lucide-react";
 import { useState } from "react";
 import { useDynamicSeo } from "@/lib/use-dynamic-seo";
-import { MARKETPLACE_ITEMS, MARKETPLACE_CATEGORIES, formatEuro } from "@/lib/marketplace-data";
+import { MARKETPLACE_CATEGORIES, formatEuro, useAllMarketplaceItems } from "@/lib/marketplace-data";
 
 const SEO_BY_CAT: Record<string, { title: string; description: string }> = {
   Todo: {
@@ -93,7 +93,9 @@ function MarketplacePage() {
   const seo = SEO_BY_CAT[category] ?? SEO_BY_CAT.Todo;
   useDynamicSeo({ title: seo.title, description: seo.description });
 
-  const filtered = MARKETPLACE_ITEMS.filter((p) => {
+  const allItems = useAllMarketplaceItems();
+
+  const filtered = allItems.filter((p) => {
     if (category !== "Todo" && p.category !== category) return false;
     if (query.trim() && !p.title.toLowerCase().includes(query.trim().toLowerCase())) return false;
     return true;
@@ -103,7 +105,8 @@ function MarketplacePage() {
   const rest = filtered.slice(1);
 
   const countFor = (c: string) =>
-    c === "Todo" ? MARKETPLACE_ITEMS.length : MARKETPLACE_ITEMS.filter((i) => i.category === c).length;
+    c === "Todo" ? allItems.length : allItems.filter((i) => i.category === c).length;
+
 
   return (
     <PageShell>
