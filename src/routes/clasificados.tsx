@@ -363,7 +363,7 @@ function ClasificadosPage() {
             {filtered.map((a) => {
               const isFav = favs.has(a.id);
               const Icon = catMeta[a.cat]?.icon ?? ShoppingBag;
-              void catMeta[a.cat];
+              
               return (
                 <article
                   key={a.id}
