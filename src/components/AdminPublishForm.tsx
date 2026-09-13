@@ -297,6 +297,47 @@ export function AdminPublishForm() {
           </div>
         </div>
 
+        {kind === "marketplace" && (
+          <div className="space-y-4 rounded-2xl border border-border p-4">
+            <div>
+              <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                SEO del anuncio
+              </span>
+              <p className="mt-1 text-xs text-muted-foreground">
+                Lo que verán Google y las redes sociales. Si lo dejas vacío se usa el título,
+                la descripción y la foto del anuncio.
+              </p>
+            </div>
+            <Field label="Título SEO (máx. 60)">
+              <input
+                value={form.seoTitle}
+                onChange={(e) => set({ seoTitle: e.target.value })}
+                maxLength={70}
+                placeholder="Bicicleta urbana Orbea de segunda mano en Tarragona"
+                className="w-full bg-transparent px-3 py-3 focus:outline-none"
+              />
+            </Field>
+            <Field label="Descripción SEO (máx. 155)">
+              <textarea
+                value={form.seoDescription}
+                onChange={(e) => set({ seoDescription: e.target.value })}
+                rows={2}
+                maxLength={160}
+                placeholder="Bici Orbea talla M revisada, 280 €, recogida en la Part Alta de Tarragona."
+                className="w-full resize-y bg-transparent px-3 py-3 focus:outline-none"
+              />
+            </Field>
+            <Field label="Imagen SEO (URL 1200x630)">
+              <input
+                value={form.seoImage}
+                onChange={(e) => set({ seoImage: e.target.value })}
+                placeholder="https://…/portada-1200x630.jpg"
+                className="w-full bg-transparent px-3 py-3 focus:outline-none"
+              />
+            </Field>
+          </div>
+        )}
+
         {error && <p className="text-sm text-red-500">{error}</p>}
         {okMsg && (
           <p className="inline-flex items-center gap-1.5 text-sm font-semibold text-emerald-600">
