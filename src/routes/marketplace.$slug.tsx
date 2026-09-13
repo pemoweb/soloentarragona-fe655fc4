@@ -14,9 +14,14 @@ export const Route = createFileRoute("/marketplace/$slug")({
     if (!loaderData) {
       return { meta: [{ title: "Anuncio no encontrado — Marketplace Tarragona" }, { name: "robots", content: "noindex" }] };
     }
-    const title = `${loaderData.title} — ${formatEuro(loaderData.price)} en Tarragona`;
-    const description = loaderData.description.slice(0, 155);
+    const seo = loaderData.seo ?? {};
+    const title = seo.title?.trim()
+      ? seo.title.trim()
+      : `${loaderData.title} — ${formatEuro(loaderData.price)} en Tarragona`;
+    const description = (seo.description?.trim() || loaderData.description).slice(0, 155);
     const url = `https://soloentarragona.lovable.app/marketplace/${params.slug}`;
+    const shareImage =
+      seo.image?.trim().startsWith("https://") ? seo.image.trim() : undefined;
     return {
       meta: [
         { title },
@@ -28,6 +33,12 @@ export const Route = createFileRoute("/marketplace/$slug")({
         { property: "product:price:amount", content: String(loaderData.price) },
         { property: "product:price:currency", content: "EUR" },
         { name: "twitter:card", content: "summary_large_image" },
+        ...(shareImage
+          ? [
+              { property: "og:image", content: shareImage },
+              { name: "twitter:image", content: shareImage },
+            ]
+          : []),
       ],
       links: [{ rel: "canonical", href: url }],
       scripts: [

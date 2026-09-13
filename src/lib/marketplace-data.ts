@@ -22,6 +22,8 @@ export type MarketplaceItem = {
   description: string;
   gallery: string[];
   seller: { name: string; since: string; rating: number; phone: string };
+  /** Metadatos SEO opcionales definidos al publicar desde el panel de admin. */
+  seo?: { title?: string; description?: string; image?: string };
 };
 
 export const MARKETPLACE_CATEGORIES = [
@@ -186,6 +188,9 @@ export type NewMarketplaceItem = {
   img: string;
   sellerName: string;
   sellerPhone: string;
+  seoTitle?: string;
+  seoDescription?: string;
+  seoImage?: string;
 };
 
 export function addMarketplaceItem(input: NewMarketplaceItem) {
@@ -212,6 +217,14 @@ export function addMarketplaceItem(input: NewMarketplaceItem) {
       rating: 5,
       phone: input.sellerPhone || "+34 977 000 000",
     },
+    seo:
+      input.seoTitle?.trim() || input.seoDescription?.trim() || input.seoImage?.trim()
+        ? {
+            title: input.seoTitle?.trim() || undefined,
+            description: input.seoDescription?.trim() || undefined,
+            image: input.seoImage?.trim() || undefined,
+          }
+        : undefined,
   };
   saveUserMarketplaceItems([item, ...existing]);
   return item;
