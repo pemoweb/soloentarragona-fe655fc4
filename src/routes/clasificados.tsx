@@ -14,7 +14,10 @@ import {
   RotateCcw,
   PlusCircle,
   ArrowUpDown,
+  Phone,
+  MessageCircle,
 } from "lucide-react";
+import { telHref, whatsappHref } from "@/lib/contact-links";
 import { useMemo, useState } from "react";
 import {
   Dialog,
@@ -359,18 +362,23 @@ function ClasificadosPage() {
             No hay anuncios con estos filtros.
           </div>
         ) : (
-          <div className="mt-6 flex flex-col gap-3 sm:gap-4">
+          <div className="mt-6 flex flex-col gap-2.5 sm:gap-4">
             {filtered.map((a) => {
               const isFav = favs.has(a.id);
               const Icon = catMeta[a.cat]?.icon ?? ShoppingBag;
-              
+              const tel = telHref(a.contact?.phone);
+              const wa = whatsappHref(
+                a.contact?.phone,
+                `Hola, te escribo por el anuncio "${a.title}" de Solo en Tarragona.`,
+              );
+
               return (
                 <article
                   key={a.id}
                   onClick={() => setSelectedAd(a)}
-                  className="group relative flex cursor-pointer items-start gap-4 rounded-2xl border border-border bg-card p-5 transition-all hover:-translate-y-0.5 hover:shadow-card"
+                  className="group relative flex cursor-pointer items-start gap-3 rounded-xl border border-border bg-card p-3 transition-all hover:shadow-card sm:gap-4 sm:rounded-2xl sm:p-5 sm:hover:-translate-y-0.5"
                 >
-                  <div className="h-20 w-20 sm:h-24 sm:w-24 shrink-0 overflow-hidden rounded-xl bg-muted">
+                  <div className="h-16 w-16 sm:h-24 sm:w-24 shrink-0 overflow-hidden rounded-lg bg-muted sm:rounded-xl">
                     <img
                       src={classifiedAdImage(a)}
                       alt={a.title}
@@ -383,7 +391,7 @@ function ClasificadosPage() {
 
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center justify-between gap-2">
-                      <span className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-coral">
+                      <span className="inline-flex items-center gap-1.5 text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-coral">
                         <Icon className="h-3.5 w-3.5 sm:hidden" /> {a.cat}
                       </span>
                       <button
@@ -392,35 +400,62 @@ function ClasificadosPage() {
                           toggle(a.id);
                         }}
                         aria-label={isFav ? "Quitar de favoritos" : "Guardar"}
-                        className={`grid h-8 w-8 shrink-0 place-items-center rounded-full border transition ${
+                        className={`grid h-7 w-7 sm:h-8 sm:w-8 shrink-0 place-items-center rounded-full border transition ${
                           isFav
                             ? "bg-coral text-coral-foreground border-coral"
                             : "border-border text-muted-foreground hover:border-coral hover:text-coral"
                         }`}
                       >
-                        <Heart className={`h-4 w-4 ${isFav ? "fill-current" : ""}`} />
+                        <Heart className={`h-3.5 w-3.5 sm:h-4 sm:w-4 ${isFav ? "fill-current" : ""}`} />
                       </button>
                     </div>
-                    <h3 className="mt-1.5 font-display text-lg font-bold leading-tight line-clamp-1">
+                    <h3 className="mt-1 font-display text-sm sm:text-lg font-bold leading-tight line-clamp-2 sm:line-clamp-1">
                       {a.title}
                     </h3>
                     {a.description && (
-                      <p className="mt-1 text-sm text-muted-foreground line-clamp-2">{a.description}</p>
+                      <p className="mt-1 hidden text-sm text-muted-foreground line-clamp-2 sm:block">{a.description}</p>
                     )}
-                    <div className="mt-3 flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground">
-                      <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+                    <div className="mt-1.5 sm:mt-3 flex flex-wrap items-center justify-between gap-x-2 gap-y-1 text-[11px] sm:text-xs text-muted-foreground">
+                      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 sm:gap-x-4">
                         <span className="inline-flex items-center gap-1">
                           <MapPin className="h-3 w-3" /> {a.location}
                         </span>
                         <span className="inline-flex items-center gap-1">
                           <Clock className="h-3 w-3" /> {a.time}
                         </span>
-                        <span className="text-[11px] font-semibold uppercase tracking-wider">
+                        <span className="hidden text-[11px] font-semibold uppercase tracking-wider sm:inline">
                           Caduca en {a.daysLeft} días
                         </span>
                       </div>
-                      <span className="text-sm font-semibold text-coral whitespace-nowrap">Ver anuncio</span>
+                      <span className="hidden text-sm font-semibold text-coral whitespace-nowrap sm:inline">Ver anuncio</span>
                     </div>
+
+                    {(tel || wa) && (
+                      <div className="mt-2 flex gap-1.5">
+                        {tel && (
+                          <a
+                            href={tel}
+                            onClick={(e) => e.stopPropagation()}
+                            aria-label={`Llamar por el anuncio ${a.title}`}
+                            className="inline-flex items-center justify-center gap-1 rounded-full border border-border px-3 py-1.5 text-[11px] font-semibold transition hover:border-coral hover:text-coral"
+                          >
+                            <Phone className="h-3.5 w-3.5" /> Llamar
+                          </a>
+                        )}
+                        {wa && (
+                          <a
+                            href={wa}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            aria-label={`Escribir por WhatsApp sobre ${a.title}`}
+                            className="inline-flex items-center justify-center gap-1 rounded-full bg-emerald-600 px-3 py-1.5 text-[11px] font-semibold text-white transition hover:opacity-90"
+                          >
+                            <MessageCircle className="h-3.5 w-3.5" /> WhatsApp
+                          </a>
+                        )}
+                      </div>
+                    )}
                   </div>
                 </article>
               );
