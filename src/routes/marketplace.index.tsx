@@ -2,7 +2,8 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { PageShell } from "@/components/PageShell";
 import { MiniCarousel } from "@/components/MiniCarousel";
 
-import { Search, MapPin, Heart, Filter, RotateCcw, ArrowRight } from "lucide-react";
+import { Search, MapPin, Heart, Filter, RotateCcw, ArrowRight, Phone, MessageCircle } from "lucide-react";
+import { telHref, whatsappHref } from "@/lib/contact-links";
 import { useState } from "react";
 import { useDynamicSeo } from "@/lib/use-dynamic-seo";
 import { MARKETPLACE_CATEGORIES, formatEuro, useAllMarketplaceItems } from "@/lib/marketplace-data";
@@ -230,21 +231,24 @@ function MarketplacePage() {
         )}
 
         {/* Products */}
-        <div className="mt-6 flex flex-col gap-4 sm:grid sm:gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {rest.map((p) => (
+        <div className="mt-6 flex flex-col gap-2.5 sm:grid sm:gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {rest.map((p) => {
+            const tel = telHref(p.seller.phone);
+            const wa = whatsappHref(p.seller.phone, `Hola, me interesa "${p.title}" (${formatEuro(p.price)}) publicado en Solo en Tarragona.`);
+            return (
             <article
               key={p.slug}
               onClick={() => navigate({ to: "/marketplace/$slug", params: { slug: p.slug } })}
-              className="group flex cursor-pointer rounded-2xl bg-card border border-border overflow-hidden hover:shadow-glow transition-all hover:-translate-y-1 sm:block"
+              className="group flex cursor-pointer rounded-xl bg-card border border-border overflow-hidden hover:shadow-glow transition-all sm:rounded-2xl sm:hover:-translate-y-1 sm:block"
             >
-              <div className="relative w-32 shrink-0 sm:w-auto">
-                <MiniCarousel images={p.gallery} alt={p.title} className="aspect-[4/3]" />
+              <div className="relative w-24 shrink-0 sm:w-auto">
+                <MiniCarousel images={p.gallery} alt={p.title} className="h-full aspect-square sm:h-auto sm:aspect-[4/3]" />
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-foreground/70 via-transparent to-transparent opacity-80" />
-                <span className="pointer-events-none absolute bottom-2 left-2 font-display text-lg sm:bottom-3 sm:left-3 sm:text-2xl font-black text-background drop-shadow">
+                <span className="pointer-events-none absolute bottom-1.5 left-1.5 font-display text-sm sm:bottom-3 sm:left-3 sm:text-2xl font-black text-background drop-shadow">
                   {formatEuro(p.price)}
                 </span>
                 {p.featured && (
-                  <span className="pointer-events-none absolute top-2 left-2 sm:top-3 sm:left-3 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full bg-coral text-coral-foreground text-[10px] sm:text-xs font-bold uppercase tracking-wider shadow-lg">
+                  <span className="pointer-events-none absolute top-1.5 left-1.5 sm:top-3 sm:left-3 px-1.5 py-0.5 sm:px-2.5 sm:py-1 rounded-full bg-coral text-coral-foreground text-[9px] sm:text-xs font-bold uppercase tracking-wider shadow-lg">
                     Destacado
                   </span>
                 )}
@@ -257,18 +261,45 @@ function MarketplacePage() {
                 </button>
               </div>
 
-              <div className="min-w-0 flex-1 p-4 flex flex-col justify-center sm:block">
-                <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">{p.category}</span>
-                <h3 className="mt-1 font-semibold leading-tight line-clamp-2">{p.title}</h3>
-                <div className="mt-3 flex items-center justify-between gap-2 text-xs text-muted-foreground">
+              <div className="min-w-0 flex-1 p-3 sm:p-4">
+                <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">{p.category}</span>
+                <h3 className="mt-0.5 text-sm sm:text-base font-semibold leading-tight line-clamp-2">{p.title}</h3>
+                <div className="mt-1.5 sm:mt-3 flex items-center justify-between gap-2 text-[11px] sm:text-xs text-muted-foreground">
                   <span className="inline-flex min-w-0 items-center gap-1"><MapPin className="h-3 w-3 shrink-0" /> <span className="truncate">{p.location}</span></span>
-                  <span className="inline-flex shrink-0 items-center gap-1 font-semibold text-coral">
+                  <span className="hidden sm:inline-flex shrink-0 items-center gap-1 font-semibold text-coral">
                     Ver detalle <ArrowRight className="h-3 w-3" />
                   </span>
                 </div>
+                {(tel || wa) && (
+                  <div className="mt-2 flex gap-1.5">
+                    {tel && (
+                      <a
+                        href={tel}
+                        onClick={(e) => e.stopPropagation()}
+                        aria-label={`Llamar a ${p.seller.name}`}
+                        className="inline-flex flex-1 items-center justify-center gap-1 rounded-full border border-border px-2.5 py-1.5 text-[11px] font-semibold text-foreground transition hover:border-coral hover:text-coral"
+                      >
+                        <Phone className="h-3.5 w-3.5" /> Llamar
+                      </a>
+                    )}
+                    {wa && (
+                      <a
+                        href={wa}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        aria-label={`Escribir por WhatsApp a ${p.seller.name}`}
+                        className="inline-flex flex-1 items-center justify-center gap-1 rounded-full bg-emerald-600 px-2.5 py-1.5 text-[11px] font-semibold text-white transition hover:opacity-90"
+                      >
+                        <MessageCircle className="h-3.5 w-3.5" /> WhatsApp
+                      </a>
+                    )}
+                  </div>
+                )}
               </div>
             </article>
-          ))}
+            );
+          })}
         </div>
 
       </section>
