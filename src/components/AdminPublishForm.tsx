@@ -20,6 +20,9 @@ const EMPTY = {
   sellerPhone: "",
   daysLeft: "7",
   contactEmail: "",
+  seoTitle: "",
+  seoDescription: "",
+  seoImage: "",
 };
 
 export function AdminPublishForm() {
@@ -70,6 +73,9 @@ export function AdminPublishForm() {
         img: form.img.trim(),
         sellerName: form.sellerName.trim(),
         sellerPhone: form.sellerPhone.trim(),
+        seoTitle: form.seoTitle.trim(),
+        seoDescription: form.seoDescription.trim(),
+        seoImage: form.seoImage.trim() || form.img.trim(),
       });
       setOkMsg(`Publicado en Marketplace: ${item.title}`);
     } else {
