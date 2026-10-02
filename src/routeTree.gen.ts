@@ -9,104 +9,44 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as AccederRouteImport } from './routes/acceder'
-import { Route as AdminRouteImport } from './routes/admin'
-import { Route as ClasificadosRouteImport } from './routes/clasificados'
-import { Route as DashboardRouteImport } from './routes/dashboard'
-import { Route as DirectorioRouteImport } from './routes/directorio'
-import { Route as MarketplaceRouteImport } from './routes/marketplace'
-import { Route as McpRouteImport } from './routes/mcp'
-import { Route as NoticiasRouteImport } from './routes/noticias'
-import { Route as PrivacidadRouteImport } from './routes/privacidad'
-import { Route as PublicarRouteImport } from './routes/publicar'
-import { Route as ServiciosPublicosRouteImport } from './routes/servicios-publicos'
-import { Route as ShoppingRouteImport } from './routes/shopping'
-import { Route as SitiosDeInteresRouteImport } from './routes/sitios-de-interes'
 import { Route as TerminosRouteImport } from './routes/terminos'
-import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
-import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
-import { Route as ClasificadosPublicarRouteImport } from './routes/clasificados.publicar'
-import { Route as DirectorioIndexRouteImport } from './routes/directorio.index'
-import { Route as DirectorioSlugRouteImport } from './routes/directorio.$slug'
-import { Route as MarketplaceIndexRouteImport } from './routes/marketplace.index'
-import { Route as MarketplaceSlugRouteImport } from './routes/marketplace.$slug'
-import { Route as MarketplacePublicarRouteImport } from './routes/marketplace.publicar'
-import { Route as NoticiasIndexRouteImport } from './routes/noticias.index'
-import { Route as NoticiasSlugRouteImport } from './routes/noticias.$slug'
-import { Route as NoticiasPublicarRouteImport } from './routes/noticias.publicar'
-import { Route as ServiciosPublicosIndexRouteImport } from './routes/servicios-publicos.index'
-import { Route as ServiciosPublicosSlugRouteImport } from './routes/servicios-publicos.$slug'
-import { Route as ShoppingIndexRouteImport } from './routes/shopping.index'
-import { Route as ShoppingSlugRouteImport } from './routes/shopping.$slug'
+import { Route as SitiosDeInteresRouteImport } from './routes/sitios-de-interes'
+import { Route as ShoppingRouteImport } from './routes/shopping'
+import { Route as ServiciosPublicosRouteImport } from './routes/servicios-publicos'
+import { Route as PublicarRouteImport } from './routes/publicar'
+import { Route as PrivacidadRouteImport } from './routes/privacidad'
+import { Route as NoticiasRouteImport } from './routes/noticias'
+import { Route as McpRouteImport } from './routes/mcp'
+import { Route as MarketplaceRouteImport } from './routes/marketplace'
+import { Route as DirectorioRouteImport } from './routes/directorio'
+import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as ClasificadosRouteImport } from './routes/clasificados'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as AccederRouteImport } from './routes/acceder'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as SitiosDeInteresIndexRouteImport } from './routes/sitios-de-interes.index'
+import { Route as ShoppingIndexRouteImport } from './routes/shopping.index'
+import { Route as ServiciosPublicosIndexRouteImport } from './routes/servicios-publicos.index'
+import { Route as NoticiasIndexRouteImport } from './routes/noticias.index'
+import { Route as MarketplaceIndexRouteImport } from './routes/marketplace.index'
+import { Route as DirectorioIndexRouteImport } from './routes/directorio.index'
 import { Route as SitiosDeInteresSlugRouteImport } from './routes/sitios-de-interes.$slug'
-import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
+import { Route as ShoppingSlugRouteImport } from './routes/shopping.$slug'
+import { Route as ServiciosPublicosSlugRouteImport } from './routes/servicios-publicos.$slug'
+import { Route as NoticiasPublicarRouteImport } from './routes/noticias.publicar'
+import { Route as NoticiasSlugRouteImport } from './routes/noticias.$slug'
+import { Route as MarketplacePublicarRouteImport } from './routes/marketplace.publicar'
+import { Route as MarketplaceSlugRouteImport } from './routes/marketplace.$slug'
+import { Route as DirectorioSlugRouteImport } from './routes/directorio.$slug'
+import { Route as ClasificadosPublicarRouteImport } from './routes/clasificados.publicar'
+import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
+import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
 import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
+import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AccederRoute = AccederRouteImport.update({
-  id: '/acceder',
-  path: '/acceder',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminRoute = AdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ClasificadosRoute = ClasificadosRouteImport.update({
-  id: '/clasificados',
-  path: '/clasificados',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DashboardRoute = DashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DirectorioRoute = DirectorioRouteImport.update({
-  id: '/directorio',
-  path: '/directorio',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MarketplaceRoute = MarketplaceRouteImport.update({
-  id: '/marketplace',
-  path: '/marketplace',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const McpRoute = McpRouteImport.update({
-  id: '/mcp',
-  path: '/mcp',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const NoticiasRoute = NoticiasRouteImport.update({
-  id: '/noticias',
-  path: '/noticias',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PrivacidadRoute = PrivacidadRouteImport.update({
-  id: '/privacidad',
-  path: '/privacidad',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PublicarRoute = PublicarRouteImport.update({
-  id: '/publicar',
-  path: '/publicar',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ServiciosPublicosRoute = ServiciosPublicosRouteImport.update({
-  id: '/servicios-publicos',
-  path: '/servicios-publicos',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ShoppingRoute = ShoppingRouteImport.update({
-  id: '/shopping',
-  path: '/shopping',
+const TerminosRoute = TerminosRouteImport.update({
+  id: '/terminos',
+  path: '/terminos',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SitiosDeInteresRoute = SitiosDeInteresRouteImport.update({
@@ -114,56 +54,119 @@ const SitiosDeInteresRoute = SitiosDeInteresRouteImport.update({
   path: '/sitios-de-interes',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TerminosRoute = TerminosRouteImport.update({
-  id: '/terminos',
-  path: '/terminos',
+const ShoppingRoute = ShoppingRouteImport.update({
+  id: '/shopping',
+  path: '/shopping',
   getParentRoute: () => rootRouteImport,
 } as any)
-const Char91DotmcpChar93ListToolsRoute =
-  Char91DotmcpChar93ListToolsRouteImport.update({
-    id: '/.mcp/list-tools',
-    path: '/.mcp/list-tools',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const Char91DotwellKnownChar93OauthProtectedResourceRoute =
-  Char91DotwellKnownChar93OauthProtectedResourceRouteImport.update({
-    id: '/.well-known/oauth-protected-resource',
-    path: '/.well-known/oauth-protected-resource',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const ClasificadosPublicarRoute = ClasificadosPublicarRouteImport.update({
+const ServiciosPublicosRoute = ServiciosPublicosRouteImport.update({
+  id: '/servicios-publicos',
+  path: '/servicios-publicos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PublicarRoute = PublicarRouteImport.update({
   id: '/publicar',
   path: '/publicar',
-  getParentRoute: () => ClasificadosRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-const DirectorioIndexRoute = DirectorioIndexRouteImport.update({
+const PrivacidadRoute = PrivacidadRouteImport.update({
+  id: '/privacidad',
+  path: '/privacidad',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NoticiasRoute = NoticiasRouteImport.update({
+  id: '/noticias',
+  path: '/noticias',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const McpRoute = McpRouteImport.update({
+  id: '/mcp',
+  path: '/mcp',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MarketplaceRoute = MarketplaceRouteImport.update({
+  id: '/marketplace',
+  path: '/marketplace',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DirectorioRoute = DirectorioRouteImport.update({
+  id: '/directorio',
+  path: '/directorio',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ClasificadosRoute = ClasificadosRouteImport.update({
+  id: '/clasificados',
+  path: '/clasificados',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccederRoute = AccederRouteImport.update({
+  id: '/acceder',
+  path: '/acceder',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => DirectorioRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-const DirectorioSlugRoute = DirectorioSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => DirectorioRoute,
+const SitiosDeInteresIndexRoute = SitiosDeInteresIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => SitiosDeInteresRoute,
+} as any)
+const ShoppingIndexRoute = ShoppingIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ShoppingRoute,
+} as any)
+const ServiciosPublicosIndexRoute = ServiciosPublicosIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ServiciosPublicosRoute,
+} as any)
+const NoticiasIndexRoute = NoticiasIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => NoticiasRoute,
 } as any)
 const MarketplaceIndexRoute = MarketplaceIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => MarketplaceRoute,
 } as any)
-const MarketplaceSlugRoute = MarketplaceSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => MarketplaceRoute,
-} as any)
-const MarketplacePublicarRoute = MarketplacePublicarRouteImport.update({
-  id: '/publicar',
-  path: '/publicar',
-  getParentRoute: () => MarketplaceRoute,
-} as any)
-const NoticiasIndexRoute = NoticiasIndexRouteImport.update({
+const DirectorioIndexRoute = DirectorioIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => DirectorioRoute,
+} as any)
+const SitiosDeInteresSlugRoute = SitiosDeInteresSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => SitiosDeInteresRoute,
+} as any)
+const ShoppingSlugRoute = ShoppingSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => ShoppingRoute,
+} as any)
+const ServiciosPublicosSlugRoute = ServiciosPublicosSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => ServiciosPublicosRoute,
+} as any)
+const NoticiasPublicarRoute = NoticiasPublicarRouteImport.update({
+  id: '/publicar',
+  path: '/publicar',
   getParentRoute: () => NoticiasRoute,
 } as any)
 const NoticiasSlugRoute = NoticiasSlugRouteImport.update({
@@ -171,52 +174,49 @@ const NoticiasSlugRoute = NoticiasSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => NoticiasRoute,
 } as any)
-const NoticiasPublicarRoute = NoticiasPublicarRouteImport.update({
+const MarketplacePublicarRoute = MarketplacePublicarRouteImport.update({
   id: '/publicar',
   path: '/publicar',
-  getParentRoute: () => NoticiasRoute,
+  getParentRoute: () => MarketplaceRoute,
 } as any)
-const ServiciosPublicosIndexRoute = ServiciosPublicosIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => ServiciosPublicosRoute,
-} as any)
-const ServiciosPublicosSlugRoute = ServiciosPublicosSlugRouteImport.update({
+const MarketplaceSlugRoute = MarketplaceSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
-  getParentRoute: () => ServiciosPublicosRoute,
+  getParentRoute: () => MarketplaceRoute,
 } as any)
-const ShoppingIndexRoute = ShoppingIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => ShoppingRoute,
-} as any)
-const ShoppingSlugRoute = ShoppingSlugRouteImport.update({
+const DirectorioSlugRoute = DirectorioSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
-  getParentRoute: () => ShoppingRoute,
+  getParentRoute: () => DirectorioRoute,
 } as any)
-const SitiosDeInteresIndexRoute = SitiosDeInteresIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => SitiosDeInteresRoute,
+const ClasificadosPublicarRoute = ClasificadosPublicarRouteImport.update({
+  id: '/publicar',
+  path: '/publicar',
+  getParentRoute: () => ClasificadosRoute,
 } as any)
-const SitiosDeInteresSlugRoute = SitiosDeInteresSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => SitiosDeInteresRoute,
-} as any)
-const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
-  id: '/.lovable/oauth/consent',
-  path: '/.lovable/oauth/consent',
-  getParentRoute: () => rootRouteImport,
-} as any)
+const Char91DotwellKnownChar93OauthProtectedResourceRoute =
+  Char91DotwellKnownChar93OauthProtectedResourceRouteImport.update({
+    id: '/.well-known/oauth-protected-resource',
+    path: '/.well-known/oauth-protected-resource',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const Char91DotmcpChar93ListToolsRoute =
+  Char91DotmcpChar93ListToolsRouteImport.update({
+    id: '/.mcp/list-tools',
+    path: '/.mcp/list-tools',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const Char91DotmcpChar93InvokeToolToolRoute =
   Char91DotmcpChar93InvokeToolToolRouteImport.update({
     id: '/.mcp/invoke-tool/$tool',
     path: '/.mcp/invoke-tool/$tool',
     getParentRoute: () => rootRouteImport,
   } as any)
+const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
+  id: '/.lovable/oauth/consent',
+  path: '/.lovable/oauth/consent',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -450,95 +450,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/acceder': {
-      id: '/acceder'
-      path: '/acceder'
-      fullPath: '/acceder'
-      preLoaderRoute: typeof AccederRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin': {
-      id: '/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AdminRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/clasificados': {
-      id: '/clasificados'
-      path: '/clasificados'
-      fullPath: '/clasificados'
-      preLoaderRoute: typeof ClasificadosRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dashboard': {
-      id: '/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/directorio': {
-      id: '/directorio'
-      path: '/directorio'
-      fullPath: '/directorio'
-      preLoaderRoute: typeof DirectorioRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/marketplace': {
-      id: '/marketplace'
-      path: '/marketplace'
-      fullPath: '/marketplace'
-      preLoaderRoute: typeof MarketplaceRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/mcp': {
-      id: '/mcp'
-      path: '/mcp'
-      fullPath: '/mcp'
-      preLoaderRoute: typeof McpRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/noticias': {
-      id: '/noticias'
-      path: '/noticias'
-      fullPath: '/noticias'
-      preLoaderRoute: typeof NoticiasRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/privacidad': {
-      id: '/privacidad'
-      path: '/privacidad'
-      fullPath: '/privacidad'
-      preLoaderRoute: typeof PrivacidadRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/publicar': {
-      id: '/publicar'
-      path: '/publicar'
-      fullPath: '/publicar'
-      preLoaderRoute: typeof PublicarRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/servicios-publicos': {
-      id: '/servicios-publicos'
-      path: '/servicios-publicos'
-      fullPath: '/servicios-publicos'
-      preLoaderRoute: typeof ServiciosPublicosRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/shopping': {
-      id: '/shopping'
-      path: '/shopping'
-      fullPath: '/shopping'
-      preLoaderRoute: typeof ShoppingRouteImport
+    '/terminos': {
+      id: '/terminos'
+      path: '/terminos'
+      fullPath: '/terminos'
+      preLoaderRoute: typeof TerminosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sitios-de-interes': {
@@ -548,47 +464,124 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SitiosDeInteresRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/terminos': {
-      id: '/terminos'
-      path: '/terminos'
-      fullPath: '/terminos'
-      preLoaderRoute: typeof TerminosRouteImport
+    '/shopping': {
+      id: '/shopping'
+      path: '/shopping'
+      fullPath: '/shopping'
+      preLoaderRoute: typeof ShoppingRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/.mcp/list-tools': {
-      id: '/.mcp/list-tools'
-      path: '/.mcp/list-tools'
-      fullPath: '/.mcp/list-tools'
-      preLoaderRoute: typeof Char91DotmcpChar93ListToolsRouteImport
+    '/servicios-publicos': {
+      id: '/servicios-publicos'
+      path: '/servicios-publicos'
+      fullPath: '/servicios-publicos'
+      preLoaderRoute: typeof ServiciosPublicosRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/.well-known/oauth-protected-resource': {
-      id: '/.well-known/oauth-protected-resource'
-      path: '/.well-known/oauth-protected-resource'
-      fullPath: '/.well-known/oauth-protected-resource'
-      preLoaderRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/clasificados/publicar': {
-      id: '/clasificados/publicar'
+    '/publicar': {
+      id: '/publicar'
       path: '/publicar'
-      fullPath: '/clasificados/publicar'
-      preLoaderRoute: typeof ClasificadosPublicarRouteImport
-      parentRoute: typeof ClasificadosRoute
+      fullPath: '/publicar'
+      preLoaderRoute: typeof PublicarRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/directorio/': {
-      id: '/directorio/'
+    '/privacidad': {
+      id: '/privacidad'
+      path: '/privacidad'
+      fullPath: '/privacidad'
+      preLoaderRoute: typeof PrivacidadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/noticias': {
+      id: '/noticias'
+      path: '/noticias'
+      fullPath: '/noticias'
+      preLoaderRoute: typeof NoticiasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mcp': {
+      id: '/mcp'
+      path: '/mcp'
+      fullPath: '/mcp'
+      preLoaderRoute: typeof McpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/marketplace': {
+      id: '/marketplace'
+      path: '/marketplace'
+      fullPath: '/marketplace'
+      preLoaderRoute: typeof MarketplaceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/directorio': {
+      id: '/directorio'
+      path: '/directorio'
+      fullPath: '/directorio'
+      preLoaderRoute: typeof DirectorioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/clasificados': {
+      id: '/clasificados'
+      path: '/clasificados'
+      fullPath: '/clasificados'
+      preLoaderRoute: typeof ClasificadosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/acceder': {
+      id: '/acceder'
+      path: '/acceder'
+      fullPath: '/acceder'
+      preLoaderRoute: typeof AccederRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
       path: '/'
-      fullPath: '/directorio/'
-      preLoaderRoute: typeof DirectorioIndexRouteImport
-      parentRoute: typeof DirectorioRoute
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/directorio/$slug': {
-      id: '/directorio/$slug'
-      path: '/$slug'
-      fullPath: '/directorio/$slug'
-      preLoaderRoute: typeof DirectorioSlugRouteImport
-      parentRoute: typeof DirectorioRoute
+    '/sitios-de-interes/': {
+      id: '/sitios-de-interes/'
+      path: '/'
+      fullPath: '/sitios-de-interes/'
+      preLoaderRoute: typeof SitiosDeInteresIndexRouteImport
+      parentRoute: typeof SitiosDeInteresRoute
+    }
+    '/shopping/': {
+      id: '/shopping/'
+      path: '/'
+      fullPath: '/shopping/'
+      preLoaderRoute: typeof ShoppingIndexRouteImport
+      parentRoute: typeof ShoppingRoute
+    }
+    '/servicios-publicos/': {
+      id: '/servicios-publicos/'
+      path: '/'
+      fullPath: '/servicios-publicos/'
+      preLoaderRoute: typeof ServiciosPublicosIndexRouteImport
+      parentRoute: typeof ServiciosPublicosRoute
+    }
+    '/noticias/': {
+      id: '/noticias/'
+      path: '/'
+      fullPath: '/noticias/'
+      preLoaderRoute: typeof NoticiasIndexRouteImport
+      parentRoute: typeof NoticiasRoute
     }
     '/marketplace/': {
       id: '/marketplace/'
@@ -597,25 +590,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MarketplaceIndexRouteImport
       parentRoute: typeof MarketplaceRoute
     }
-    '/marketplace/$slug': {
-      id: '/marketplace/$slug'
-      path: '/$slug'
-      fullPath: '/marketplace/$slug'
-      preLoaderRoute: typeof MarketplaceSlugRouteImport
-      parentRoute: typeof MarketplaceRoute
-    }
-    '/marketplace/publicar': {
-      id: '/marketplace/publicar'
-      path: '/publicar'
-      fullPath: '/marketplace/publicar'
-      preLoaderRoute: typeof MarketplacePublicarRouteImport
-      parentRoute: typeof MarketplaceRoute
-    }
-    '/noticias/': {
-      id: '/noticias/'
+    '/directorio/': {
+      id: '/directorio/'
       path: '/'
-      fullPath: '/noticias/'
-      preLoaderRoute: typeof NoticiasIndexRouteImport
+      fullPath: '/directorio/'
+      preLoaderRoute: typeof DirectorioIndexRouteImport
+      parentRoute: typeof DirectorioRoute
+    }
+    '/sitios-de-interes/$slug': {
+      id: '/sitios-de-interes/$slug'
+      path: '/$slug'
+      fullPath: '/sitios-de-interes/$slug'
+      preLoaderRoute: typeof SitiosDeInteresSlugRouteImport
+      parentRoute: typeof SitiosDeInteresRoute
+    }
+    '/shopping/$slug': {
+      id: '/shopping/$slug'
+      path: '/$slug'
+      fullPath: '/shopping/$slug'
+      preLoaderRoute: typeof ShoppingSlugRouteImport
+      parentRoute: typeof ShoppingRoute
+    }
+    '/servicios-publicos/$slug': {
+      id: '/servicios-publicos/$slug'
+      path: '/$slug'
+      fullPath: '/servicios-publicos/$slug'
+      preLoaderRoute: typeof ServiciosPublicosSlugRouteImport
+      parentRoute: typeof ServiciosPublicosRoute
+    }
+    '/noticias/publicar': {
+      id: '/noticias/publicar'
+      path: '/publicar'
+      fullPath: '/noticias/publicar'
+      preLoaderRoute: typeof NoticiasPublicarRouteImport
       parentRoute: typeof NoticiasRoute
     }
     '/noticias/$slug': {
@@ -625,60 +632,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NoticiasSlugRouteImport
       parentRoute: typeof NoticiasRoute
     }
-    '/noticias/publicar': {
-      id: '/noticias/publicar'
+    '/marketplace/publicar': {
+      id: '/marketplace/publicar'
       path: '/publicar'
-      fullPath: '/noticias/publicar'
-      preLoaderRoute: typeof NoticiasPublicarRouteImport
-      parentRoute: typeof NoticiasRoute
+      fullPath: '/marketplace/publicar'
+      preLoaderRoute: typeof MarketplacePublicarRouteImport
+      parentRoute: typeof MarketplaceRoute
     }
-    '/servicios-publicos/': {
-      id: '/servicios-publicos/'
-      path: '/'
-      fullPath: '/servicios-publicos/'
-      preLoaderRoute: typeof ServiciosPublicosIndexRouteImport
-      parentRoute: typeof ServiciosPublicosRoute
-    }
-    '/servicios-publicos/$slug': {
-      id: '/servicios-publicos/$slug'
+    '/marketplace/$slug': {
+      id: '/marketplace/$slug'
       path: '/$slug'
-      fullPath: '/servicios-publicos/$slug'
-      preLoaderRoute: typeof ServiciosPublicosSlugRouteImport
-      parentRoute: typeof ServiciosPublicosRoute
+      fullPath: '/marketplace/$slug'
+      preLoaderRoute: typeof MarketplaceSlugRouteImport
+      parentRoute: typeof MarketplaceRoute
     }
-    '/shopping/': {
-      id: '/shopping/'
-      path: '/'
-      fullPath: '/shopping/'
-      preLoaderRoute: typeof ShoppingIndexRouteImport
-      parentRoute: typeof ShoppingRoute
-    }
-    '/shopping/$slug': {
-      id: '/shopping/$slug'
+    '/directorio/$slug': {
+      id: '/directorio/$slug'
       path: '/$slug'
-      fullPath: '/shopping/$slug'
-      preLoaderRoute: typeof ShoppingSlugRouteImport
-      parentRoute: typeof ShoppingRoute
+      fullPath: '/directorio/$slug'
+      preLoaderRoute: typeof DirectorioSlugRouteImport
+      parentRoute: typeof DirectorioRoute
     }
-    '/sitios-de-interes/': {
-      id: '/sitios-de-interes/'
-      path: '/'
-      fullPath: '/sitios-de-interes/'
-      preLoaderRoute: typeof SitiosDeInteresIndexRouteImport
-      parentRoute: typeof SitiosDeInteresRoute
+    '/clasificados/publicar': {
+      id: '/clasificados/publicar'
+      path: '/publicar'
+      fullPath: '/clasificados/publicar'
+      preLoaderRoute: typeof ClasificadosPublicarRouteImport
+      parentRoute: typeof ClasificadosRoute
     }
-    '/sitios-de-interes/$slug': {
-      id: '/sitios-de-interes/$slug'
-      path: '/$slug'
-      fullPath: '/sitios-de-interes/$slug'
-      preLoaderRoute: typeof SitiosDeInteresSlugRouteImport
-      parentRoute: typeof SitiosDeInteresRoute
+    '/.well-known/oauth-protected-resource': {
+      id: '/.well-known/oauth-protected-resource'
+      path: '/.well-known/oauth-protected-resource'
+      fullPath: '/.well-known/oauth-protected-resource'
+      preLoaderRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/.lovable/oauth/consent': {
-      id: '/.lovable/oauth/consent'
-      path: '/.lovable/oauth/consent'
-      fullPath: '/.lovable/oauth/consent'
-      preLoaderRoute: typeof DotlovableOauthConsentRouteImport
+    '/.mcp/list-tools': {
+      id: '/.mcp/list-tools'
+      path: '/.mcp/list-tools'
+      fullPath: '/.mcp/list-tools'
+      preLoaderRoute: typeof Char91DotmcpChar93ListToolsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/.mcp/invoke-tool/$tool': {
@@ -686,6 +679,13 @@ declare module '@tanstack/react-router' {
       path: '/.mcp/invoke-tool/$tool'
       fullPath: '/.mcp/invoke-tool/$tool'
       preLoaderRoute: typeof Char91DotmcpChar93InvokeToolToolRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/.lovable/oauth/consent': {
+      id: '/.lovable/oauth/consent'
+      path: '/.lovable/oauth/consent'
+      fullPath: '/.lovable/oauth/consent'
+      preLoaderRoute: typeof DotlovableOauthConsentRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
