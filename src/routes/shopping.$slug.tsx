@@ -45,7 +45,7 @@ export const Route = createFileRoute("/shopping/$slug")({
     <PageShell>
       <div className="mx-auto max-w-3xl px-4 py-24 text-center">
         <h1 className="font-display text-3xl font-black">Algo ha fallado</h1>
-        <p className="mt-4 text-muted-foreground">{error.message}</p>
+        <p className="mt-4 text-muted-foreground">{error instanceof Error ? error.message : String(error)}</p>
       </div>
     </PageShell>
   ),
