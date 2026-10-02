@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { telHref, whatsappHref } from "@/lib/contact-links";
 import { useMemo, useState } from "react";
+import { AiClassifiedSearch } from "@/components/AiClassifiedSearch";
 import {
   Dialog,
   DialogContent,
@@ -352,6 +353,8 @@ function ClasificadosPage() {
             )}
           </div>
         </div>
+
+        <AiClassifiedSearch ads={ads} onSelect={setSelectedAd} />
 
         {/* List */}
         <h2 className="mt-12 font-display text-3xl md:text-4xl font-black">
