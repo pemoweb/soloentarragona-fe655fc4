@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, MapPin, Heart, Share2, ShieldCheck, Clock, Star, Phone, AlertTriangle, Check, Tag } from "lucide-react";
 import { useEffect, useState } from "react";
+import { trackAdEvent } from "@/lib/ad-tracking";
 
 import { PageShell } from "@/components/PageShell";
 import { MiniCarousel } from "@/components/MiniCarousel";
@@ -98,6 +99,10 @@ function MarketplaceDetail() {
     setItem(loaded ?? getMarketplaceItem(slug) ?? null);
   }, [loaded, slug]);
 
+  useEffect(() => {
+    if (item) trackAdEvent(item.slug, item.title, "view");
+  }, [item?.slug]); // eslint-disable-line react-hooks/exhaustive-deps
+
   if (!item) return <MarketplaceNotFound />;
 
   const sameCategory = MARKETPLACE_ITEMS.filter((p) => p.slug !== item.slug && p.category === item.category);
@@ -163,7 +168,7 @@ function MarketplaceDetail() {
 
             <div className="mt-8 flex flex-wrap gap-3">
               <button
-                onClick={() => setShowPhone(true)}
+                onClick={() => { if (!showPhone) trackAdEvent(item.slug, item.title, "call"); setShowPhone(true); }}
                 className="flex-1 min-w-[200px] inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-coral text-coral-foreground font-bold hover:opacity-90 transition"
               >
                 <Phone className="h-5 w-5" /> {showPhone ? item.seller.phone : "Contactar al vendedor"}
