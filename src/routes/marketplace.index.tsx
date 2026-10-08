@@ -5,6 +5,8 @@ import { MiniCarousel } from "@/components/MiniCarousel";
 import { Search, MapPin, Heart, Filter, RotateCcw, ArrowRight, Phone, MessageCircle } from "lucide-react";
 import { telHref, whatsappHref } from "@/lib/contact-links";
 import { useState } from "react";
+import { AiMarketplaceSearch } from "@/components/AiMarketplaceSearch";
+import { trackAdEvent } from "@/lib/ad-tracking";
 import { useDynamicSeo } from "@/lib/use-dynamic-seo";
 import { MARKETPLACE_CATEGORIES, formatEuro, useAllMarketplaceItems } from "@/lib/marketplace-data";
 
@@ -90,6 +92,7 @@ function MarketplacePage() {
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<string>("Todo");
+  const [zone, setZone] = useState<string>("Todas");
 
   const seo = SEO_BY_CAT[category] ?? SEO_BY_CAT.Todo;
   useDynamicSeo({ title: seo.title, description: seo.description });
@@ -98,10 +101,12 @@ function MarketplacePage() {
 
   const filtered = allItems.filter((p) => {
     if (category !== "Todo" && p.category !== category) return false;
+    if (zone !== "Todas" && p.location !== zone) return false;
     if (query.trim() && !p.title.toLowerCase().includes(query.trim().toLowerCase())) return false;
     return true;
   });
 
+  const zones = Array.from(new Set(allItems.map((i) => i.location))).sort((a, b) => a.localeCompare(b, "es"));
   const featured = filtered[0];
   const rest = filtered.slice(1);
 
@@ -152,14 +157,23 @@ function MarketplacePage() {
             />
           </div>
           <div className="flex gap-2">
-            <button className="px-4 py-3 rounded-xl border border-border font-medium text-sm inline-flex items-center gap-2 hover:border-coral">
-              <MapPin className="h-4 w-4" /> Tarragona
-            </button>
+            <label className="px-3 py-1 rounded-xl border border-border font-medium text-sm inline-flex items-center gap-2 hover:border-coral">
+              <MapPin className="h-4 w-4 shrink-0" />
+              <span className="sr-only">Barrio o zona</span>
+              <select value={zone} onChange={(e) => setZone(e.target.value)} className="bg-transparent py-2 focus:outline-none">
+                <option value="Todas">Toda Tarragona</option>
+                {zones.map((z) => <option key={z} value={z}>{z}</option>)}
+              </select>
+            </label>
             <button className="px-4 py-3 rounded-xl border border-border font-medium text-sm inline-flex items-center gap-2 hover:border-coral">
               <Filter className="h-4 w-4" /> Filtros
             </button>
             <button className="px-6 py-3 rounded-xl bg-coral text-coral-foreground font-semibold">Buscar</button>
           </div>
+        </div>
+
+        <div className="mt-8">
+          <AiMarketplaceSearch items={zone === "Todas" ? allItems : allItems.filter((i) => i.location === zone)} />
         </div>
 
         {/* Categories */}
@@ -179,9 +193,9 @@ function MarketplacePage() {
               </button>
             );
           })}
-          {category !== "Todo" && (
+          {(category !== "Todo" || zone !== "Todas" || query) && (
             <button
-              onClick={() => { setCategory("Todo"); setQuery(""); }}
+              onClick={() => { setCategory("Todo"); setQuery(""); setZone("Todas"); }}
               className="shrink-0 px-3 py-2 rounded-full text-sm font-semibold border border-border text-muted-foreground hover:border-coral hover:text-coral inline-flex items-center gap-1 transition"
             >
               <RotateCcw className="h-3.5 w-3.5" /> Limpiar filtros
@@ -275,7 +289,7 @@ function MarketplacePage() {
                     {tel && (
                       <a
                         href={tel}
-                        onClick={(e) => e.stopPropagation()}
+                        onClick={(e) => { e.stopPropagation(); trackAdEvent(p.slug, p.title, "call"); }}
                         aria-label={`Llamar a ${p.seller.name}`}
                         className="inline-flex flex-1 items-center justify-center gap-1 rounded-full border border-border px-2.5 py-1.5 text-[11px] font-semibold text-foreground transition hover:border-coral hover:text-coral"
                       >
@@ -287,7 +301,7 @@ function MarketplacePage() {
                         href={wa}
                         target="_blank"
                         rel="noopener noreferrer"
-                        onClick={(e) => e.stopPropagation()}
+                        onClick={(e) => { e.stopPropagation(); trackAdEvent(p.slug, p.title, "whatsapp"); }}
                         aria-label={`Escribir por WhatsApp a ${p.seller.name}`}
                         className="inline-flex flex-1 items-center justify-center gap-1 rounded-full bg-emerald-600 px-2.5 py-1.5 text-[11px] font-semibold text-white transition hover:opacity-90"
                       >

@@ -27,6 +27,7 @@ import {
 } from "@/lib/moderation";
 import { deleteReport, setReportStatus, useReports } from "@/lib/reports";
 import { AdminPublishForm } from "@/components/AdminPublishForm";
+import { AdStatsPanel } from "@/components/AdStatsPanel";
 import { Flag } from "lucide-react";
 
 
@@ -148,6 +149,8 @@ function AdminDashboard({ onLogout }: { onLogout: () => void }) {
         </div>
 
         <AdminPublishForm />
+
+        <AdStatsPanel />
 
         <ReportsPanel />
 
