@@ -27,6 +27,7 @@ import { Route as TerminosRouteImport } from './routes/terminos'
 import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
 import { Route as ClasificadosPublicarRouteImport } from './routes/clasificados.publicar'
+import { Route as ClasificadosIdRouteImport } from './routes/clasificados_.$id'
 import { Route as DirectorioIndexRouteImport } from './routes/directorio.index'
 import { Route as DirectorioSlugRouteImport } from './routes/directorio.$slug'
 import { Route as MarketplaceIndexRouteImport } from './routes/marketplace.index'
@@ -136,6 +137,11 @@ const ClasificadosPublicarRoute = ClasificadosPublicarRouteImport.update({
   path: '/publicar',
   getParentRoute: () => ClasificadosRoute,
 } as any)
+const ClasificadosIdRoute = ClasificadosIdRouteImport.update({
+  id: '/clasificados_/$id',
+  path: '/clasificados/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DirectorioIndexRoute = DirectorioIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -237,6 +243,7 @@ export interface FileRoutesByFullPath {
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/clasificados/publicar': typeof ClasificadosPublicarRoute
+  '/clasificados/$id': typeof ClasificadosIdRoute
   '/directorio/$slug': typeof DirectorioSlugRoute
   '/marketplace/$slug': typeof MarketplaceSlugRoute
   '/marketplace/publicar': typeof MarketplacePublicarRoute
@@ -267,6 +274,7 @@ export interface FileRoutesByTo {
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/clasificados/publicar': typeof ClasificadosPublicarRoute
+  '/clasificados/$id': typeof ClasificadosIdRoute
   '/directorio/$slug': typeof DirectorioSlugRoute
   '/marketplace/$slug': typeof MarketplaceSlugRoute
   '/marketplace/publicar': typeof MarketplacePublicarRoute
@@ -304,6 +312,7 @@ export interface FileRoutesById {
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/clasificados/publicar': typeof ClasificadosPublicarRoute
+  '/clasificados_/$id': typeof ClasificadosIdRoute
   '/directorio/$slug': typeof DirectorioSlugRoute
   '/marketplace/$slug': typeof MarketplaceSlugRoute
   '/marketplace/publicar': typeof MarketplacePublicarRoute
@@ -342,6 +351,7 @@ export interface FileRouteTypes {
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
     | '/clasificados/publicar'
+    | '/clasificados/$id'
     | '/directorio/$slug'
     | '/marketplace/$slug'
     | '/marketplace/publicar'
@@ -372,6 +382,7 @@ export interface FileRouteTypes {
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
     | '/clasificados/publicar'
+    | '/clasificados/$id'
     | '/directorio/$slug'
     | '/marketplace/$slug'
     | '/marketplace/publicar'
@@ -408,6 +419,7 @@ export interface FileRouteTypes {
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
     | '/clasificados/publicar'
+    | '/clasificados_/$id'
     | '/directorio/$slug'
     | '/marketplace/$slug'
     | '/marketplace/publicar'
@@ -444,6 +456,7 @@ export interface RootRouteChildren {
   TerminosRoute: typeof TerminosRoute
   Char91DotmcpChar93ListToolsRoute: typeof Char91DotmcpChar93ListToolsRoute
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  ClasificadosIdRoute: typeof ClasificadosIdRoute
   DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
   Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
 }
@@ -575,6 +588,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/clasificados/publicar'
       preLoaderRoute: typeof ClasificadosPublicarRouteImport
       parentRoute: typeof ClasificadosRoute
+    }
+    '/clasificados_/$id': {
+      id: '/clasificados_/$id'
+      path: '/clasificados/$id'
+      fullPath: '/clasificados/$id'
+      preLoaderRoute: typeof ClasificadosIdRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/directorio/': {
       id: '/directorio/'
@@ -809,6 +829,7 @@ const rootRouteChildren: RootRouteChildren = {
   Char91DotmcpChar93ListToolsRoute: Char91DotmcpChar93ListToolsRoute,
   Char91DotwellKnownChar93OauthProtectedResourceRoute:
     Char91DotwellKnownChar93OauthProtectedResourceRoute,
+  ClasificadosIdRoute: ClasificadosIdRoute,
   DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
   Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
 }
