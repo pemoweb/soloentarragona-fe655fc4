@@ -143,6 +143,10 @@ export function addClassified(c: Omit<Classified, "id" | "time">) {
   return item;
 }
 
+export function getClassified(id: string): Classified | undefined {
+  return CLASSIFIEDS_SEED.find((c) => c.id === id) ?? loadUserClassifieds().find((c) => c.id === id);
+}
+
 export function useAllClassifieds() {
   const [items, setItems] = useState<Classified[]>(CLASSIFIEDS_SEED);
   useEffect(() => {

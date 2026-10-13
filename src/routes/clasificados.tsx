@@ -476,6 +476,9 @@ function ClasificadosPage() {
                   </span>
                 </div>
                 <DialogTitle className="text-2xl">{selectedAd.title}</DialogTitle>
+                <Link to="/clasificados/$id" params={{ id: selectedAd.id }} className="text-sm font-semibold text-coral hover:underline">
+                  Ver ficha completa →
+                </Link>
                 <DialogDescription className="flex items-center gap-4 mt-2">
                   <span className="inline-flex items-center gap-1">
                     <MapPin className="h-4 w-4" /> {selectedAd.location}
