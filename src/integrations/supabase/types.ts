@@ -38,6 +38,99 @@ export type Database = {
         }
         Relationships: []
       }
+      classified_ads: {
+        Row: {
+          category: string
+          contact_email: string | null
+          contact_name: string | null
+          contact_phone: string | null
+          created_at: string
+          days_left: number
+          description: string | null
+          id: string
+          image_url: string | null
+          location: string
+          title: string
+        }
+        Insert: {
+          category: string
+          contact_email?: string | null
+          contact_name?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          days_left?: number
+          description?: string | null
+          id: string
+          image_url?: string | null
+          location?: string
+          title: string
+        }
+        Update: {
+          category?: string
+          contact_email?: string | null
+          contact_name?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          days_left?: number
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          location?: string
+          title?: string
+        }
+        Relationships: []
+      }
+      marketplace_ads: {
+        Row: {
+          category: string
+          condition: string
+          created_at: string
+          description: string
+          image_url: string | null
+          location: string
+          price: number
+          seller_name: string
+          seller_phone: string
+          seo_description: string | null
+          seo_image: string | null
+          seo_title: string | null
+          slug: string
+          title: string
+        }
+        Insert: {
+          category?: string
+          condition?: string
+          created_at?: string
+          description?: string
+          image_url?: string | null
+          location?: string
+          price?: number
+          seller_name?: string
+          seller_phone?: string
+          seo_description?: string | null
+          seo_image?: string | null
+          seo_title?: string | null
+          slug: string
+          title: string
+        }
+        Update: {
+          category?: string
+          condition?: string
+          created_at?: string
+          description?: string
+          image_url?: string | null
+          location?: string
+          price?: number
+          seller_name?: string
+          seller_phone?: string
+          seo_description?: string | null
+          seo_image?: string | null
+          seo_title?: string | null
+          slug?: string
+          title?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
