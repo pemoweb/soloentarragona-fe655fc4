@@ -44,6 +44,7 @@ import { Route as SitiosDeInteresIndexRouteImport } from './routes/sitios-de-int
 import { Route as SitiosDeInteresSlugRouteImport } from './routes/sitios-de-interes.$slug'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
+import { Route as ApiPublicAdPhotoFileRouteImport } from './routes/api/public/ad-photo.$file'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -223,6 +224,11 @@ const Char91DotmcpChar93InvokeToolToolRoute =
     path: '/.mcp/invoke-tool/$tool',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicAdPhotoFileRoute = ApiPublicAdPhotoFileRouteImport.update({
+  id: '/api/public/ad-photo/$file',
+  path: '/api/public/ad-photo/$file',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -260,6 +266,7 @@ export interface FileRoutesByFullPath {
   '/sitios-de-interes/': typeof SitiosDeInteresIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/api/public/ad-photo/$file': typeof ApiPublicAdPhotoFileRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -291,6 +298,7 @@ export interface FileRoutesByTo {
   '/sitios-de-interes': typeof SitiosDeInteresIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/api/public/ad-photo/$file': typeof ApiPublicAdPhotoFileRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -329,6 +337,7 @@ export interface FileRoutesById {
   '/sitios-de-interes/': typeof SitiosDeInteresIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/api/public/ad-photo/$file': typeof ApiPublicAdPhotoFileRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -368,6 +377,7 @@ export interface FileRouteTypes {
     | '/sitios-de-interes/'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
+    | '/api/public/ad-photo/$file'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -399,6 +409,7 @@ export interface FileRouteTypes {
     | '/sitios-de-interes'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
+    | '/api/public/ad-photo/$file'
   id:
     | '__root__'
     | '/'
@@ -436,6 +447,7 @@ export interface FileRouteTypes {
     | '/sitios-de-interes/'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
+    | '/api/public/ad-photo/$file'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -459,6 +471,7 @@ export interface RootRouteChildren {
   ClasificadosIdRoute: typeof ClasificadosIdRoute
   DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
   Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
+  ApiPublicAdPhotoFileRoute: typeof ApiPublicAdPhotoFileRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -708,6 +721,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char91DotmcpChar93InvokeToolToolRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/ad-photo/$file': {
+      id: '/api/public/ad-photo/$file'
+      path: '/api/public/ad-photo/$file'
+      fullPath: '/api/public/ad-photo/$file'
+      preLoaderRoute: typeof ApiPublicAdPhotoFileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -832,6 +852,7 @@ const rootRouteChildren: RootRouteChildren = {
   ClasificadosIdRoute: ClasificadosIdRoute,
   DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
   Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
+  ApiPublicAdPhotoFileRoute: ApiPublicAdPhotoFileRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
