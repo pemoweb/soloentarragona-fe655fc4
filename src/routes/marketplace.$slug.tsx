@@ -21,8 +21,14 @@ export const Route = createFileRoute("/marketplace/$slug")({
       : `${loaderData.title} — ${formatEuro(loaderData.price)} en Tarragona`;
     const description = (seo.description?.trim() || loaderData.description).slice(0, 155);
     const url = `https://soloentarragona.lovable.app/marketplace/${params.slug}`;
-    const shareImage =
-      seo.image?.trim().startsWith("https://") ? seo.image.trim() : undefined;
+    const toAbs = (src?: string) => {
+      const s = src?.trim();
+      if (!s) return undefined;
+      if (s.startsWith("https://")) return s;
+      if (s.startsWith("/")) return `https://soloentarragona.lovable.app${s}`;
+      return undefined;
+    };
+    const shareImage = toAbs(seo.image) ?? toAbs(loaderData.gallery[0]);
     return {
       meta: [
         { title },
